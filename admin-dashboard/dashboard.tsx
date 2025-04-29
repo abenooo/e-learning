@@ -209,7 +209,7 @@ export default function Dashboard() {
           <div className="flex items-center space-x-2">
             <Hexagon className="h-8 w-8 text-orange-500" />
             <span className="text-xl font-bold bg-gradient-to-r from-orange-400 to-amber-500 bg-clip-text text-transparent">
-              WINGADI
+            Advanced Technical Service Provider
             </span>
           </div>
 
@@ -488,8 +488,8 @@ export default function Dashboard() {
                       <AvatarFallback className="bg-slate-700 text-orange-500 text-xl">ST</AvatarFallback>
                     </Avatar>
                     <div>
-                      <div className="text-lg font-medium text-slate-100">Shimels</div>
-                      <div className="text-sm text-slate-400">shimelschane</div>
+                      <div className="text-lg font-medium text-slate-100">Abenezer Kifle</div>
+                      <div className="text-sm text-slate-400">abenezerkifle@gmail.com</div>
                     </div>
                   </div>
                   <div className="space-y-3">
