@@ -24,11 +24,12 @@ A modern, responsive dashboard for managing technical courses, classes, and trai
 ## Getting Started
 
 1. Clone the repository
-2. Install dependencies:
+2. cd admin-dashboard
+3. Install dependencies:
 ```bash
 npm install
 ```
-3. Run the development server:
+4. Run the development server:
 ```bash
 npm run dev
 ```
