@@ -24,7 +24,7 @@ A modern, responsive dashboard for managing technical courses, classes, and trai
 ## Getting Started
 
 1. Clone the repository
-2. cd admin-dashboard
+2. CD admin-dashboard
 3. Install dependencies:
 ```bash
 npm install
