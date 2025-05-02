@@ -17,6 +17,9 @@ module.exports = {
       },
     },
     extend: {
+      gridColumn: {
+        'span-6': 'span 12 / span 16',
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",

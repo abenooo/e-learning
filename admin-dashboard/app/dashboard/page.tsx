@@ -8,12 +8,13 @@ import {
   Bell,
   Book,
   BookOpen,
+  ChevronLeft,
+  ChevronRight,
   Command,
   Database,
   Hexagon,
   Layers,
   ListChecks,
-  type LucideIcon,
   Moon,
   Search,
   Shield,
@@ -21,6 +22,7 @@ import {
   User,
   Users,
   Video,
+  type LucideIcon,
 } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
@@ -28,62 +30,46 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { Badge } from "@/components/ui/badge"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { NavDropdown } from "@/components/layout/NavDropdown"
+import { NavSubItem } from "@/components/layout/NavSubItem"
+import { StatusItem } from "@/components/layout/StatusItem"
 
 export default function Dashboard() {
   const [theme, setTheme] = useState<"dark" | "light">("dark")
-  const [systemStatus, setSystemStatus] = useState(83)
   const [cpuUsage, setCpuUsage] = useState(42)
   const [memoryUsage, setMemoryUsage] = useState(68)
-  const [networkStatus, setNetworkStatus] = useState(86)
-  const [securityLevel, setSecurityLevel] = useState(75)
   const [currentTime, setCurrentTime] = useState(new Date())
   const [isLoading, setIsLoading] = useState(true)
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true)
 
   const canvasRef = useRef<HTMLCanvasElement>(null)
 
-  // Simulate data loading
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoading(false)
-    }, 2000)
-
+    const timer = setTimeout(() => setIsLoading(false), 2000)
     return () => clearTimeout(timer)
   }, [])
 
-  // Update time
   useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentTime(new Date())
-    }, 1000)
-
+    const interval = setInterval(() => setCurrentTime(new Date()), 1000)
     return () => clearInterval(interval)
   }, [])
 
-  // Simulate changing data
   useEffect(() => {
     const interval = setInterval(() => {
       setCpuUsage(Math.floor(Math.random() * 30) + 30)
       setMemoryUsage(Math.floor(Math.random() * 20) + 60)
-      setNetworkStatus(Math.floor(Math.random() * 15) + 80)
-      setSystemStatus(Math.floor(Math.random() * 10) + 80)
     }, 3000)
-
     return () => clearInterval(interval)
   }, [])
 
-  // Particle effect
   useEffect(() => {
     const canvas = canvasRef.current
     if (!canvas) return
-
     const ctx = canvas.getContext("2d")
     if (!ctx) return
 
     canvas.width = canvas.offsetWidth
     canvas.height = canvas.offsetHeight
-
-    const particles: Particle[] = []
-    const particleCount = 100
 
     class Particle {
       x: number
@@ -92,30 +78,24 @@ export default function Dashboard() {
       speedX: number
       speedY: number
       color: string
-      width: number
-      height: number
-
-      constructor(width: number, height: number) {
-        this.width = width
-        this.height = height
+      constructor(public width: number, public height: number) {
         this.x = Math.random() * width
         this.y = Math.random() * height
         this.size = Math.random() * 3 + 1
         this.speedX = (Math.random() - 0.5) * 0.5
         this.speedY = (Math.random() - 0.5) * 0.5
-        this.color = `rgba(${Math.floor(Math.random() * 100) + 100}, ${Math.floor(Math.random() * 100) + 150}, ${Math.floor(Math.random() * 55) + 200}, ${Math.random() * 0.5 + 0.2})`
+        this.color = `rgba(${Math.floor(Math.random() * 100) + 100}, ${Math.floor(
+          Math.random() * 100
+        ) + 150}, ${Math.floor(Math.random() * 55) + 200}, ${Math.random() * 0.5 + 0.2})`
       }
-
       update() {
         this.x += this.speedX
         this.y += this.speedY
-
         if (this.x > this.width) this.x = 0
         if (this.x < 0) this.x = this.width
         if (this.y > this.height) this.y = 0
         if (this.y < 0) this.y = this.height
       }
-
       draw() {
         if (!ctx) return
         ctx.fillStyle = this.color
@@ -125,6 +105,9 @@ export default function Dashboard() {
       }
     }
 
+
+    const particles: Particle[] = []
+    const particleCount = 100
     for (let i = 0; i < particleCount; i++) {
       particles.push(new Particle(canvas.width, canvas.height))
     }
@@ -132,15 +115,12 @@ export default function Dashboard() {
     function animate() {
       if (!ctx || !canvas) return
       ctx.clearRect(0, 0, canvas.width, canvas.height)
-
-      for (const particle of particles) {
-        particle.update()
-        particle.draw()
-      }
-
+      particles.forEach((p) => {
+        p.update()
+        p.draw()
+      })
       requestAnimationFrame(animate)
     }
-
     animate()
 
     const handleResize = () => {
@@ -150,53 +130,26 @@ export default function Dashboard() {
     }
 
     window.addEventListener("resize", handleResize)
-
-    return () => {
-      window.removeEventListener("resize", handleResize)
-    }
+    return () => window.removeEventListener("resize", handleResize)
   }, [])
 
-  // Toggle theme
   const toggleTheme = () => {
     setTheme(theme === "dark" ? "light" : "dark")
   }
 
-  // Format time
-  const formatTime = (date: Date) => {
-    return date.toLocaleTimeString("en-US", {
-      hour12: false,
-      hour: "2-digit",
-      minute: "2-digit",
-      second: "2-digit",
-    })
-  }
-
-  // Format date
-  const formatDate = (date: Date) => {
-    return date.toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-    })
-  }
+  const formatTime = (date: Date) => date.toLocaleTimeString("en-US", { hour12: false, hour: "2-digit", minute: "2-digit", second: "2-digit" })
+  const formatDate = (date: Date) => date.toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" })
 
   return (
-    <div
-      className={`${theme} min-h-screen bg-gradient-to-br from-black to-slate-900 text-slate-100 relative overflow-hidden`}
-    >
-      {/* Background particle effect */}
+    <div className={`${theme} min-h-screen bg-gradient-to-br from-black to-slate-900 text-slate-100 relative overflow-hidden`}>
       <canvas ref={canvasRef} className="absolute inset-0 w-full h-full opacity-30" />
 
-      {/* Loading overlay */}
       {isLoading && (
         <div className="absolute inset-0 bg-black/80 flex items-center justify-center z-50">
           <div className="flex flex-col items-center">
-            <div className="relative w-24 h-24">
+            <div className="relative w-24 h-24 animate-spin-slower">
               <div className="absolute inset-0 border-4 border-cyan-500/30 rounded-full animate-ping"></div>
-              <div className="absolute inset-2 border-4 border-t-cyan-500 border-r-transparent border-b-transparent border-l-transparent rounded-full animate-spin"></div>
-              <div className="absolute inset-4 border-4 border-r-purple-500 border-t-transparent border-b-transparent border-l-transparent rounded-full animate-spin-slow"></div>
-              <div className="absolute inset-6 border-4 border-b-blue-500 border-t-transparent border-r-transparent border-l-transparent rounded-full animate-spin-slower"></div>
-              <div className="absolute inset-8 border-4 border-l-green-500 border-t-transparent border-r-transparent border-b-transparent rounded-full animate-spin"></div>
+              <div className="absolute inset-2 border-4 border-t-cyan-500 border-r-transparent rounded-full animate-spin"></div>
             </div>
             <div className="mt-4 text-cyan-500 font-mono text-sm tracking-wider">SYSTEM INITIALIZING</div>
           </div>
@@ -204,12 +157,11 @@ export default function Dashboard() {
       )}
 
       <div className="container mx-auto p-4 relative z-10">
-        {/* Header */}
         <header className="flex items-center justify-between py-4 border-b border-slate-700/50 mb-6">
           <div className="flex items-center space-x-2">
             <Hexagon className="h-8 w-8 text-orange-500" />
             <span className="text-xl font-bold bg-gradient-to-r from-orange-400 to-amber-500 bg-clip-text text-transparent">
-            Advanced Technical Service Provider
+              Advanced Technical Service Provider
             </span>
           </div>
 
@@ -222,7 +174,6 @@ export default function Dashboard() {
                 className="bg-transparent border-none focus:outline-none text-sm w-40 placeholder:text-slate-500"
               />
             </div>
-
             <div className="flex items-center space-x-3">
               <TooltipProvider>
                 <Tooltip>
@@ -237,16 +188,10 @@ export default function Dashboard() {
                   </TooltipContent>
                 </Tooltip>
               </TooltipProvider>
-
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger asChild>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      onClick={toggleTheme}
-                      className="text-slate-400 hover:text-slate-100"
-                    >
+                    <Button variant="ghost" size="icon" onClick={toggleTheme} className="text-slate-400 hover:text-slate-100">
                       {theme === "dark" ? <Moon className="h-5 w-5" /> : <Sun className="h-5 w-5" />}
                     </Button>
                   </TooltipTrigger>
@@ -255,7 +200,6 @@ export default function Dashboard() {
                   </TooltipContent>
                 </Tooltip>
               </TooltipProvider>
-
               <Avatar>
                 <AvatarImage src="/placeholder.svg?height=40&width=40" alt="User" />
                 <AvatarFallback className="bg-slate-700 text-orange-500">ST</AvatarFallback>
@@ -264,35 +208,94 @@ export default function Dashboard() {
           </div>
         </header>
 
-        {/* Main content */}
         <div className="grid grid-cols-12 gap-6">
           {/* Sidebar */}
-          <div className="col-span-12 md:col-span-3 lg:col-span-2">
-            <Card className="bg-slate-900/50 border-slate-700/50 backdrop-blur-sm h-full">
-              <CardContent className="p-4">
-                <nav className="space-y-2">
-                  <NavItem icon={Command} label="Dashboard" active />
-                  <NavItem icon={BookOpen} label="Courses" />
-                  <NavItem icon={Layers} label="Classes" />
-                  <NavItem icon={Users} label="Batch & Group" />
-                  <NavItem icon={Database} label="Add Content" />
-                  <NavItem icon={User} label="Assign" />
-                  <NavItem icon={Shield} label="User Hub" />
-                  <NavItem icon={Activity} label="Sessions" />
-                  <NavItem icon={BarChart3} label="Reports" />
-                </nav>
+          <div className="col-span-2 md:col-span-2 lg:col-span-[span-3]">
+  <Card className="bg-slate-900/50 border-slate-700/50 backdrop-blur-sm h-full">
+    <CardContent className="p-4 space-y-2">
+      {/* Sidebar Header with Toggle */}
+      <div className="flex items-center justify-between mb-2">
+        <h2 className="text-lg font-semibold text-slate-100">Dashboard</h2>
+        <Button
+          variant="ghost"
+          size="icon"
+          className="text-slate-400 hover:text-slate-100"
+          onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+        >
+          {isSidebarOpen ? <ChevronLeft className="h-5 w-5" /> : <ChevronRight className="h-5 w-5" />}
+        </Button>
+      </div>
 
-                <div className="mt-8 pt-6 border-t border-slate-700/50">
-                  <div className="text-xs text-slate-500 mb-2 font-mono">SYSTEM STATUS</div>
-                  <div className="space-y-3">
-                    <StatusItem label="Core Systems" value={83} color="orange" />
-                    <StatusItem label="Security" value={75} color="green" />
-                    <StatusItem label="Network" value={86} color="blue" />
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+      {/* Sidebar Content */}
+      {isSidebarOpen && (
+        <>
+          <NavDropdown icon={BookOpen} label="Courses">
+            <NavSubItem label="Create Course" href="/courses/create" />
+            <NavSubItem label="Create Phase" href="#" />
+            <NavSubItem label="Create Week" href="#" />
+            <NavSubItem label="Create Week Component" href="#" />
+          </NavDropdown>
+
+          <NavDropdown icon={Layers} label="Classes">
+            <NavSubItem label="Create Class" href="/classes/create" />
+            <NavSubItem label="Add Video" href="#" />
+            <NavSubItem label="Add Live Video" href="#" />
+            <NavSubItem label="Create Checklist" href="#" />
+            <NavSubItem label="Create Class Component" href="#" />
+          </NavDropdown>
+
+          <NavDropdown icon={Users} label="Batch & Group">
+            <NavSubItem label="Create Batch" href="#" />
+            <NavSubItem label="Create Group" href="#" />
+            <NavSubItem label="Batch Instructors" href="#" />
+            <NavSubItem label="Course Instructors" href="#" />
+          </NavDropdown>
+
+          <NavDropdown icon={Database} label="Add Content">
+            <NavSubItem label="Add Week Content" href="#" />
+            <NavSubItem label="Add Class Content" href="#" />
+          </NavDropdown>
+
+          <NavDropdown icon={User} label="Assign">
+            <NavSubItem label="Assign Week" href="#" />
+            <NavSubItem label="Batch Instructors" href="#" />
+            <NavSubItem label="Course Instructors" href="#" />
+          </NavDropdown>
+
+          <NavDropdown icon={Shield} label="User Hub">
+            <NavSubItem label="List of Users" href="#" />
+            <NavSubItem label="List of Students" href="#" />
+            <NavSubItem label="Group Confirmation" href="#" />
+          </NavDropdown>
+
+          <NavDropdown icon={Activity} label="Sessions">
+            <NavSubItem label="Live Session" href="#" />
+            <NavSubItem label="Group Session" href="#" />
+          </NavDropdown>
+
+          <NavDropdown icon={BarChart3} label="Reports">
+            <NavSubItem label="Checklist" href="#" />
+            <NavSubItem label="Watched" href="#" />
+            <NavSubItem label="Attendance" href="#" />
+            <NavSubItem label="Completion" href="#" />
+            <NavSubItem label="Weekly Report" href="#" />
+          </NavDropdown>
+
+          <div className="mt-8 pt-6 border-t border-slate-700/50">
+            <div className="text-xs text-slate-500 mb-2 font-mono">SYSTEM STATUS</div>
+            <div className="space-y-3">
+              <StatusItem label="Core Systems" value={83} color="orange" />
+              <StatusItem label="Security" value={75} color="green" />
+              <StatusItem label="Network" value={86} color="blue" />
+            </div>
           </div>
+        </>
+      )}
+    </CardContent>
+  </Card>
+</div>
+
+
 
           {/* Main dashboard */}
           <div className="col-span-12 md:col-span-9 lg:col-span-7">
@@ -488,8 +491,8 @@ export default function Dashboard() {
                       <AvatarFallback className="bg-slate-700 text-orange-500 text-xl">ST</AvatarFallback>
                     </Avatar>
                     <div>
-                      <div className="text-lg font-medium text-slate-100">Abenezer Kifle</div>
-                      <div className="text-sm text-slate-400">abenezerkifle@gmail.com</div>
+                      <div className="text-lg font-medium text-slate-100">Advanced TSP</div>
+                      <div className="text-sm text-slate-400">advancestsp@gmail.com</div>
                     </div>
                   </div>
                   <div className="space-y-3">
