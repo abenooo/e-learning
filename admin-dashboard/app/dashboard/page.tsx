@@ -32,7 +32,7 @@ import { Badge } from "@/components/ui/badge"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { NavDropdown } from "@/components/layout/NavDropdown"
 import { NavSubItem } from "@/components/layout/NavSubItem"
-import { StatusItem } from "@/components/layout/StatusItem"
+//import { StatusItem } from "@/components/layout/StatusItem"
 
 export default function Dashboard() {
   const [theme, setTheme] = useState<"dark" | "light">("dark")
@@ -104,8 +104,6 @@ export default function Dashboard() {
         ctx.fill()
       }
     }
-
-
     const particles: Particle[] = []
     const particleCount = 100
     for (let i = 0; i < particleCount; i++) {
@@ -208,92 +206,93 @@ export default function Dashboard() {
           </div>
         </header>
 
-        <div className="grid grid-cols-12 gap-6">
+        <div className="flex gap-6">
           {/* Sidebar */}
-          <div className="col-span-2 md:col-span-2 lg:col-span-[span-3]">
-  <Card className="bg-slate-900/50 border-slate-700/50 backdrop-blur-sm h-full">
-    <CardContent className="p-4 space-y-2">
-      {/* Sidebar Header with Toggle */}
-      <div className="flex items-center justify-between mb-2">
-        <h2 className="text-lg font-semibold text-slate-100">Dashboard</h2>
-        <Button
-          variant="ghost"
-          size="icon"
-          className="text-slate-400 hover:text-slate-100"
-          onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-        >
-          {isSidebarOpen ? <ChevronLeft className="h-5 w-5" /> : <ChevronRight className="h-5 w-5" />}
-        </Button>
-      </div>
+          <div className="w-72">
+            <Card className="bg-slate-900/50 border-slate-700/50 backdrop-blur-sm h-full">
+              <CardContent className="p-4 space-y-2">
+                {/* Sidebar Header with Toggle */}
+                <div className="flex items-center justify-between mb-2">
+                  <h2 className="text-lg font-semibold text-slate-100">Dashboard</h2>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="text-slate-400 hover:text-slate-100"
+                    onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+                  >
+                    {isSidebarOpen ? <ChevronLeft className="h-5 w-5" /> : <ChevronRight className="h-5 w-5" />}
+                  </Button>
+                </div>
 
-      {/* Sidebar Content */}
-      {isSidebarOpen && (
-        <>
-          <NavDropdown icon={BookOpen} label="Courses">
-            <NavSubItem label="Create Course" href="/courses/create" />
-            <NavSubItem label="Create Phase" href="#" />
-            <NavSubItem label="Create Week" href="#" />
-            <NavSubItem label="Create Week Component" href="#" />
-          </NavDropdown>
+                {/* Sidebar Content */}
+                {isSidebarOpen && (
+                  <>
+                    <NavDropdown icon={BookOpen} label="Courses">
+                      <NavSubItem label="Create Course" href="/courses/create" />
+                      <NavSubItem label="Create Phase" href="#" />
+                      <NavSubItem label="Create Week" href="#" />
+                      <NavSubItem label="Create Week Component" href="#" />
+                    </NavDropdown>
 
-          <NavDropdown icon={Layers} label="Classes">
-            <NavSubItem label="Create Class" href="/classes/create" />
-            <NavSubItem label="Add Video" href="#" />
-            <NavSubItem label="Add Live Video" href="#" />
-            <NavSubItem label="Create Checklist" href="#" />
-            <NavSubItem label="Create Class Component" href="#" />
-          </NavDropdown>
+                    <NavDropdown icon={Layers} label="Classes">
+                      <NavSubItem label="Create Class" href="/classes/create" />
+                      <NavSubItem label="Add Video" href="#" />
+                      <NavSubItem label="Add Live Video" href="#" />
+                      <NavSubItem label="Create Checklist" href="#" />
+                      <NavSubItem label="Create Class Component" href="#" />
+                    </NavDropdown>
 
-          <NavDropdown icon={Users} label="Batch & Group">
-            <NavSubItem label="Create Batch" href="#" />
-            <NavSubItem label="Create Group" href="#" />
-            <NavSubItem label="Batch Instructors" href="#" />
-            <NavSubItem label="Course Instructors" href="#" />
-          </NavDropdown>
+                    <NavDropdown icon={Users} label="Batch & Group">
+                      <NavSubItem label="Create Batch" href="#" />
+                      <NavSubItem label="Create Group" href="#" />
+                      <NavSubItem label="Batch Instructors" href="#" />
+                      <NavSubItem label="Course Instructors" href="#" />
+                    </NavDropdown>
 
-          <NavDropdown icon={Database} label="Add Content">
-            <NavSubItem label="Add Week Content" href="#" />
-            <NavSubItem label="Add Class Content" href="#" />
-          </NavDropdown>
+                    <NavDropdown icon={Database} label="Add Content">
+                      <NavSubItem label="Add Week Content" href="#" />
+                      <NavSubItem label="Add Class Content" href="#" />
+                    </NavDropdown>
 
-          <NavDropdown icon={User} label="Assign">
-            <NavSubItem label="Assign Week" href="#" />
-            <NavSubItem label="Batch Instructors" href="#" />
-            <NavSubItem label="Course Instructors" href="#" />
-          </NavDropdown>
+                    <NavDropdown icon={User} label="Assign">
+                      <NavSubItem label="Assign Week" href="#" />
+                      <NavSubItem label="Batch Instructors" href="#" />
+                      <NavSubItem label="Course Instructors" href="#" />
+                    </NavDropdown>
 
-          <NavDropdown icon={Shield} label="User Hub">
-            <NavSubItem label="List of Users" href="#" />
-            <NavSubItem label="List of Students" href="#" />
-            <NavSubItem label="Group Confirmation" href="#" />
-          </NavDropdown>
+                    <NavDropdown icon={Shield} label="User Hub">
+                      <NavSubItem label="List of Users" href="#" />
+                      <NavSubItem label="List of Students" href="#" />
+                      <NavSubItem label="Group Confirmation" href="#" />
+                    </NavDropdown>
 
-          <NavDropdown icon={Activity} label="Sessions">
-            <NavSubItem label="Live Session" href="#" />
-            <NavSubItem label="Group Session" href="#" />
-          </NavDropdown>
+                    <NavDropdown icon={Activity} label="Sessions">
+                      <NavSubItem label="Live Session" href="#" />
+                      <NavSubItem label="Group Session" href="#" />
+                    </NavDropdown>
 
-          <NavDropdown icon={BarChart3} label="Reports">
-            <NavSubItem label="Checklist" href="#" />
-            <NavSubItem label="Watched" href="#" />
-            <NavSubItem label="Attendance" href="#" />
-            <NavSubItem label="Completion" href="#" />
-            <NavSubItem label="Weekly Report" href="#" />
-          </NavDropdown>
+                    <NavDropdown icon={BarChart3} label="Reports">
+                      <NavSubItem label="Checklist" href="#" />
+                      <NavSubItem label="Watched" href="#" />
+                      <NavSubItem label="Attendance" href="#" />
+                      <NavSubItem label="Completion" href="#" />
+                      <NavSubItem label="Weekly Report" href="#" />
+                    </NavDropdown>
 
-          <div className="mt-8 pt-6 border-t border-slate-700/50">
-            <div className="text-xs text-slate-500 mb-2 font-mono">SYSTEM STATUS</div>
-            <div className="space-y-3">
-              <StatusItem label="Core Systems" value={83} color="orange" />
-              <StatusItem label="Security" value={75} color="green" />
-              <StatusItem label="Network" value={86} color="blue" />
-            </div>
+                    <div className="mt-8 pt-6 border-t border-slate-700/50">
+                      <div className="text-xs text-slate-500 mb-2 font-mono">SYSTEM STATUS</div>
+                      <div className="space-y-3">
+                        <StatusItem label="Core Systems" value={83} color="orange" />
+                        <StatusItem label="Security" value={75} color="green" />
+                        <StatusItem label="Network" value={86} color="blue" />
+                      </div>
+                    </div>
+                  </>
+                )}
+              </CardContent>
+            </Card>
           </div>
-        </>
-      )}
-    </CardContent>
-  </Card>
-</div>
+
 
 
 
@@ -437,7 +436,7 @@ export default function Dashboard() {
           </div>
 
           {/* Right sidebar */}
-          <div className="col-span-12 lg:col-span-3">
+          <div className="w-80">
             <div className="grid gap-6">
               {/* System time */}
               <Card className="bg-slate-900/50 border-slate-700/50 backdrop-blur-sm overflow-hidden">
@@ -563,6 +562,39 @@ export default function Dashboard() {
             </div>
           </div>
         </div>
+        <footer className="mt-12 border-t border-slate-700/50 pt-10 pb-12 text-slate-400 text-sm">
+  <div className="flex flex-col md:flex-row items-center justify-between gap-4 px-4">
+    {/* Left Section */}
+    <div className="text-center md:text-left">
+      <p className="font-semibold text-slate-200">Advanced Technical Service Provider</p>
+      <p className="mt-1">&copy; {new Date().getFullYear()} All rights reserved.</p>
+    </div>
+
+    {/* Right Section */}
+    <div className="text-center md:text-right space-y-1">
+      <p>
+        Developed by{" "}
+        <a
+          href="https://your-portfolio.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-orange-400 hover:underline"
+        >
+          Codex Team
+        </a>
+      </p>
+      <p>
+        Contact:{" "}
+        <a
+          href="mailto:contact@yourdomain.com"
+          className="hover:text-orange-400 transition-colors"
+        >
+        advancestsp@gmail.com
+        </a>
+      </p>
+    </div>
+  </div>
+</footer>
       </div>
     </div>
   )
