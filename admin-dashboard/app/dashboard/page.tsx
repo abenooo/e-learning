@@ -16,6 +16,7 @@ import {
   Layers,
   ListChecks,
   LogOut,
+  Menu,
   Moon,
   Search,
   Shield,
@@ -156,8 +157,8 @@ export default function Dashboard() {
       <div className="container mx-auto p-4 relative z-10">
         <header className="flex items-center justify-between py-4 border-b border-slate-700/50 mb-6">
           <div className="flex items-center space-x-2">
-            <Hexagon className="h-8 w-8 text-orange-500" />
-            <span className="text-xl font-bold bg-gradient-to-r from-orange-400 to-amber-500 bg-clip-text text-transparent">
+            <Hexagon className="h-8 w-8 text-blue-500" />
+            <span className="text-xl font-bold bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent">
               Advanced Technical Service Provider
             </span>
           </div>
@@ -211,19 +212,20 @@ export default function Dashboard() {
               <CardContent className="p-4 flex flex-col justify-between h-full">
                 {/* === Top Sidebar Content === */}
                 <div className="space-y-2">
-                  {/* Sidebar Header with Toggle */}
-                  <div className="flex items-center justify-between mb-2">
-                    <h2 className="text-lg font-semibold text-slate-100">Dashboard</h2>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      className="text-slate-400 hover:text-slate-100"
-                      onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-                    >
-                      {isSidebarOpen ? <ChevronLeft className="h-5 w-5" /> : <ChevronRight className="h-5 w-5" />}
-                    </Button>
-                  </div>
-
+                <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center space-x-2">
+                  <Activity className="h-5 w-5 text-blue-400" />
+                  <h2 className="text-lg font-semibold text-slate-100">Dashboard</h2>
+                </div>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="text-slate-400 hover:text-slate-100"
+                  onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+                >
+                  <Menu className="h-5 w-5" />
+                </Button>
+              </div>
                   {/* Sidebar Navigation */}
                   {isSidebarOpen && (
                     <>
