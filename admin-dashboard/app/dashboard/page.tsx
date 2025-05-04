@@ -199,7 +199,7 @@ export default function Dashboard() {
                 </Tooltip>
               </TooltipProvider>
               <Avatar>
-                <AvatarImage src="/placeholder.svg?height=40&width=40" alt="User" />
+                <AvatarImage src="/user.jpg?height=40&width=40" alt="User" />
                 <AvatarFallback className="bg-slate-700 text-orange-500">ST</AvatarFallback>
               </Avatar>
             </div>
@@ -207,110 +207,108 @@ export default function Dashboard() {
         </header>
         <div className="flex gap-6">
           {/* Sidebar */}
-          <div className="w-72">
-            <Card className="bg-slate-900/50 border-slate-700/50 backdrop-blur-sm h-full">
-              <CardContent className="p-4 flex flex-col justify-between h-full">
-                {/* === Top Sidebar Content === */}
-                <div className="space-y-2">
-                <div className="flex items-center justify-between mb-4">
-                <div className="flex items-center space-x-2">
-                  <Activity className="h-5 w-5 text-blue-400" />
-                  <h2 className="text-lg font-semibold text-slate-100">Dashboard</h2>
+          <div className={`transition-all duration-300 ${isSidebarOpen ? "w-72" : "w-16"} flex-shrink-0`}>
+            <div className="h-full bg-slate-950 border border-slate-800 rounded-xl flex flex-col justify-between overflow-hidden">
+              {/* Top Section */}
+              <div className="px-2 pt-2 pb-2">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center space-x-2">
+                    <Activity className="h-5 w-5 text-blue-400" />
+                    {isSidebarOpen && <h2 className="text-sm font-semibold text-slate-100">Dashboard</h2>}
+                  </div>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="text-slate-400 hover:text-slate-100"
+                    onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+                  >
+                    <Menu className="h-5 w-5" />
+                  </Button>
                 </div>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="text-slate-400 hover:text-slate-100"
-                  onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-                >
-                  <Menu className="h-5 w-5" />
-                </Button>
               </div>
-                  {/* Sidebar Navigation */}
-                  {isSidebarOpen && (
-                    <>
-                      <NavDropdown icon={BookOpen} label="Courses">
-                        <NavSubItem label="Create Course" href="/courses/create" />
-                        <NavSubItem label="Create Phase" href="#" />
-                        <NavSubItem label="Create Week" href="#" />
-                        <NavSubItem label="Create Week Component" href="#" />
-                      </NavDropdown>
 
-                      <NavDropdown icon={Layers} label="Classes">
-                        <NavSubItem label="Create Class" href="/classes/create" />
-                        <NavSubItem label="Add Video" href="#" />
-                        <NavSubItem label="Add Live Video" href="#" />
-                        <NavSubItem label="Create Checklist" href="#" />
-                        <NavSubItem label="Create Class Component" href="#" />
-                      </NavDropdown>
+              {/* Navigation Menu */}
+              <div className="flex-1 px-2 space-y-1 overflow-y-auto">
+                <NavDropdown icon={BookOpen} label={isSidebarOpen ? "Course Management" : ""}>
+                  <NavSubItem label="Create Course" href="dashboard/courses/createCourse" />
+                  <NavSubItem label="Create Phase" href="dashboard/courses/createPhase" />
+                  <NavSubItem label="Create Week" href="dashboard/courses/createWeek" />
+                  <NavSubItem label="Create Week Component" href="dashboard/courses/createWeekComponent" />
+                </NavDropdown>
 
-                      <NavDropdown icon={Users} label="Batch & Group">
-                        <NavSubItem label="Create Batch" href="#" />
-                        <NavSubItem label="Create Group" href="#" />
-                        <NavSubItem label="Batch Instructors" href="#" />
-                        <NavSubItem label="Course Instructors" href="#" />
-                      </NavDropdown>
+                <NavDropdown icon={Layers} label={isSidebarOpen ? "Class Management" : ""}>
+                  <NavSubItem label="Create Class" href="dashboard/classes/createClass" />
+                  <NavSubItem label="Add Video" href="#" />
+                  <NavSubItem label="Add Live Video" href="#" />
+                  <NavSubItem label="Create Checklist" href="#" />
+                  <NavSubItem label="Create Class Component" href="#" />
+                </NavDropdown>
 
-                      <NavDropdown icon={Database} label="Add Content">
-                        <NavSubItem label="Add Week Content" href="#" />
-                        <NavSubItem label="Add Class Content" href="#" />
-                      </NavDropdown>
+                <NavDropdown icon={Users} label={isSidebarOpen ? "Batch & Group Management" : ""}>
+                  <NavSubItem label="Create Batch" href="#" />
+                  <NavSubItem label="Create Group" href="#" />
+                  <NavSubItem label="Batch Instructors" href="#" />
+                  <NavSubItem label="Course Instructors" href="#" />
+                </NavDropdown>
 
-                      <NavDropdown icon={User} label="Assign">
-                        <NavSubItem label="Assign Week" href="#" />
-                        <NavSubItem label="Batch Instructors" href="#" />
-                        <NavSubItem label="Course Instructors" href="#" />
-                      </NavDropdown>
+                <NavDropdown icon={Database} label={isSidebarOpen ? "Add Content Management" : ""}>
+                  <NavSubItem label="Add Week Content" href="#" />
+                  <NavSubItem label="Add Class Content" href="#" />
+                </NavDropdown>
 
-                      <NavDropdown icon={Shield} label="User Hub">
-                        <NavSubItem label="List of Users" href="#" />
-                        <NavSubItem label="List of Students" href="#" />
-                        <NavSubItem label="Group Confirmation" href="#" />
-                      </NavDropdown>
+                <NavDropdown icon={User} label={isSidebarOpen ? "Manage Assignments" : ""}>
+                  <NavSubItem label="Assign Week" href="#" />
+                  <NavSubItem label="Batch Instructors" href="#" />
+                  <NavSubItem label="Course Instructors" href="#" />
+                </NavDropdown>
 
-                      <NavDropdown icon={Activity} label="Sessions">
-                        <NavSubItem label="Live Session" href="#" />
-                        <NavSubItem label="Group Session" href="#" />
-                      </NavDropdown>
+                <NavDropdown icon={Shield} label={isSidebarOpen ? "User Management" : ""}>
+                  <NavSubItem label="List of Users" href="#" />
+                  <NavSubItem label="List of Students" href="#" />
+                  <NavSubItem label="Group Confirmation" href="#" />
+                </NavDropdown>
 
-                      <NavDropdown icon={BarChart3} label="Reports">
-                        <NavSubItem label="Checklist" href="#" />
-                        <NavSubItem label="Watched" href="#" />
-                        <NavSubItem label="Attendance" href="#" />
-                        <NavSubItem label="Completion" href="#" />
-                        <NavSubItem label="Weekly Report" href="#" />
-                      </NavDropdown>
-                      {/* === Bottom User + Logout Section === */}
-                      <div className="mt-6">
-                        <div
-                          className="flex items-center justify-between px-3 py-2 rounded-md bg-slate-800/10 hover:bg-slate-800/50 hover:shadow-md transition-all duration-200"
-                        >
-                          <div className="flex items-center space-x-3">
-                            <Avatar className="h-8 w-8">
-                              <AvatarImage src="/placeholder.svg" alt="User" />
-                              <AvatarFallback className="bg-slate-700 text-orange-500">ST</AvatarFallback>
-                            </Avatar>
-                            <div className="text-sm text-slate-300 font-medium">Your Name</div>
-                          </div>
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            className="text-slate-400 hover:text-red-500"
-                            onClick={() => {
-                              // 🔐 Add logout logic here
-                              console.log("Logging out...")
-                            }}
-                          >
-                            <LogOut className="h-5 w-5" />
-                          </Button>
-                        </div>
-                      </div>
-                    </>
-                  )}
+                <NavDropdown icon={Activity} label={isSidebarOpen ? "Session Management" : ""}>
+                  <NavSubItem label="Live Session" href="#" />
+                  <NavSubItem label="Group Session" href="#" />
+                </NavDropdown>
+
+                <NavDropdown icon={BarChart3} label={isSidebarOpen ? "Report Management" : ""}>
+                  <NavSubItem label="Checklist" href="#" />
+                  <NavSubItem label="Watched" href="#" />
+                  <NavSubItem label="Attendance" href="#" />
+                  <NavSubItem label="Completion" href="#" />
+                  <NavSubItem label="Weekly Report" href="#" />
+                </NavDropdown>
+                {/* === Bottom User + Logout Section === */}
+                <div className="mt-6">
+                  <div
+                    className="flex items-center justify-between px-3 py-2 rounded-md bg-slate-800/10 hover:bg-slate-800/50 hover:shadow-md transition-all duration-200"
+                  >
+                    <div className="flex items-center space-x-3">
+                      <Avatar className="h-8 w-8">
+                        <AvatarImage src="/user.jpg" alt="User" />
+                        <AvatarFallback className="bg-slate-700 text-orange-500">ST</AvatarFallback>
+                      </Avatar>
+                      <div className="text-sm text-slate-300 font-medium">Your Name</div>
+                    </div>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="text-slate-400 hover:text-red-500"
+                      onClick={() => {
+                        // 🔐 Add logout logic here
+                        console.log("Logging out...")
+                      }}
+                    >
+                      <LogOut className="h-5 w-5" />
+                    </Button>
+                  </div>
                 </div>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
           </div>
+
           {/* Main dashboard */}
           <div className="col-span-12 md:col-span-9 lg:col-span-7">
             <div className="grid gap-6">
