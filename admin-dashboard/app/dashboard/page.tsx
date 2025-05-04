@@ -25,7 +25,6 @@ import {
   Video,
   type LucideIcon,
 } from "lucide-react"
-
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
@@ -154,7 +153,6 @@ export default function Dashboard() {
           </div>
         </div>
       )}
-
       <div className="container mx-auto p-4 relative z-10">
         <header className="flex items-center justify-between py-4 border-b border-slate-700/50 mb-6">
           <div className="flex items-center space-x-2">
@@ -206,118 +204,111 @@ export default function Dashboard() {
             </div>
           </div>
         </header>
-
         <div className="flex gap-6">
           {/* Sidebar */}
           <div className="w-72">
-  <Card className="bg-slate-900/50 border-slate-700/50 backdrop-blur-sm h-full">
-    <CardContent className="p-4 flex flex-col justify-between h-full">
-      {/* === Top Sidebar Content === */}
-      <div className="space-y-2">
-        {/* Sidebar Header with Toggle */}
-        <div className="flex items-center justify-between mb-2">
-          <h2 className="text-lg font-semibold text-slate-100">Dashboard</h2>
-          <Button
-            variant="ghost"
-            size="icon"
-            className="text-slate-400 hover:text-slate-100"
-            onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-          >
-            {isSidebarOpen ? <ChevronLeft className="h-5 w-5" /> : <ChevronRight className="h-5 w-5" />}
-          </Button>
-        </div>
+            <Card className="bg-slate-900/50 border-slate-700/50 backdrop-blur-sm h-full">
+              <CardContent className="p-4 flex flex-col justify-between h-full">
+                {/* === Top Sidebar Content === */}
+                <div className="space-y-2">
+                  {/* Sidebar Header with Toggle */}
+                  <div className="flex items-center justify-between mb-2">
+                    <h2 className="text-lg font-semibold text-slate-100">Dashboard</h2>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="text-slate-400 hover:text-slate-100"
+                      onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+                    >
+                      {isSidebarOpen ? <ChevronLeft className="h-5 w-5" /> : <ChevronRight className="h-5 w-5" />}
+                    </Button>
+                  </div>
 
-        {/* Sidebar Navigation */}
-        {isSidebarOpen && (
-          <>
-            <NavDropdown icon={BookOpen} label="Courses">
-              <NavSubItem label="Create Course" href="/courses/create" />
-              <NavSubItem label="Create Phase" href="#" />
-              <NavSubItem label="Create Week" href="#" />
-              <NavSubItem label="Create Week Component" href="#" />
-            </NavDropdown>
+                  {/* Sidebar Navigation */}
+                  {isSidebarOpen && (
+                    <>
+                      <NavDropdown icon={BookOpen} label="Courses">
+                        <NavSubItem label="Create Course" href="/courses/create" />
+                        <NavSubItem label="Create Phase" href="#" />
+                        <NavSubItem label="Create Week" href="#" />
+                        <NavSubItem label="Create Week Component" href="#" />
+                      </NavDropdown>
 
-            <NavDropdown icon={Layers} label="Classes">
-              <NavSubItem label="Create Class" href="/classes/create" />
-              <NavSubItem label="Add Video" href="#" />
-              <NavSubItem label="Add Live Video" href="#" />
-              <NavSubItem label="Create Checklist" href="#" />
-              <NavSubItem label="Create Class Component" href="#" />
-            </NavDropdown>
+                      <NavDropdown icon={Layers} label="Classes">
+                        <NavSubItem label="Create Class" href="/classes/create" />
+                        <NavSubItem label="Add Video" href="#" />
+                        <NavSubItem label="Add Live Video" href="#" />
+                        <NavSubItem label="Create Checklist" href="#" />
+                        <NavSubItem label="Create Class Component" href="#" />
+                      </NavDropdown>
 
-            <NavDropdown icon={Users} label="Batch & Group">
-              <NavSubItem label="Create Batch" href="#" />
-              <NavSubItem label="Create Group" href="#" />
-              <NavSubItem label="Batch Instructors" href="#" />
-              <NavSubItem label="Course Instructors" href="#" />
-            </NavDropdown>
+                      <NavDropdown icon={Users} label="Batch & Group">
+                        <NavSubItem label="Create Batch" href="#" />
+                        <NavSubItem label="Create Group" href="#" />
+                        <NavSubItem label="Batch Instructors" href="#" />
+                        <NavSubItem label="Course Instructors" href="#" />
+                      </NavDropdown>
 
-            <NavDropdown icon={Database} label="Add Content">
-              <NavSubItem label="Add Week Content" href="#" />
-              <NavSubItem label="Add Class Content" href="#" />
-            </NavDropdown>
+                      <NavDropdown icon={Database} label="Add Content">
+                        <NavSubItem label="Add Week Content" href="#" />
+                        <NavSubItem label="Add Class Content" href="#" />
+                      </NavDropdown>
 
-            <NavDropdown icon={User} label="Assign">
-              <NavSubItem label="Assign Week" href="#" />
-              <NavSubItem label="Batch Instructors" href="#" />
-              <NavSubItem label="Course Instructors" href="#" />
-            </NavDropdown>
+                      <NavDropdown icon={User} label="Assign">
+                        <NavSubItem label="Assign Week" href="#" />
+                        <NavSubItem label="Batch Instructors" href="#" />
+                        <NavSubItem label="Course Instructors" href="#" />
+                      </NavDropdown>
 
-            <NavDropdown icon={Shield} label="User Hub">
-              <NavSubItem label="List of Users" href="#" />
-              <NavSubItem label="List of Students" href="#" />
-              <NavSubItem label="Group Confirmation" href="#" />
-            </NavDropdown>
+                      <NavDropdown icon={Shield} label="User Hub">
+                        <NavSubItem label="List of Users" href="#" />
+                        <NavSubItem label="List of Students" href="#" />
+                        <NavSubItem label="Group Confirmation" href="#" />
+                      </NavDropdown>
 
-            <NavDropdown icon={Activity} label="Sessions">
-              <NavSubItem label="Live Session" href="#" />
-              <NavSubItem label="Group Session" href="#" />
-            </NavDropdown>
+                      <NavDropdown icon={Activity} label="Sessions">
+                        <NavSubItem label="Live Session" href="#" />
+                        <NavSubItem label="Group Session" href="#" />
+                      </NavDropdown>
 
-            <NavDropdown icon={BarChart3} label="Reports">
-              <NavSubItem label="Checklist" href="#" />
-              <NavSubItem label="Watched" href="#" />
-              <NavSubItem label="Attendance" href="#" />
-              <NavSubItem label="Completion" href="#" />
-              <NavSubItem label="Weekly Report" href="#" />
-            </NavDropdown>
-
-        {/* === Bottom User + Logout Section === */}
-        <div className="pt-6 border-t border-slate-700/50">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-3">
-            <Avatar className="h-8 w-8">
-              <AvatarImage src="/placeholder.svg" alt="User" />
-              <AvatarFallback className="bg-slate-700 text-orange-500">ST</AvatarFallback>
-            </Avatar>
-            <div className="text-sm text-slate-300 font-medium">Your Name</div>
+                      <NavDropdown icon={BarChart3} label="Reports">
+                        <NavSubItem label="Checklist" href="#" />
+                        <NavSubItem label="Watched" href="#" />
+                        <NavSubItem label="Attendance" href="#" />
+                        <NavSubItem label="Completion" href="#" />
+                        <NavSubItem label="Weekly Report" href="#" />
+                      </NavDropdown>
+                      {/* === Bottom User + Logout Section === */}
+                      <div className="mt-6">
+                        <div
+                          className="flex items-center justify-between px-3 py-2 rounded-md bg-slate-800/10 hover:bg-slate-800/50 hover:shadow-md transition-all duration-200"
+                        >
+                          <div className="flex items-center space-x-3">
+                            <Avatar className="h-8 w-8">
+                              <AvatarImage src="/placeholder.svg" alt="User" />
+                              <AvatarFallback className="bg-slate-700 text-orange-500">ST</AvatarFallback>
+                            </Avatar>
+                            <div className="text-sm text-slate-300 font-medium">Your Name</div>
+                          </div>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            className="text-slate-400 hover:text-red-500"
+                            onClick={() => {
+                              // 🔐 Add logout logic here
+                              console.log("Logging out...")
+                            }}
+                          >
+                            <LogOut className="h-5 w-5" />
+                          </Button>
+                        </div>
+                      </div>
+                    </>
+                  )}
+                </div>
+              </CardContent>
+            </Card>
           </div>
-          <Button
-            variant="ghost"
-            size="icon"
-            className="text-slate-400 hover:text-red-500"
-            onClick={() => {
-              // 🔐 Add logout logic here
-              console.log("Logging out...")
-            }}
-          >
-            <LogOut className="h-5 w-5" />
-          </Button>
-        </div>
-      </div>
-          </>
-        )}
-      </div>
-
-
-    </CardContent>
-  </Card>
-</div>
-
-
-
-
-
           {/* Main dashboard */}
           <div className="col-span-12 md:col-span-9 lg:col-span-7">
             <div className="grid gap-6">
@@ -400,7 +391,6 @@ export default function Dashboard() {
                   </CardContent>
                 </Card>
               </div>
-
               {/* User Management & Session Management */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <Card className="bg-slate-900/50 border-slate-700/50 backdrop-blur-sm">
@@ -418,7 +408,6 @@ export default function Dashboard() {
                     </div>
                   </CardContent>
                 </Card>
-
                 <Card className="bg-slate-900/50 border-slate-700/50 backdrop-blur-sm">
                   <CardHeader className="pb-2 border-b border-slate-700/50">
                     <CardTitle className="text-slate-100 flex items-center text-base">
@@ -435,7 +424,6 @@ export default function Dashboard() {
                   </CardContent>
                 </Card>
               </div>
-
               {/* Report Management */}
               <Card className="bg-slate-900/50 border-slate-700/50 backdrop-blur-sm">
                 <CardHeader className="pb-2 border-b border-slate-700/50">
@@ -456,7 +444,6 @@ export default function Dashboard() {
               </Card>
             </div>
           </div>
-
           {/* Right sidebar */}
           <div className="w-80">
             <div className="grid gap-6">
@@ -484,7 +471,6 @@ export default function Dashboard() {
                   </div>
                 </CardContent>
               </Card>
-
               {/* Quick actions */}
               <Card className="bg-slate-900/50 border-slate-700/50 backdrop-blur-sm">
                 <CardHeader className="pb-2">
@@ -585,38 +571,37 @@ export default function Dashboard() {
           </div>
         </div>
         <footer className="mt-12 border-t border-slate-700/50 pt-10 pb-12 text-slate-400 text-sm">
-  <div className="flex flex-col md:flex-row items-center justify-between gap-4 px-4">
-    {/* Left Section */}
-    <div className="text-center md:text-left">
-      <p className="font-semibold text-slate-200">Advanced Technical Service Provider</p>
-      <p className="mt-1">&copy; {new Date().getFullYear()} All rights reserved.</p>
-    </div>
-
-    {/* Right Section */}
-    <div className="text-center md:text-right space-y-1">
-      <p>
-        Developed by{" "}
-        <a
-          href="https://your-portfolio.com"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-orange-400 hover:underline"
-        >
-          Codex Team
-        </a>
-      </p>
-      <p>
-        Contact:{" "}
-        <a
-          href="mailto:contact@yourdomain.com"
-          className="hover:text-orange-400 transition-colors"
-        >
-        advancestsp@gmail.com
-        </a>
-      </p>
-    </div>
-  </div>
-</footer>
+          <div className="flex flex-col md:flex-row items-center justify-between gap-4 px-4">
+            {/* Left Section */}
+            <div className="text-center md:text-left">
+              <p className="font-semibold text-slate-200">Advanced Technical Service Provider</p>
+              <p className="mt-1">&copy; {new Date().getFullYear()} All rights reserved.</p>
+            </div>
+            {/* Right Section */}
+            <div className="text-center md:text-right space-y-1">
+              <p>
+                Developed by{" "}
+                <a
+                  href="https://your-portfolio.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-orange-400 hover:underline"
+                >
+                  Codex Team
+                </a>
+              </p>
+              <p>
+                Contact:{" "}
+                <a
+                  href="mailto:contact@yourdomain.com"
+                  className="hover:text-orange-400 transition-colors"
+                >
+                  advancestsp@gmail.com
+                </a>
+              </p>
+            </div>
+          </div>
+        </footer>
       </div>
     </div>
   )
@@ -634,7 +619,6 @@ function NavItem({ icon: Icon, label, active }: { icon: LucideIcon; label: strin
     </Button>
   )
 }
-
 // Component for status items
 function StatusItem({ label, value, color }: { label: string; value: number; color: string }) {
   const getColor = () => {
@@ -651,7 +635,6 @@ function StatusItem({ label, value, color }: { label: string; value: number; col
         return "from-orange-500 to-amber-500"
     }
   }
-
   return (
     <div>
       <div className="flex items-center justify-between mb-1">
@@ -664,7 +647,6 @@ function StatusItem({ label, value, color }: { label: string; value: number; col
     </div>
   )
 }
-
 // Component for management links
 function ManagementLink({ icon: Icon, label }: { icon: LucideIcon; label: string }) {
   return (
@@ -677,7 +659,6 @@ function ManagementLink({ icon: Icon, label }: { icon: LucideIcon; label: string
     </a>
   )
 }
-
 // Action button component
 function ActionButton({ icon: Icon, label }: { icon: LucideIcon; label: string }) {
   return (
@@ -690,12 +671,10 @@ function ActionButton({ icon: Icon, label }: { icon: LucideIcon; label: string }
     </Button>
   )
 }
-
 // Add missing imports
-function Info(props :any) {
+function Info(props: any) {
   return <AlertCircle {...props} />
 }
-
-function Check(props :any) {
+function Check(props: any) {
   return <Shield {...props} />
 }
