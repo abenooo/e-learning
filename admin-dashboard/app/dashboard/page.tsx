@@ -15,6 +15,7 @@ import {
   Hexagon,
   Layers,
   ListChecks,
+  LogOut,
   Moon,
   Search,
   Shield,
@@ -209,89 +210,110 @@ export default function Dashboard() {
         <div className="flex gap-6">
           {/* Sidebar */}
           <div className="w-72">
-            <Card className="bg-slate-900/50 border-slate-700/50 backdrop-blur-sm h-full">
-              <CardContent className="p-4 space-y-2">
-                {/* Sidebar Header with Toggle */}
-                <div className="flex items-center justify-between mb-2">
-                  <h2 className="text-lg font-semibold text-slate-100">Dashboard</h2>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="text-slate-400 hover:text-slate-100"
-                    onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-                  >
-                    {isSidebarOpen ? <ChevronLeft className="h-5 w-5" /> : <ChevronRight className="h-5 w-5" />}
-                  </Button>
-                </div>
+  <Card className="bg-slate-900/50 border-slate-700/50 backdrop-blur-sm h-full">
+    <CardContent className="p-4 flex flex-col justify-between h-full">
+      {/* === Top Sidebar Content === */}
+      <div className="space-y-2">
+        {/* Sidebar Header with Toggle */}
+        <div className="flex items-center justify-between mb-2">
+          <h2 className="text-lg font-semibold text-slate-100">Dashboard</h2>
+          <Button
+            variant="ghost"
+            size="icon"
+            className="text-slate-400 hover:text-slate-100"
+            onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+          >
+            {isSidebarOpen ? <ChevronLeft className="h-5 w-5" /> : <ChevronRight className="h-5 w-5" />}
+          </Button>
+        </div>
 
-                {/* Sidebar Content */}
-                {isSidebarOpen && (
-                  <>
-                    <NavDropdown icon={BookOpen} label="Courses">
-                      <NavSubItem label="Create Course" href="/courses/create" />
-                      <NavSubItem label="Create Phase" href="#" />
-                      <NavSubItem label="Create Week" href="#" />
-                      <NavSubItem label="Create Week Component" href="#" />
-                    </NavDropdown>
+        {/* Sidebar Navigation */}
+        {isSidebarOpen && (
+          <>
+            <NavDropdown icon={BookOpen} label="Courses">
+              <NavSubItem label="Create Course" href="/courses/create" />
+              <NavSubItem label="Create Phase" href="#" />
+              <NavSubItem label="Create Week" href="#" />
+              <NavSubItem label="Create Week Component" href="#" />
+            </NavDropdown>
 
-                    <NavDropdown icon={Layers} label="Classes">
-                      <NavSubItem label="Create Class" href="/classes/create" />
-                      <NavSubItem label="Add Video" href="#" />
-                      <NavSubItem label="Add Live Video" href="#" />
-                      <NavSubItem label="Create Checklist" href="#" />
-                      <NavSubItem label="Create Class Component" href="#" />
-                    </NavDropdown>
+            <NavDropdown icon={Layers} label="Classes">
+              <NavSubItem label="Create Class" href="/classes/create" />
+              <NavSubItem label="Add Video" href="#" />
+              <NavSubItem label="Add Live Video" href="#" />
+              <NavSubItem label="Create Checklist" href="#" />
+              <NavSubItem label="Create Class Component" href="#" />
+            </NavDropdown>
 
-                    <NavDropdown icon={Users} label="Batch & Group">
-                      <NavSubItem label="Create Batch" href="#" />
-                      <NavSubItem label="Create Group" href="#" />
-                      <NavSubItem label="Batch Instructors" href="#" />
-                      <NavSubItem label="Course Instructors" href="#" />
-                    </NavDropdown>
+            <NavDropdown icon={Users} label="Batch & Group">
+              <NavSubItem label="Create Batch" href="#" />
+              <NavSubItem label="Create Group" href="#" />
+              <NavSubItem label="Batch Instructors" href="#" />
+              <NavSubItem label="Course Instructors" href="#" />
+            </NavDropdown>
 
-                    <NavDropdown icon={Database} label="Add Content">
-                      <NavSubItem label="Add Week Content" href="#" />
-                      <NavSubItem label="Add Class Content" href="#" />
-                    </NavDropdown>
+            <NavDropdown icon={Database} label="Add Content">
+              <NavSubItem label="Add Week Content" href="#" />
+              <NavSubItem label="Add Class Content" href="#" />
+            </NavDropdown>
 
-                    <NavDropdown icon={User} label="Assign">
-                      <NavSubItem label="Assign Week" href="#" />
-                      <NavSubItem label="Batch Instructors" href="#" />
-                      <NavSubItem label="Course Instructors" href="#" />
-                    </NavDropdown>
+            <NavDropdown icon={User} label="Assign">
+              <NavSubItem label="Assign Week" href="#" />
+              <NavSubItem label="Batch Instructors" href="#" />
+              <NavSubItem label="Course Instructors" href="#" />
+            </NavDropdown>
 
-                    <NavDropdown icon={Shield} label="User Hub">
-                      <NavSubItem label="List of Users" href="#" />
-                      <NavSubItem label="List of Students" href="#" />
-                      <NavSubItem label="Group Confirmation" href="#" />
-                    </NavDropdown>
+            <NavDropdown icon={Shield} label="User Hub">
+              <NavSubItem label="List of Users" href="#" />
+              <NavSubItem label="List of Students" href="#" />
+              <NavSubItem label="Group Confirmation" href="#" />
+            </NavDropdown>
 
-                    <NavDropdown icon={Activity} label="Sessions">
-                      <NavSubItem label="Live Session" href="#" />
-                      <NavSubItem label="Group Session" href="#" />
-                    </NavDropdown>
+            <NavDropdown icon={Activity} label="Sessions">
+              <NavSubItem label="Live Session" href="#" />
+              <NavSubItem label="Group Session" href="#" />
+            </NavDropdown>
 
-                    <NavDropdown icon={BarChart3} label="Reports">
-                      <NavSubItem label="Checklist" href="#" />
-                      <NavSubItem label="Watched" href="#" />
-                      <NavSubItem label="Attendance" href="#" />
-                      <NavSubItem label="Completion" href="#" />
-                      <NavSubItem label="Weekly Report" href="#" />
-                    </NavDropdown>
+            <NavDropdown icon={BarChart3} label="Reports">
+              <NavSubItem label="Checklist" href="#" />
+              <NavSubItem label="Watched" href="#" />
+              <NavSubItem label="Attendance" href="#" />
+              <NavSubItem label="Completion" href="#" />
+              <NavSubItem label="Weekly Report" href="#" />
+            </NavDropdown>
 
-                    <div className="mt-8 pt-6 border-t border-slate-700/50">
-                      <div className="text-xs text-slate-500 mb-2 font-mono">SYSTEM STATUS</div>
-                      <div className="space-y-3">
-                        <StatusItem label="Core Systems" value={83} color="orange" />
-                        <StatusItem label="Security" value={75} color="green" />
-                        <StatusItem label="Network" value={86} color="blue" />
-                      </div>
-                    </div>
-                  </>
-                )}
-              </CardContent>
-            </Card>
+        {/* === Bottom User + Logout Section === */}
+        <div className="pt-6 border-t border-slate-700/50">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center space-x-3">
+            <Avatar className="h-8 w-8">
+              <AvatarImage src="/placeholder.svg" alt="User" />
+              <AvatarFallback className="bg-slate-700 text-orange-500">ST</AvatarFallback>
+            </Avatar>
+            <div className="text-sm text-slate-300 font-medium">Your Name</div>
           </div>
+          <Button
+            variant="ghost"
+            size="icon"
+            className="text-slate-400 hover:text-red-500"
+            onClick={() => {
+              // 🔐 Add logout logic here
+              console.log("Logging out...")
+            }}
+          >
+            <LogOut className="h-5 w-5" />
+          </Button>
+        </div>
+      </div>
+          </>
+        )}
+      </div>
+
+
+    </CardContent>
+  </Card>
+</div>
+
 
 
 
