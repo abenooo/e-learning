@@ -2,20 +2,8 @@
 
 import { useState, useEffect, useRef } from "react"
 import {
-  Hexagon,
-  Search,
-  Moon,
-  Sun,
-  LogOut,
-  BookOpen,
-  Layers,
-  Users,
-  Database,
-  Shield,
-  Activity,
-  BarChart3,
-  User,
-  Menu,
+  Hexagon, Search, Moon, Sun, LogOut, BookOpen, Layers,
+  Users, Database, Shield, Activity, BarChart3, User, Menu,
 } from "lucide-react"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
@@ -40,12 +28,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     canvas.height = canvas.offsetHeight
 
     class Particle {
-      x: number
-      y: number
-      size: number
-      speedX: number
-      speedY: number
-      color: string
+      x: number; y: number; size: number; speedX: number; speedY: number; color: string;
       constructor(public width: number, public height: number) {
         this.x = Math.random() * width
         this.y = Math.random() * height
@@ -89,13 +72,8 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     animate()
   }, [])
 
-  const toggleTheme = () => {
-    setTheme(theme === "dark" ? "light" : "dark")
-  }
-
-  const toggleSidebar = () => {
-    setIsSidebarOpen(!isSidebarOpen)
-  }
+  const toggleTheme = () => setTheme(theme === "dark" ? "light" : "dark")
+  const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen)
 
   return (
     <div className={`${theme} min-h-screen bg-gradient-to-br from-black to-slate-900 text-slate-100 relative`}>
@@ -139,10 +117,9 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                 <Activity className="w-4 h-4 text-blue-400" />
                 {isSidebarOpen && <span>Dashboard</span>}
               </div>
-                          {/* ✅ Toggle button always visible */}
-            <Button variant="ghost" size="icon" onClick={toggleSidebar} className="inline-flex">
-              <Menu className="w-5 h-5 text-white" />
-            </Button>
+              <Button variant="ghost" size="icon" onClick={toggleSidebar} className="inline-flex">
+                <Menu className="w-5 h-5 text-white" />
+              </Button>
             </div>
 
             {/* Menu Items */}
@@ -157,47 +134,46 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
                 <NavDropdown icon={Layers} label="Class Management">
                   <NavSubItem label="Create Class" href="/dashboard/classes/createClass" />
-                  <NavSubItem label="Add Video" href="#" />
-                  <NavSubItem label="Add Live Video" href="#" />
-                  <NavSubItem label="Create Checklist" href="#" />
-                  <NavSubItem label="Create Class Component" href="#" />
+                  <NavSubItem label="Add Video" href="/dashboard/classes/addVideo" />
+                  <NavSubItem label="Create Checklist" href="/dashboard/classes/createChecklist" />
+                  <NavSubItem label="Create Class Component" href="/dashboard/classes/createClassComponent" />
                 </NavDropdown>
 
                 <NavDropdown icon={Users} label="Batch & Group Management">
-                  <NavSubItem label="Create Batch" href="#" />
-                  <NavSubItem label="Create Group" href="#" />
-                  <NavSubItem label="Batch Instructors" href="#" />
-                  <NavSubItem label="Course Instructors" href="#" />
+                  <NavSubItem label="Create Batch" href="/dashboard/batch/createBatch" />
+                  <NavSubItem label="Create Group" href="/dashboard/batch/createGroup" />
+                  <NavSubItem label="Batch Instructors" href="/dashboard/batch/batchInstructors" />
+                  <NavSubItem label="Course Instructors" href="/dashboard/batch/courseInstructors" />
                 </NavDropdown>
 
                 <NavDropdown icon={Database} label="Add Content Management">
-                  <NavSubItem label="Add Week Content" href="#" />
-                  <NavSubItem label="Add Class Content" href="#" />
+                  <NavSubItem label="Add Week Content" href="/dashboard/content/addWeek" />
+                  <NavSubItem label="Add Class Content" href="/dashboard/content/addClass" />
                 </NavDropdown>
 
                 <NavDropdown icon={User} label="Manage Assignments">
-                  <NavSubItem label="Assign Week" href="#" />
-                  <NavSubItem label="Batch Instructors" href="#" />
-                  <NavSubItem label="Course Instructors" href="#" />
+                  <NavSubItem label="Assign Week" href="/dashboard/assignments/assignWeek" />
+                  <NavSubItem label="Batch Instructors" href="/dashboard/assignments/batchInstructors" />
+                  <NavSubItem label="Course Instructors" href="/dashboard/assignments/courseInstructors" />
                 </NavDropdown>
 
                 <NavDropdown icon={Shield} label="User Management">
-                  <NavSubItem label="List of Users" href="#" />
-                  <NavSubItem label="List of Students" href="#" />
-                  <NavSubItem label="Group Confirmation" href="#" />
+                  <NavSubItem label="List of Users" href="/dashboard/users/list" />
+                  <NavSubItem label="List of Students" href="/dashboard/users/students" />
+                  <NavSubItem label="Group Confirmation" href="/dashboard/users/groupConfirmation" />
                 </NavDropdown>
 
                 <NavDropdown icon={Activity} label="Session Management">
-                  <NavSubItem label="Live Session" href="#" />
-                  <NavSubItem label="Group Session" href="#" />
+                  <NavSubItem label="Live Session" href="/dashboard/sessions/live" />
+                  <NavSubItem label="Group Session" href="/dashboard/sessions/group" />
                 </NavDropdown>
 
                 <NavDropdown icon={BarChart3} label="Report Management">
-                  <NavSubItem label="Checklist" href="#" />
-                  <NavSubItem label="Watched" href="#" />
-                  <NavSubItem label="Attendance" href="#" />
-                  <NavSubItem label="Completion" href="#" />
-                  <NavSubItem label="Weekly Report" href="#" />
+                  <NavSubItem label="Checklist" href="/dashboard/reports/checklist" />
+                  <NavSubItem label="Watched" href="/dashboard/reports/watched" />
+                  <NavSubItem label="Attendance" href="/dashboard/reports/attendance" />
+                  <NavSubItem label="Completion" href="/dashboard/reports/completion" />
+                  <NavSubItem label="Weekly Report" href="/dashboard/reports/weekly" />
                 </NavDropdown>
               </>
             )}
