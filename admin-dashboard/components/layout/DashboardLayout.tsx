@@ -1,4 +1,4 @@
-"use client"
+'use client'
 
 import { useState, useEffect, useRef } from "react"
 import {
@@ -75,6 +75,39 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   const toggleTheme = () => setTheme(theme === "dark" ? "light" : "dark")
   const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen)
 
+  const renderFooter = () => (
+    <footer className="mt-12 border-t border-slate-700/50 pt-10 pb-12 text-slate-400 text-sm">
+      <div className="flex flex-col md:flex-row items-center justify-between gap-4 px-4">
+        <div className="text-center md:text-left">
+          <p className="font-semibold text-slate-200">Advanced Technical Service Provider</p>
+          <p className="mt-1">&copy; {new Date().getFullYear()} All rights reserved.</p>
+        </div>
+        <div className="text-center md:text-right space-y-1">
+          <p>
+            Developed by{" "}
+            <a
+              href="https://your-portfolio.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-orange-400 hover:underline"
+            >
+              Codex Team
+            </a>
+          </p>
+          <p>
+            Contact:{" "}
+            <a
+              href="mailto:advancestsp@gmail.com"
+              className="hover:text-orange-400 transition-colors"
+            >
+              advancestsp@gmail.com
+            </a>
+          </p>
+        </div>
+      </div>
+    </footer>
+  )
+
   return (
     <div className={`${theme} min-h-screen bg-gradient-to-br from-black to-slate-900 text-slate-100 relative`}>
       <canvas ref={canvasRef} className="absolute inset-0 w-full h-full opacity-30" />
@@ -111,18 +144,16 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         <div className="flex gap-6">
           {/* Sidebar */}
           <div className={`transition-all duration-300 ${isSidebarOpen ? "w-72" : "w-16"} bg-slate-950 rounded-xl p-4 shadow-md border border-slate-800 space-y-4`}>
-            {/* Dashboard Label */}
             <div className="flex items-center justify-between text-sm font-semibold text-slate-200 mb-2 border-b border-slate-800 pb-2">
               <div className="flex items-center space-x-2">
                 <Activity className="w-4 h-4 text-blue-400" />
                 {isSidebarOpen && <span>Dashboard</span>}
               </div>
-              <Button variant="ghost" size="icon" onClick={toggleSidebar} className="inline-flex">
+              <Button variant="ghost" size="icon" onClick={toggleSidebar}>
                 <Menu className="w-5 h-5 text-white" />
               </Button>
             </div>
 
-            {/* Menu Items */}
             {isSidebarOpen && (
               <>
                 <NavDropdown icon={BookOpen} label="Course Management">
@@ -178,17 +209,37 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
               </>
             )}
 
-            {/* Footer */}
-            <div className="mt-6 flex justify-between items-center border-t border-slate-800 pt-4">
-              <div className={`text-sm text-slate-400 ${!isSidebarOpen ? "hidden" : ""}`}>Your Name</div>
-              <Button variant="ghost" size="icon" onClick={() => console.log("Logout")}>
-                <LogOut className="h-5 w-5 text-red-500 hover:text-red-600" />
-              </Button>
+            {/* === Bottom User + Logout Section === */}
+            <div className="mt-6">
+              <div className="flex items-center justify-between px-3 py-2 rounded-md bg-slate-800/10 hover:bg-slate-800/50 hover:shadow-md transition-all duration-200">
+                <div className="flex items-center space-x-3">
+                  <Avatar className="h-8 w-8">
+                    <AvatarImage src="/user.jpg" alt="User" />
+                    <AvatarFallback className="bg-slate-700 text-orange-500">ST</AvatarFallback>
+                  </Avatar>
+                  {isSidebarOpen && (
+                    <div className="text-sm text-slate-300 font-medium">Your Name</div>
+                  )}
+                </div>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="text-slate-400 hover:text-red-500"
+                  onClick={() => {
+                    console.log("Logging out...")
+                  }}
+                >
+                  <LogOut className="h-5 w-5" />
+                </Button>
+              </div>
             </div>
           </div>
 
           {/* Main content */}
-          <main className="flex-1 overflow-auto">{children}</main>
+          <main className="flex-1 overflow-auto">
+            {children}
+            {renderFooter()}
+          </main>
         </div>
       </div>
     </div>
