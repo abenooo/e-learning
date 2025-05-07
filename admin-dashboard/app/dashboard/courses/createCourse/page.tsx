@@ -1,7 +1,8 @@
-"use client";
+"use client"
 
-import { useState } from "react";
-import { Book, BookOpen, Layers } from "lucide-react";
+import { useState } from "react"
+import { useRouter, usePathname } from "next/navigation"
+import { Book } from "lucide-react"
 
 export default function CreateCoursePage() {
   const [formData, setFormData] = useState({
@@ -9,12 +10,22 @@ export default function CreateCoursePage() {
     duration: "",
     path: "",
     payment: "Free",
-  });
+  })
+
+  const router = useRouter()
+  const pathname = usePathname()
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
+    const { name, value } = e.target
+    setFormData(prev => ({ ...prev, [name]: value }))
+  }
+
+  const tabs = [
+    { label: "Create Course", path: "/dashboard/courses/createCourse" },
+    { label: "Create Phase", path: "/dashboard/courses/createPhase" },
+    { label: "Create Week", path: "/dashboard/courses/createWeek" },
+    { label: "Week Component", path: "/dashboard/courses/createWeekComponent" },
+  ]
 
   return (
     <div className="p-6 text-white">
@@ -26,20 +37,25 @@ export default function CreateCoursePage() {
 
       {/* Tab Navigation */}
       <div className="flex space-x-4 border-b border-slate-700 mb-6 text-sm font-semibold text-slate-400">
-        <button className="pb-2 border-b-2 border-orange-500 text-orange-400">
-          Course Detail
-        </button>
-        <button className="hover:text-white">Create Phase</button>
-        <button className="hover:text-white">Create Week</button>
-        <button className="hover:text-white">Week Component</button>
+        {tabs.map(tab => (
+          <button
+            key={tab.path}
+            onClick={() => router.push(tab.path)}
+            className={`pb-2 ${
+              pathname === tab.path
+                ? "border-b-2 border-orange-500 text-orange-400"
+                : "hover:text-white"
+            }`}
+          >
+            {tab.label}
+          </button>
+        ))}
       </div>
 
       {/* Form */}
       <form className="bg-slate-900/50 p-6 rounded shadow border border-slate-700/50 space-y-5 text-sm">
         <div>
-          <label className="block font-medium mb-1 text-slate-300">
-            Course Title
-          </label>
+          <label className="block font-medium mb-1 text-slate-300">Course Title</label>
           <input
             name="title"
             value={formData.title}
@@ -50,9 +66,7 @@ export default function CreateCoursePage() {
         </div>
 
         <div>
-          <label className="block font-medium mb-1 text-slate-300">
-            Course Duration
-          </label>
+          <label className="block font-medium mb-1 text-slate-300">Course Duration</label>
           <input
             name="duration"
             value={formData.duration}
@@ -63,9 +77,7 @@ export default function CreateCoursePage() {
         </div>
 
         <div>
-          <label className="block font-medium mb-1 text-slate-300">
-            Description
-          </label>
+          <label className="block font-medium mb-1 text-slate-300">Description</label>
           <textarea
             rows={4}
             placeholder="Describe the course..."
@@ -74,9 +86,7 @@ export default function CreateCoursePage() {
         </div>
 
         <div>
-          <label className="block font-medium mb-1 text-slate-300">
-            Course Icon
-          </label>
+          <label className="block font-medium mb-1 text-slate-300">Course Icon</label>
           <input
             type="file"
             accept=".jpg,.jpeg,.png,.gif"
@@ -88,9 +98,7 @@ export default function CreateCoursePage() {
         </div>
 
         <div>
-          <label className="block font-medium mb-1 text-slate-300">
-            Course Path
-          </label>
+          <label className="block font-medium mb-1 text-slate-300">Course Path</label>
           <input
             name="path"
             value={formData.path}
@@ -101,9 +109,7 @@ export default function CreateCoursePage() {
         </div>
 
         <div>
-          <label className="block font-medium mb-1 text-slate-300">
-            Payment Status
-          </label>
+          <label className="block font-medium mb-1 text-slate-300">Payment Status</label>
           <div className="flex gap-6 mt-2 text-slate-400">
             <label>
               <input
@@ -146,5 +152,5 @@ export default function CreateCoursePage() {
         </div>
       </form>
     </div>
-  );
+  )
 }

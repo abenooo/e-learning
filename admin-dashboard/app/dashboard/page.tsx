@@ -237,11 +237,10 @@ export default function Dashboard() {
                 </NavDropdown>
 
                 <NavDropdown icon={Layers} label={isSidebarOpen ? "Class Management" : ""}>
-                  <NavSubItem label="Create Class" href="dashboard/classes/createClass" />
-                  <NavSubItem label="Add Video" href="#" />
-                  <NavSubItem label="Add Live Video" href="#" />
-                  <NavSubItem label="Create Checklist" href="#" />
-                  <NavSubItem label="Create Class Component" href="#" />
+                <NavSubItem label="Create Class" href="/dashboard/classes/createClass" />
+                  <NavSubItem label="Add Video" href="/dashboard/classes/addVideo" />
+                  <NavSubItem label="Create Checklist" href="/dashboard/classes/createChecklist" />
+                  <NavSubItem label="Create Class Component" href="/dashboard/classes/createClassComponent" />
                 </NavDropdown>
 
                 <NavDropdown icon={Users} label={isSidebarOpen ? "Batch & Group Management" : ""}>

@@ -1,9 +1,13 @@
-"use client";
+"use client"
 
-import { useState } from "react";
-import { BookOpen } from "lucide-react";
+import { useState } from "react"
+import { useRouter, usePathname } from "next/navigation"
+import { BookOpen } from "lucide-react"
 
 export default function CreatePhasePage() {
+  const router = useRouter()
+  const pathname = usePathname()
+
   const [formData, setFormData] = useState({
     courseTitle: "",
     phaseName: "",
@@ -11,34 +15,50 @@ export default function CreatePhasePage() {
     phaseUrl: "",
     description: "",
     icon: null as File | null,
-  });
+  })
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
-  };
+    const { name, value } = e.target
+    setFormData(prev => ({ ...prev, [name]: value }))
+  }
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0] || null;
-    setFormData(prev => ({ ...prev, icon: file }));
-  };
+    const file = e.target.files?.[0] || null
+    setFormData(prev => ({ ...prev, icon: file }))
+  }
+
+  const tabs = [
+    { label: "Course Detail", path: "/dashboard/courses/createCourse" },
+    { label: "Create Phase", path: "/dashboard/courses/createPhase" },
+    { label: "Create Week", path: "/dashboard/courses/createWeek" },
+    { label: "Week Component", path: "/dashboard/courses/createWeekComponent" },
+  ]
 
   return (
     <div className="p-6 text-white">
       {/* Page Title */}
       <h1 className="text-2xl font-bold text-orange-400 mb-6 flex items-center gap-2">
         <BookOpen className="text-orange-500" />
-        Create Course Phase
+        Create Phase
       </h1>
 
-      {/* Tabs */}
+      {/* Tab Navigation */}
       <div className="flex space-x-4 border-b border-slate-700 mb-6 text-sm font-semibold text-slate-400">
-        <button className="hover:text-white">Create Course Detail</button>
-        <button className="pb-2 border-b-2 border-orange-500 text-orange-400">Create Phase</button>
-        <button className="hover:text-white">Create Week</button>
-        <button className="hover:text-white">Create Week Component</button>
+        {tabs.map(tab => (
+          <button
+            key={tab.path}
+            onClick={() => router.push(tab.path)}
+            className={`pb-2 ${
+              pathname === tab.path
+                ? "border-b-2 border-orange-500 text-orange-400"
+                : "hover:text-white"
+            }`}
+          >
+            {tab.label}
+          </button>
+        ))}
       </div>
 
       {/* Form */}
@@ -130,5 +150,5 @@ export default function CreatePhasePage() {
         </div>
       </form>
     </div>
-  );
+  )
 }
