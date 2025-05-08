@@ -244,10 +244,10 @@ export default function Dashboard() {
                 </NavDropdown>
 
                 <NavDropdown icon={Users} label={isSidebarOpen ? "Batch & Group Management" : ""}>
-                  <NavSubItem label="Create Batch" href="#" />
-                  <NavSubItem label="Create Group" href="#" />
-                  <NavSubItem label="Batch Instructors" href="#" />
-                  <NavSubItem label="Course Instructors" href="#" />
+                  <NavSubItem label="Create Batch" href="/dashboard/batch/createBatch" />
+                  <NavSubItem label="Create Group" href="/dashboard/batch/createGroup" />
+                  <NavSubItem label="Batch Instructors" href="/dashboard/batch/batchInstructors" />
+                  <NavSubItem label="Course Instructors" href="/dashboard/batch/courseInstructors" />
                 </NavDropdown>
 
                 <NavDropdown icon={Database} label={isSidebarOpen ? "Add Content Management" : ""}>
