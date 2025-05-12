@@ -248,36 +248,37 @@ export default function Dashboard() {
                   <NavSubItem label="Create Group" href="/dashboard/batch/createGroup" />
                   <NavSubItem label="Batch Instructors" href="/dashboard/batch/batchInstructors" />
                   <NavSubItem label="Course Instructors" href="/dashboard/batch/courseInstructors" />
+                  <NavSubItem label="Assign Week" href="/dashboard/assignments/assignWeek" />
                 </NavDropdown>
 
                 <NavDropdown icon={Database} label={isSidebarOpen ? "Add Content Management" : ""}>
-                  <NavSubItem label="Add Week Content" href="#" />
-                  <NavSubItem label="Add Class Content" href="#" />
+                <NavSubItem label="Add Week Content" href="/dashboard/content/addWeek" />
+                <NavSubItem label="Add Class Content" href="/dashboard/content/addClass" />
                 </NavDropdown>
 
                 <NavDropdown icon={User} label={isSidebarOpen ? "Manage Assignments" : ""}>
-                  <NavSubItem label="Assign Week" href="#" />
-                  <NavSubItem label="Batch Instructors" href="#" />
-                  <NavSubItem label="Course Instructors" href="#" />
-                </NavDropdown>
+                <NavSubItem label="Assign Week" href="/dashboard/assignments/assignWeek" />
+                  <NavSubItem label="Batch Instructors" href="/dashboard/assignments/batchInstructors" />
+                  <NavSubItem label="Course Instructors" href="/dashboard/assignments/courseInstructors" />
+                </NavDropdown> 
 
                 <NavDropdown icon={Shield} label={isSidebarOpen ? "User Management" : ""}>
-                  <NavSubItem label="List of Users" href="#" />
-                  <NavSubItem label="List of Students" href="#" />
-                  <NavSubItem label="Group Confirmation" href="#" />
+                <NavSubItem label="List of Users" href="/dashboard/users/list" />
+                  <NavSubItem label="List of Students" href="/dashboard/users/students" />
+                  <NavSubItem label="Group Confirmation" href="/dashboard/users/groupConfirmation" />
                 </NavDropdown>
 
                 <NavDropdown icon={Activity} label={isSidebarOpen ? "Session Management" : ""}>
-                  <NavSubItem label="Live Session" href="#" />
-                  <NavSubItem label="Group Session" href="#" />
+                <NavSubItem label="Live Session" href="/dashboard/sessions/live" />
+                <NavSubItem label="Group Session" href="/dashboard/sessions/group" />
                 </NavDropdown>
 
                 <NavDropdown icon={BarChart3} label={isSidebarOpen ? "Report Management" : ""}>
-                  <NavSubItem label="Checklist" href="#" />
-                  <NavSubItem label="Watched" href="#" />
-                  <NavSubItem label="Attendance" href="#" />
-                  <NavSubItem label="Completion" href="#" />
-                  <NavSubItem label="Weekly Report" href="#" />
+                <NavSubItem label="Checklist" href="/dashboard/reports/checklist" />
+                  <NavSubItem label="Watched" href="/dashboard/reports/watched" />
+                  <NavSubItem label="Attendance" href="/dashboard/reports/attendance" />
+                  <NavSubItem label="Completion" href="/dashboard/reports/completion" />
+                  <NavSubItem label="Weekly Report" href="/dashboard/reports/weekly" />
                 </NavDropdown>
                 {/* === Bottom User + Logout Section === */}
                 <div className="mt-6">
