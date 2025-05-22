@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from "react"
 import {
   Hexagon, Search, Moon, Sun, LogOut, BookOpen, Layers,
   Users, Database, Shield, Activity, BarChart3, User, Menu,
+  Home,
 } from "lucide-react"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
@@ -11,9 +12,10 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 import { NavDropdown } from "@/components/layout/NavDropdown"
 import { NavSubItem } from "@/components/layout/NavSubItem"
 import { usePathname } from "next/navigation"
+import Link from "next/link"
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
-  const [theme, setTheme] = useState<"dark" | "light">("dark")
+  const [theme, setTheme] = useState<"dark" | "light">("light")
   const [isSidebarOpen, setIsSidebarOpen] = useState(true)
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const pathname = usePathname()
@@ -35,7 +37,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         this.size = Math.random() * 3 + 1
         this.speedX = (Math.random() - 0.5) * 0.5
         this.speedY = (Math.random() - 0.5) * 0.5
-        this.color = `rgba(100, 150, 255, 0.2)`
+        this.color = `rgba(100, 150, 255, 0.1)`
       }
       update() {
         this.x += this.speedX
@@ -76,10 +78,10 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen)
 
   const renderFooter = () => (
-    <footer className="mt-12 border-t border-slate-700/50 pt-10 pb-12 text-slate-400 text-sm">
+    <footer className="mt-12 border-t border-gray-300 pt-10 pb-12 text-gray-600 text-sm">
       <div className="flex flex-col md:flex-row items-center justify-between gap-4 px-4">
         <div className="text-center md:text-left">
-          <p className="font-semibold text-slate-200">Advanced Technical Service Provider</p>
+          <p className="font-semibold text-gray-800">Advanced Technical Service Provider</p>
           <p className="mt-1">&copy; {new Date().getFullYear()} All rights reserved.</p>
         </div>
         <div className="text-center md:text-right space-y-1">
@@ -89,7 +91,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
               href="https://your-portfolio.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-orange-400 hover:underline"
+              className="text-blue-600 hover:underline"
             >
               Codex Team
             </a>
@@ -98,7 +100,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             Contact:{" "}
             <a
               href="mailto:advancestsp@gmail.com"
-              className="hover:text-orange-400 transition-colors"
+              className="hover:text-blue-600 transition-colors"
             >
               advancestsp@gmail.com
             </a>
@@ -109,19 +111,19 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   )
 
   return (
-    <div className={`${theme} min-h-screen bg-gradient-to-br from-black to-slate-900 text-slate-100 relative`}>
-      <canvas ref={canvasRef} className="absolute inset-0 w-full h-full opacity-30" />
+    <div className={`${theme} min-h-screen bg-white text-black relative`}>
+      <canvas ref={canvasRef} className="absolute inset-0 w-full h-full opacity-10" />
       <div className="relative z-10 container mx-auto p-4">
         {/* Header */}
-        <header className="flex items-center justify-between py-4 border-b border-slate-700/50 mb-6">
+        <header className="flex items-center justify-between py-4 border-b border-gray-300 mb-6">
           <div className="flex items-center space-x-2">
-            <Hexagon className="h-8 w-8 text-blue-500" />
-            <span className="text-xl font-bold text-blue-400">Advanced Technical Service Provider</span>
+            <Hexagon className="h-8 w-8 text-green-500" />
+            <span className="text-xl font-bold text-green-600">Advanced Technical Service Provider</span>
           </div>
           <div className="flex items-center space-x-4">
-            <div className="hidden md:flex items-center space-x-2 bg-slate-800/50 px-3 py-1.5 rounded-full border border-slate-700/50">
-              <Search className="h-4 w-4 text-slate-400" />
-              <input className="bg-transparent text-sm focus:outline-none placeholder:text-slate-500" placeholder="Search..." />
+            <div className="hidden md:flex items-center space-x-2 bg-gray-100 px-3 py-1.5 rounded-full border border-gray-300">
+              <Search className="h-4 w-4 text-gray-500" />
+              <input className="bg-transparent text-sm focus:outline-none placeholder:text-gray-400" placeholder="Search..." />
             </div>
             <TooltipProvider>
               <Tooltip>
@@ -135,7 +137,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             </TooltipProvider>
             <Avatar>
               <AvatarImage src="/placeholder.svg" />
-              <AvatarFallback className="bg-slate-700 text-orange-500">ST</AvatarFallback>
+              <AvatarFallback className="bg-gray-200 text-blue-500">ST</AvatarFallback>
             </Avatar>
           </div>
         </header>
@@ -143,14 +145,19 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         {/* Layout */}
         <div className="flex gap-6">
           {/* Sidebar */}
-          <div className={`transition-all duration-300 ${isSidebarOpen ? "w-72" : "w-16"} bg-slate-950 rounded-xl p-4 shadow-md border border-slate-800 space-y-4`}>
-            <div className="flex items-center justify-between text-sm font-semibold text-slate-200 mb-2 border-b border-slate-800 pb-2">
+         <div className={`transition-all duration-300 ${isSidebarOpen ? "w-72" : "w-16"} bg-white text-black border border-gray-300 shadow-md p-4 rounded-xl space-y-4`}>
+
+            <div className="flex items-center justify-between text-sm font-semibold text-gray-700 mb-2 border-b border-gray-300 pb-2">
               <div className="flex items-center space-x-2">
-                <Activity className="w-4 h-4 text-blue-400" />
-                {isSidebarOpen && <span>Dashboard</span>}
+                <Home className="w-4 h-4 text-blue-500" />
+                {isSidebarOpen && (
+                  <Link href="/" className="no-underline text-inherit">
+                    Dashboard
+                  </Link>
+                )}
               </div>
               <Button variant="ghost" size="icon" onClick={toggleSidebar}>
-                <Menu className="w-5 h-5 text-white" />
+                <Menu className="w-5 h-5 text-gray-700" />
               </Button>
             </div>
 
@@ -211,20 +218,20 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
             {/* === Bottom User + Logout Section === */}
             <div className="mt-6">
-              <div className="flex items-center justify-between px-3 py-2 rounded-md bg-slate-800/10 hover:bg-slate-800/50 hover:shadow-md transition-all duration-200">
+              <div className="flex items-center justify-between px-3 py-2 rounded-md bg-gray-200 hover:bg-gray-300 hover:shadow-md transition-all duration-200">
                 <div className="flex items-center space-x-3">
                   <Avatar className="h-8 w-8">
                     <AvatarImage src="/user.jpg" alt="User" />
-                    <AvatarFallback className="bg-slate-700 text-orange-500">ST</AvatarFallback>
+                    <AvatarFallback className="bg-gray-300 text-blue-500">ST</AvatarFallback>
                   </Avatar>
                   {isSidebarOpen && (
-                    <div className="text-sm text-slate-300 font-medium">Your Name</div>
+                    <div className="text-sm text-gray-700 font-medium">Your Name</div>
                   )}
                 </div>
                 <Button
                   variant="ghost"
                   size="icon"
-                  className="text-slate-400 hover:text-red-500"
+                  className="text-gray-500 hover:text-red-500"
                   onClick={() => {
                     console.log("Logging out...")
                   }}
@@ -238,10 +245,10 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           {/* Main content */}
           <main className="flex-1 overflow-auto">
             {children}
-            {renderFooter()}
           </main>
         </div>
       </div>
+      {renderFooter()}
     </div>
   )
 }

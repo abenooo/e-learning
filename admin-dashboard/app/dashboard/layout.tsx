@@ -8,3 +8,4 @@ export default function DashboardSectionLayout({
 }) {
   return <DashboardLayout>{children}</DashboardLayout>
 }
+ 
