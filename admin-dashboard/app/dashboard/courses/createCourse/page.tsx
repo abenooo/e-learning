@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useRef } from "react"
 import { useRouter, usePathname } from "next/navigation"
 import { Book } from "lucide-react"
 
@@ -9,21 +9,125 @@ import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
 import { Card } from "@/components/ui/card"
+import { getToken } from "@/lib/auth"
 
 export default function CreateCoursePage() {
   const [formData, setFormData] = useState({
     title: "",
-    duration: "",
-    path: "",
-    payment: "Free",
+    description: "",
+    thumbnail: "/uploads/courses/fullstack-thumbnail.jpg",
+    logo_url: "",
+    price: 0,
+    difficulty_level: "beginner",
+    status: "draft",
+    duration_months: 1,
+    course_type: "free",
+    delivery_method: "online",
   })
+
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+  const [success, setSuccess] = useState<boolean>(false)
+  const [iconPreview, setIconPreview] = useState<string>("")
+  const fileInputRef = useRef<HTMLInputElement>(null)
 
   const router = useRouter()
   const pathname = usePathname()
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target
-    setFormData(prev => ({ ...prev, [name]: value }))
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    const { name, value, type } = e.target
+    const val = type === "number" ? Number(value) : value
+    setFormData(prev => ({ ...prev, [name]: val }))
+  }
+
+  const handleIconUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+
+    const allowedTypes = ["image/jpeg", "image/png", "image/gif", "image/jpg"]
+    if (!allowedTypes.includes(file.type)) {
+      setError("Invalid file type. Only JPG, PNG, and GIF allowed.")
+      return
+    }
+
+    const img = new Image()
+    img.src = URL.createObjectURL(file)
+
+    img.onload = () => {
+      if (img.width !== 60 || img.height !== 60) {
+        setError("Course icon must be exactly 60 x 60 pixels.")
+        return
+      }
+
+      setError(null)
+      const reader = new FileReader()
+      reader.onloadend = () => {
+        const base64 = reader.result?.toString() || ""
+        setFormData(prev => ({ ...prev, logo_url: base64 }))
+        setIconPreview(base64)
+      }
+      reader.readAsDataURL(file)
+    }
+  }
+
+  const handleSubmit = async () => {
+    setLoading(true)
+    setError(null)
+    setSuccess(false)
+
+    const requiredFields = [
+      "title",
+      "description",
+      "price",
+      "difficulty_level",
+      "status",
+      "duration_months",
+      "course_type",
+      "delivery_method",
+      "logo_url",
+    ]
+    const missingField = requiredFields.find(field => !formData[field as keyof typeof formData])
+    if (missingField) {
+      setError(`Please fill in the required field: ${missingField}`)
+      setLoading(false)
+      return
+    }
+
+    try {
+      const token = getToken()
+      if (!token) throw new Error("Unauthorized. No token found.")
+
+      const res = await fetch("https://e-learning-mern-stack.onrender.com/api/courses", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(formData),
+      })
+
+      const result = await res.json()
+      if (!res.ok) throw new Error(result.message || "Failed to create course.")
+
+      setSuccess(true)
+      setFormData({
+        title: "",
+        description: "",
+        thumbnail: "/uploads/courses/fullstack-thumbnail.jpg",
+        logo_url: "",
+        price: 0,
+        difficulty_level: "beginner",
+        status: "draft",
+        duration_months: 1,
+        course_type: "free",
+        delivery_method: "online",
+      })
+      setIconPreview("")
+    } catch (err: any) {
+      setError(err.message || "Something went wrong.")
+    } finally {
+      setLoading(false)
+    }
   }
 
   const tabs = [
@@ -35,13 +139,11 @@ export default function CreateCoursePage() {
 
   return (
     <div className="p-6 text-black bg-white min-h-screen">
-      {/* Page Title */}
       <h1 className="text-2xl font-bold text-green-600 mb-6 flex items-center gap-2">
         <Book className="text-green-500" />
         Create Course
       </h1>
 
-      {/* Tab Navigation */}
       <div className="flex space-x-4 border-b border-gray-300 mb-6 text-sm font-semibold text-gray-600">
         {tabs.map(tab => (
           <button
@@ -58,88 +160,97 @@ export default function CreateCoursePage() {
         ))}
       </div>
 
-      {/* Form Card */}
       <Card className="p-6 border border-gray-200 space-y-5">
         <div className="space-y-4 text-sm">
           <div>
-            <Label className="mb-1 text-gray-800">Course Title</Label>
-            <Input
-              name="title"
-              value={formData.title}
-              onChange={handleChange}
-              placeholder="Full Stack Development"
-            />
+            <Label>
+              Course Title <span className="text-red-500">*</span>
+            </Label>
+            <Input name="title" required value={formData.title} onChange={handleChange} />
+          </div>
+          <div>
+            <Label>
+              Upload Course Icon (60x60 JPG, PNG, GIF) <span className="text-red-500">*</span>
+            </Label>
+            <Input ref={fileInputRef} type="file" accept=".jpg,.jpeg,.png,.gif" onChange={handleIconUpload} />
+            {iconPreview && (
+              <img src={iconPreview} alt="Icon Preview" className="mt-2 rounded border w-[60px] h-[60px] object-cover" />
+            )}
+          </div>
+          <div>
+            <Label>
+              Description <span className="text-red-500">*</span>
+            </Label>
+            <Textarea name="description" rows={4} value={formData.description} onChange={handleChange} />
           </div>
 
           <div>
-            <Label className="mb-1 text-gray-800">Course Duration</Label>
-            <Input
-              name="duration"
-              value={formData.duration}
-              onChange={handleChange}
-              placeholder="e.g., 3 months"
-            />
+            <Label>
+              Price <span className="text-red-500">*</span>
+            </Label>
+            <Input type="number" name="price" value={formData.price} onChange={handleChange} />
           </div>
 
           <div>
-            <Label className="mb-1 text-gray-800">Description</Label>
-            <Textarea
-              rows={4}
-              placeholder="Describe the course..."
-            />
+            <Label>
+              Difficulty Level <span className="text-red-500">*</span>
+            </Label>
+            <select name="difficulty_level" value={formData.difficulty_level} onChange={handleChange} className="w-full border px-3 py-2 rounded">
+              <option value="beginner">Beginner</option>
+              <option value="intermediate">Intermediate</option>
+              <option value="advance">Advance</option>
+            </select>
           </div>
 
           <div>
-            <Label className="mb-1 text-gray-800">Course Icon</Label>
-            <Input
-              type="file"
-              accept=".jpg,.jpeg,.png,.gif"
-            />
-            <p className="text-xs text-gray-500 mt-1">60×60 | jpg, jpeg, gif, png</p>
+            <Label>
+              Status <span className="text-red-500">*</span>
+            </Label>
+            <select name="status" value={formData.status} onChange={handleChange} className="w-full border px-3 py-2 rounded">
+              <option value="draft">Draft</option>
+              <option value="pending review">Pending Review</option>
+              <option value="published">Published</option>
+            </select>
           </div>
 
           <div>
-            <Label className="mb-1 text-gray-800">Course Path</Label>
-            <Input
-              name="path"
-              value={formData.path}
-              onChange={handleChange}
-              placeholder="/full-stack"
-            />
+            <Label>
+              Duration (months) <span className="text-red-500">*</span>
+            </Label>
+            <Input type="number" name="duration_months" value={formData.duration_months} onChange={handleChange} />
           </div>
 
           <div>
-            <Label className="mb-1 text-gray-800">Payment Status</Label>
+            <Label>
+              Delivery Method <span className="text-red-500">*</span>
+            </Label>
+            <Input name="delivery_method" value={formData.delivery_method} onChange={handleChange} />
+          </div>
+
+          <div>
+            <Label>
+              Course Type <span className="text-red-500">*</span>
+            </Label>
             <div className="flex gap-6 mt-2 text-gray-700">
               <label className="flex items-center space-x-2">
-                <Input
-                  type="radio"
-                  name="payment"
-                  value="Free"
-                  checked={formData.payment === "Free"}
-                  onChange={handleChange}
-                />
+                <Input type="radio" name="course_type" value="free" checked={formData.course_type === "free"} onChange={handleChange} />
                 <span>Free</span>
               </label>
               <label className="flex items-center space-x-2">
-                <Input
-                  type="radio"
-                  name="payment"
-                  value="Paid"
-                  checked={formData.payment === "Paid"}
-                  onChange={handleChange}
-                />
+                <Input type="radio" name="course_type" value="paid" checked={formData.course_type === "paid"} onChange={handleChange} />
                 <span>Paid</span>
               </label>
             </div>
           </div>
+          {error && <p className="text-red-600 text-sm">{error}</p>}
+          {success && <p className="text-green-600 text-sm">Course created successfully!</p>}
 
-          <div className="flex gap-4 pt-4">
-            <Button type="submit" variant="outline" className="bg-blue-600 text-white hover:bg-blue-700">
-              Save & Create New
-            </Button>
-            <Button type="submit" className="bg-green-500 hover:bg-orange-600 text-white">
-              Save & Next →
+          <div className="flex justify-end gap-4 pt-4">
+            {/* <Button onClick={handleSubmit} disabled={loading} variant="outline" className="bg-blue-600 text-white hover:bg-blue-700">
+              {loading ? "Saving..." : "Save & Create New"}
+            </Button> */}
+            <Button onClick={handleSubmit} disabled={loading} className="bg-green-500 hover:bg-orange-600 text-white">
+              {loading ? "Saving..." : "Save & Next →"}
             </Button>
           </div>
         </div>
