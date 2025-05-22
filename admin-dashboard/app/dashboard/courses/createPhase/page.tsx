@@ -4,6 +4,13 @@ import { useState } from "react"
 import { useRouter, usePathname } from "next/navigation"
 import { BookOpen } from "lucide-react"
 
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Textarea } from "@/components/ui/textarea"
+import { Button } from "@/components/ui/button"
+import { Card } from "@/components/ui/card"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+
 export default function CreatePhasePage() {
   const router = useRouter()
   const pathname = usePathname()
@@ -18,10 +25,14 @@ export default function CreatePhasePage() {
   })
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target
     setFormData(prev => ({ ...prev, [name]: value }))
+  }
+
+  const handleSelectChange = (value: string) => {
+    setFormData(prev => ({ ...prev, courseTitle: value }))
   }
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -37,23 +48,23 @@ export default function CreatePhasePage() {
   ]
 
   return (
-    <div className="p-6 text-white">
+    <div className="p-6 text-black bg-white min-h-screen">
       {/* Page Title */}
-      <h1 className="text-2xl font-bold text-orange-400 mb-6 flex items-center gap-2">
-        <BookOpen className="text-orange-500" />
+      <h1 className="text-2xl font-bold text-green-600 mb-6 flex items-center gap-2">
+        <BookOpen className="text-green-500" />
         Create Phase
       </h1>
 
       {/* Tab Navigation */}
-      <div className="flex space-x-4 border-b border-slate-700 mb-6 text-sm font-semibold text-slate-400">
+      <div className="flex space-x-4 border-b border-gray-300 mb-6 text-sm font-semibold text-gray-600">
         {tabs.map(tab => (
           <button
             key={tab.path}
             onClick={() => router.push(tab.path)}
             className={`pb-2 ${
               pathname === tab.path
-                ? "border-b-2 border-orange-500 text-orange-400"
-                : "hover:text-white"
+                ? "border-b-2 border-green-500 text-green-600"
+                : "hover:text-black"
             }`}
           >
             {tab.label}
@@ -61,94 +72,90 @@ export default function CreatePhasePage() {
         ))}
       </div>
 
-      {/* Form */}
-      <form className="bg-slate-900/50 p-6 rounded shadow border border-slate-700/50 space-y-5 text-sm">
+      {/* Form Card */}
+      <Card className="p-6 border border-gray-200 space-y-5">
+        {/* Course Title */}
         <div>
-          <label className="block font-medium mb-1 text-slate-300">Course Title</label>
-          <select
-            name="courseTitle"
-            value={formData.courseTitle}
-            onChange={handleChange}
-            className="w-full p-2 rounded bg-slate-800 border border-slate-600 text-white"
-          >
-            <option value="">Select a course</option>
-            <option value="Fullstack Web Application Development">Fullstack Web Application Development</option>
-            {/* You can dynamically load more options here */}
-          </select>
+          <Label className="mb-1 text-gray-800">Course Title</Label>
+          <Select value={formData.courseTitle} onValueChange={handleSelectChange}>
+            <SelectTrigger className="bg-white text-black border border-gray-300">
+              <SelectValue placeholder="Select a course" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="Fullstack Web Application Development">
+                Fullstack Web Application Development
+              </SelectItem>
+              {/* Dynamically render more options as needed */}
+            </SelectContent>
+          </Select>
         </div>
 
+        {/* Phase Name & Title */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label className="block font-medium mb-1 text-slate-300">Phase Name</label>
-            <input
+            <Label className="mb-1 text-gray-800">Phase Name</Label>
+            <Input
               name="phaseName"
               value={formData.phaseName}
               onChange={handleChange}
               placeholder="Phase-1"
-              className="w-full p-2 rounded bg-slate-800 border border-slate-600 text-white"
             />
           </div>
           <div>
-            <label className="block font-medium mb-1 text-slate-300">Phase Title</label>
-            <input
+            <Label className="mb-1 text-gray-800">Phase Title</Label>
+            <Input
               name="phaseTitle"
               value={formData.phaseTitle}
               onChange={handleChange}
               placeholder="Basic computer skills"
-              className="w-full p-2 rounded bg-slate-800 border border-slate-600 text-white"
             />
           </div>
         </div>
 
+        {/* Phase URL */}
         <div>
-          <label className="block font-medium mb-1 text-slate-300">Phase URL</label>
-          <input
+          <Label className="mb-1 text-gray-800">Phase URL</Label>
+          <Input
             name="phaseUrl"
             value={formData.phaseUrl}
             onChange={handleChange}
             placeholder="/basic-computer-skills"
-            className="w-full p-2 rounded bg-slate-800 border border-slate-600 text-white"
           />
         </div>
 
+        {/* Description */}
         <div>
-          <label className="block font-medium mb-1 text-slate-300">Description</label>
-          <textarea
+          <Label className="mb-1 text-gray-800">Description</Label>
+          <Textarea
             name="description"
             value={formData.description}
             onChange={handleChange}
             rows={4}
             placeholder="Enter phase description"
-            className="w-full p-2 rounded bg-slate-800 border border-slate-600 text-white"
           />
         </div>
 
+        {/* File Upload */}
         <div>
-          <label className="block font-medium mb-1 text-slate-300">Phase Icon</label>
-          <input
+          <Label className="mb-1 text-gray-800">Phase Icon</Label>
+          <Input
             type="file"
             accept=".jpg,.jpeg,.png,.gif"
             onChange={handleFileChange}
-            className="text-white"
           />
-          <p className="text-xs text-slate-400 mt-1">60×60 | jpg, jpeg, gif, png</p>
+          <p className="text-xs text-gray-500 mt-1">60×60 | jpg, jpeg, gif, png</p>
         </div>
 
+        {/* Buttons */}
         <div className="flex gap-4 pt-4">
-          <button
-            type="submit"
-            className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded"
-          >
+          <Button type="submit" variant="outline" className="bg-blue-600 text-white hover:bg-blue-700">
             Save & Create New Phase
-          </button>
-          <button
-            type="submit"
-            className="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded"
-          >
+          </Button>
+          <Button type="submit" className="bg-green-500 text-white hover:bg-orange-600">
             Save & Next →
-          </button>
+          </Button>
         </div>
-      </form>
+      </Card>
     </div>
   )
 }

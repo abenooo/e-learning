@@ -3,6 +3,11 @@
 import { useRouter, usePathname } from "next/navigation"
 import { useState } from "react"
 import { LayoutTemplate } from "lucide-react"
+import { Input } from "@/components/ui/input"
+import { Textarea } from "@/components/ui/textarea"
+import { Button } from "@/components/ui/button"
+import { Label } from "@/components/ui/label"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 
 export default function CreateClassPage() {
   const router = useRouter()
@@ -23,31 +28,28 @@ export default function CreateClassPage() {
     description: "",
   })
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
-  ) => {
-    const { name, value } = e.target
+  const handleChange = (name: string, value: string) => {
     setFormData(prev => ({ ...prev, [name]: value }))
   }
 
   return (
-    <div className="p-6 text-white">
+    <div className="p-6 text-black bg-white rounded shadow-md">
       {/* Page Title */}
-      <h1 className="text-2xl font-bold text-orange-400 mb-6 flex items-center gap-2">
-        <LayoutTemplate className="text-orange-500" />
+      <h1 className="text-2xl font-bold text-green-600 mb-6 flex items-center gap-2">
+        <LayoutTemplate className="text-green-600" />
         Create Class
       </h1>
 
       {/* Tab Navigation */}
-      <div className="flex space-x-4 border-b border-slate-700 mb-6 text-sm font-semibold text-slate-400">
+      <div className="flex space-x-4 border-b border-gray-300 mb-6 text-sm font-medium text-gray-500">
         {tabs.map(tab => (
           <button
             key={tab.path}
             onClick={() => router.push(tab.path)}
             className={`pb-2 ${
               pathname === tab.path
-                ? "border-b-2 border-orange-500 text-orange-400"
-                : "hover:text-white"
+                ? "border-b-2 border-green-600 text-green-600"
+                : "hover:text-black"
             }`}
           >
             {tab.label}
@@ -56,96 +58,93 @@ export default function CreateClassPage() {
       </div>
 
       {/* Form */}
-      <form className="bg-slate-900/50 p-6 rounded shadow border border-slate-700/50 space-y-5 text-sm">
-        {/* Row 1: Course & Phase */}
+      <form className="space-y-6 text-sm">
+        {/* Row 1 */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label className="block font-medium mb-1 text-slate-300">Course Title</label>
-            <select
-              name="courseTitle"
+            <Label>Course Title</Label>
+            <Select
               value={formData.courseTitle}
-              onChange={handleChange}
-              className="w-full p-2 rounded bg-slate-800 border border-slate-600 text-white"
+              onValueChange={(val) => handleChange("courseTitle", val)}
             >
-              <option value="">Select a course</option>
-              <option value="Fullstack Web Application Development">
-                Fullstack Web Application Development
-              </option>
-            </select>
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Select a course" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="Fullstack Web Application Development">
+                  Fullstack Web Application Development
+                </SelectItem>
+              </SelectContent>
+            </Select>
           </div>
           <div>
-            <label className="block font-medium mb-1 text-slate-300">Phase Title</label>
-            <select
-              name="phaseTitle"
+            <Label>Phase Title</Label>
+            <Select
               value={formData.phaseTitle}
-              onChange={handleChange}
-              className="w-full p-2 rounded bg-slate-800 border border-slate-600 text-white"
+              onValueChange={(val) => handleChange("phaseTitle", val)}
             >
-              <option value="">Select a phase</option>
-              <option value="Phase 1: Building static websites using HTML, CSS & Bootstrap">
-                Phase 1: Building static websites using HTML, CSS & Bootstrap
-              </option>
-            </select>
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Select a phase" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="Phase 1: Building static websites using HTML, CSS & Bootstrap">
+                  Phase 1: Building static websites using HTML, CSS & Bootstrap
+                </SelectItem>
+              </SelectContent>
+            </Select>
           </div>
         </div>
 
-        {/* Row 2: Week & Topic */}
+        {/* Row 2 */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label className="block font-medium mb-1 text-slate-300">Week Name</label>
-            <select
-              name="weekTitle"
+            <Label>Week Name</Label>
+            <Select
               value={formData.weekTitle}
-              onChange={handleChange}
-              className="w-full p-2 rounded bg-slate-800 border border-slate-600 text-white"
+              onValueChange={(val) => handleChange("weekTitle", val)}
             >
-              <option value="">Select week</option>
-              <option value="Course Preparation Week: Before you start the class">
-                Course Preparation Week: Before you start the class
-              </option>
-            </select>
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Select a week" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="Course Preparation Week: Before you start the class">
+                  Course Preparation Week: Before you start the class
+                </SelectItem>
+              </SelectContent>
+            </Select>
           </div>
           <div>
-            <label className="block font-medium mb-1 text-slate-300">Class Topic</label>
-            <input
+            <Label>Class Topic</Label>
+            <Input
               type="text"
               name="topic"
               value={formData.topic}
-              onChange={handleChange}
+              onChange={(e) => handleChange("topic", e.target.value)}
               placeholder="e.g. Basic computer skills - part I"
-              className="w-full p-2 rounded bg-slate-800 border border-slate-600 text-white"
             />
           </div>
         </div>
 
         {/* Description */}
         <div>
-          <label className="block font-medium mb-1 text-slate-300">Description</label>
-          <textarea
+          <Label>Description</Label>
+          <Textarea
             name="description"
-            value={formData.description}
-            onChange={handleChange}
             rows={6}
             placeholder="Enter topic description"
-            className="w-full p-2 rounded bg-slate-800 border border-slate-600 text-white"
+            value={formData.description}
+            onChange={(e) => handleChange("description", e.target.value)}
           />
-          <p className="text-xs text-slate-500 mt-1">You can format with rich text if needed.</p>
         </div>
 
         {/* Buttons */}
         <div className="flex gap-4 pt-4">
-          <button
-            type="submit"
-            className="border border-blue-500 text-blue-500 hover:bg-blue-500 hover:text-white px-4 py-2 rounded transition"
-          >
+          <Button variant="outline" className="border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white">
             Save & Create New Class +
-          </button>
-          <button
-            type="submit"
-            className="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded transition"
-          >
+          </Button>
+          <Button className="bg-green-500 hover:bg-orange-600 text-white">
             Save & Next →
-          </button>
+          </Button>
         </div>
       </form>
     </div>

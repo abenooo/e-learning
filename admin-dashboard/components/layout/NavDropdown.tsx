@@ -18,16 +18,16 @@ export function NavDropdown({ icon: Icon, label, children }: NavDropdownProps) {
       <Button
         variant="ghost"
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full flex justify-between items-center text-slate-300 hover:text-orange-400"
+        className="w-full flex justify-between items-center text-gray-800 hover:text-green-600"
       >
         <div className="flex items-center">
           <Icon className="mr-2 h-4 w-4" />
           {label}
         </div>
         {isOpen ? (
-          <ChevronDown className="h-4 w-4 text-orange-400" />
+          <ChevronDown className="h-4 w-4 text-green-600" />
         ) : (
-          <ChevronRight className="h-4 w-4 text-slate-400" />
+          <ChevronRight className="h-4 w-4 text-gray-500" />
         )}
       </Button>
 

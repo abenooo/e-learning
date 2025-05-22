@@ -3,6 +3,11 @@
 import { useState } from "react"
 import { useRouter, usePathname } from "next/navigation"
 import { Calendar } from "lucide-react"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select"
+import { Card } from "@/components/ui/card"
 
 export default function CreateCourseWeekPage() {
   const router = useRouter()
@@ -17,11 +22,8 @@ export default function CreateCourseWeekPage() {
     liveSession: "",
   })
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
-    const { name, value } = e.target
-    setFormData(prev => ({ ...prev, [name]: value }))
+  const handleChange = (key: string, value: string) => {
+    setFormData(prev => ({ ...prev, [key]: value }))
   }
 
   const tabs = [
@@ -32,132 +34,123 @@ export default function CreateCourseWeekPage() {
   ]
 
   return (
-    <div className="p-6 text-white">
+    <div className="p-6 text-black bg-white min-h-screen">
       {/* Page Title */}
-      <h1 className="text-2xl font-bold text-orange-400 mb-6 flex items-center gap-2">
-        <Calendar className="text-orange-500" />
+      <h1 className="text-2xl font-bold text-green-500 mb-6 flex items-center gap-2">
+        <Calendar className="text-green-600" />
         Create Week
       </h1>
 
       {/* Tab Navigation */}
-      <div className="flex space-x-4 border-b border-slate-700 mb-6 text-sm font-semibold text-slate-400">
+      <div className="flex space-x-4 border-b border-gray-300 mb-6 text-sm font-semibold text-gray-500">
         {tabs.map(tab => (
-          <button
+          <Button
+            variant="ghost"
             key={tab.path}
             onClick={() => router.push(tab.path)}
-            className={`pb-2 ${
+            className={`pb-2 px-1 text-sm ${
               pathname === tab.path
-                ? "border-b-2 border-orange-500 text-orange-400"
-                : "hover:text-white"
+                ? "border-b-2 border-green-500 text-green-500"
+                : "hover:text-black"
             }`}
           >
             {tab.label}
-          </button>
+          </Button>
         ))}
       </div>
 
       {/* Form */}
-      <form className="bg-slate-900/50 p-6 rounded shadow border border-slate-700/50 space-y-5 text-sm">
+      <Card className="p-6 space-y-6 border border-gray-200 shadow-sm">
         {/* Course Title */}
-        <div>
-          <label className="block font-medium mb-1 text-slate-300">Course Title</label>
-          <select
-            name="courseTitle"
-            value={formData.courseTitle}
-            onChange={handleChange}
-            className="w-full p-2 rounded bg-slate-800 border border-slate-600 text-white"
-          >
-            <option value="">Select Course Title</option>
-            <option value="Fullstack Web Application Development">Fullstack Web Application Development</option>
-          </select>
+        <div className="space-y-1">
+          <Label>Course Title</Label>
+          <Select onValueChange={(value) => handleChange("courseTitle", value)}>
+            <SelectTrigger>
+              <SelectValue placeholder="Select Course Title" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="Fullstack Web Application Development">
+                Fullstack Web Application Development
+              </SelectItem>
+            </SelectContent>
+          </Select>
         </div>
 
         {/* Selected Phase */}
-        <div>
-          <label className="block font-medium mb-1 text-slate-300">Selected Phase</label>
-          <select
-            name="phaseTitle"
-            value={formData.phaseTitle}
-            onChange={handleChange}
-            className="w-full p-2 rounded bg-slate-800 border border-slate-600 text-white"
-          >
-            <option value="">Select Phase</option>
-            <option value="Phase 1: Building static websites using HTML, CSS & Bootstrap">
-              Phase 1: Building static websites using HTML, CSS & Bootstrap
-            </option>
-          </select>
+        <div className="space-y-1">
+          <Label>Selected Phase</Label>
+          <Select onValueChange={(value) => handleChange("phaseTitle", value)}>
+            <SelectTrigger>
+              <SelectValue placeholder="Select Phase" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="Phase 1: Building static websites using HTML, CSS & Bootstrap">
+                Phase 1: Building static websites using HTML, CSS & Bootstrap
+              </SelectItem>
+            </SelectContent>
+          </Select>
         </div>
 
         {/* Week Name */}
-        <div>
-          <label className="block font-medium mb-1 text-slate-300">Week Name</label>
-          <input
+        <div className="space-y-1">
+          <Label>Week Name</Label>
+          <Input
             name="weekName"
             value={formData.weekName}
-            onChange={handleChange}
+            onChange={(e) => handleChange("weekName", e.target.value)}
             placeholder="Week 1"
-            className="w-full p-2 rounded bg-slate-800 border border-slate-600 text-white"
           />
         </div>
 
         {/* Week Title */}
-        <div>
-          <label className="block font-medium mb-1 text-slate-300">Week Title</label>
-          <input
+        <div className="space-y-1">
+          <Label>Week Title</Label>
+          <Input
             name="weekTitle"
             value={formData.weekTitle}
-            onChange={handleChange}
+            onChange={(e) => handleChange("weekTitle", e.target.value)}
             placeholder="Basic computer skills week"
-            className="w-full p-2 rounded bg-slate-800 border border-slate-600 text-white"
           />
         </div>
 
         {/* Group Sessions */}
-        <div>
-          <label className="block font-medium mb-1 text-slate-300">Group Sessions</label>
-          <select
-            name="groupSession"
-            value={formData.groupSession}
-            onChange={handleChange}
-            className="w-full p-2 rounded bg-slate-800 border border-slate-600 text-white"
-          >
-            <option value="">Select Group Sessions</option>
-            <option value="Session A">Session A</option>
-            <option value="Session B">Session B</option>
-          </select>
+        <div className="space-y-1">
+          <Label>Group Sessions</Label>
+          <Select onValueChange={(value) => handleChange("groupSession", value)}>
+            <SelectTrigger>
+              <SelectValue placeholder="Select Group Sessions" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="Session A">Session A</SelectItem>
+              <SelectItem value="Session B">Session B</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
 
         {/* Live Sessions */}
-        <div>
-          <label className="block font-medium mb-1 text-slate-300">Live Sessions</label>
-          <select
-            name="liveSession"
-            value={formData.liveSession}
-            onChange={handleChange}
-            className="w-full p-2 rounded bg-slate-800 border border-slate-600 text-white"
-          >
-            <option value="">Select Live Sessions</option>
-            <option value="Live Session 1">Live Session 1</option>
-            <option value="Live Session 2">Live Session 2</option>
-          </select>
+        <div className="space-y-1">
+          <Label>Live Sessions</Label>
+          <Select onValueChange={(value) => handleChange("liveSession", value)}>
+            <SelectTrigger>
+              <SelectValue placeholder="Select Live Sessions" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="Live Session 1">Live Session 1</SelectItem>
+              <SelectItem value="Live Session 2">Live Session 2</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
 
         {/* Buttons */}
         <div className="flex gap-4 pt-4">
-          <button
-            type="submit"
-            className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded"
-          >
+          <Button type="submit" className="bg-blue-600 hover:bg-blue-700 text-white">
             Save & Create New Week +
-          </button>
-          <button
-            type="submit"
-            className="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded"
-          >
+          </Button>
+          <Button type="submit" className="bg-green-500 hover:bg-orange-600 text-white">
             Save & Next →
-          </button>
+          </Button>
         </div>
-      </form>
+      </Card>
     </div>
   )
 }

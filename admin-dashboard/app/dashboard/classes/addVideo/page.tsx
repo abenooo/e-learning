@@ -47,10 +47,6 @@ export default function CreateClassVideoPage() {
         <Video className="text-orange-500" />
         Add Class Video
       </h1>
-      <p className="text-sm text-slate-400 mb-6">
-        Create the class roadmap of your course with details.
-      </p>
-
       {/* Tab Navigation */}
       <div className="flex space-x-4 border-b border-slate-700 mb-6 text-sm font-semibold text-slate-400">
         {tabs.map(tab => (
