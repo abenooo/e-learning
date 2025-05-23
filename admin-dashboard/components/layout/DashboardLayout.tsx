@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/button"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { NavDropdown } from "@/components/layout/NavDropdown"
 import { NavSubItem } from "@/components/layout/NavSubItem"
-import { usePathname } from "next/navigation"
+import { usePathname, useRouter } from "next/navigation"
 import Link from "next/link"
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
@@ -19,6 +19,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   const [isSidebarOpen, setIsSidebarOpen] = useState(true)
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const pathname = usePathname()
+  const router = useRouter()
 
   useEffect(() => {
     const canvas = canvasRef.current
@@ -77,6 +78,25 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   const toggleTheme = () => setTheme(theme === "dark" ? "light" : "dark")
   const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen)
 
+  const handleLogout = async () => {
+    try {
+      const token = localStorage.getItem("token")
+      const res = await fetch("https://e-learning-mern-stack.onrender.com/api/auth/logout", {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${token}`,
+        },
+      })
+      const data = await res.json()
+      if (data.success) {
+        localStorage.removeItem("token")
+        router.push("/login")
+      }
+    } catch (err) {
+      console.error("Logout error:", err)
+    }
+  }
+
   const renderFooter = () => (
     <footer className="mt-12 border-t border-gray-300 pt-10 pb-12 text-gray-600 text-sm">
       <div className="flex flex-col md:flex-row items-center justify-between gap-4 px-4">
@@ -97,13 +117,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             </a>
           </p>
           <p>
-            Contact:{" "}
-            <a
-              href="mailto:advancestsp@gmail.com"
-              className="hover:text-blue-600 transition-colors"
-            >
-              advancestsp@gmail.com
-            </a>
+            Contact: <a href="mailto:advancestsp@gmail.com" className="hover:text-blue-600 transition-colors">advancestsp@gmail.com</a>
           </p>
         </div>
       </div>
@@ -116,42 +130,105 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       <div className="relative z-10 container mx-auto p-4">
         {/* Header */}
         <header className="flex items-center justify-between py-4 border-b border-gray-300 mb-6">
+          {/* Logo and Brand */}
           <div className="flex items-center space-x-2">
             <Hexagon className="h-8 w-8 text-green-500" />
             <span className="text-xl font-bold text-green-600">Advanced Technical Service Provider</span>
           </div>
-          <div className="flex items-center space-x-4">
-            <div className="hidden md:flex items-center space-x-2 bg-gray-100 px-3 py-1.5 rounded-full border border-gray-300">
-              <Search className="h-4 w-4 text-gray-500" />
-              <input className="bg-transparent text-sm focus:outline-none placeholder:text-gray-400" placeholder="Search..." />
+
+          {/* Controls: Search, Theme, Avatar, Logout */}
+          <div className="flex items-center space-x-16">
+            {/* Search Form */}
+            <form
+              onSubmit={(e) => {
+                e.preventDefault()
+                const input = (e.currentTarget.elements.namedItem("search") as HTMLInputElement).value
+                if (input.trim()) router.push(`/dashboard/search?query=${encodeURIComponent(input.trim())}`)
+              }}
+              className="hidden md:flex items-center space-x-2 bg-white px-3 py-1.5 rounded-full border border-gray-300"
+            >
+              <input
+                type="text"
+                name="search"
+                placeholder="Search..."
+                className="bg-transparent text-sm focus:outline-none text-black placeholder:text-gray-500"
+              />
+              <button type="submit">
+                <Search className="h-4 w-4 text-black" />
+              </button>
+            </form>
+
+            {/* Theme Toggle */}
+            {/* <Button
+      variant="ghost"
+      size="icon"
+      onClick={toggleTheme}
+      className="text-gray-600 hover:text-black"
+      title="Toggle Theme"
+    >
+      {theme === "light" ? <Moon className="w-5 h-5" /> : <Sun className="w-5 h-5" />}
+    </Button> */}
+
+            {/* Avatar + Logout */}
+            <div className="flex items-center space-x-2">
+              <Avatar>
+                <AvatarImage src="/user.jpg" alt="User" />
+                <AvatarFallback className="bg-gray-300 text-blue-500">ST</AvatarFallback>
+              </Avatar>
+              <Button
+                onClick={async () => {
+                  try {
+                    const token = localStorage.getItem("token");
+
+                    if (!token) {
+                      router.replace("/"); // ✅ Redirect to LoginPage
+                      return;
+                    }
+
+                    const res = await fetch("https://e-learning-mern-stack.onrender.com/api/auth/logout", {
+                      method: "POST",
+                      headers: {
+                        Authorization: `Bearer ${token}`,
+                        "Content-Type": "application/json",
+                      },
+                    });
+
+                    if (!res.ok) {
+                      const text = await res.text();
+                      console.error("Logout failed with status:", res.status);
+                      console.error("Raw response text:", text);
+                      router.replace("/"); // Even on error, force redirect
+                      return;
+                    }
+
+                    localStorage.removeItem("token");
+                    router.replace("/"); // ✅ Redirect to root (LoginPage)
+                  } catch (err) {
+                    console.error("Logout error:", err);
+                    router.replace("/");
+                  }
+                }}
+
+                variant="ghost"
+                size="icon"
+                className="text-gray-600 hover:text-red-500"
+                title="Logout"
+              >
+                <LogOut className="h-5 w-5" />
+              </Button>
             </div>
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button variant="ghost" size="icon" onClick={toggleTheme}>
-                    {theme === "dark" ? <Moon /> : <Sun />}
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent><p>Toggle theme</p></TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-            <Avatar>
-              <AvatarImage src="/placeholder.svg" />
-              <AvatarFallback className="bg-gray-200 text-blue-500">ST</AvatarFallback>
-            </Avatar>
           </div>
         </header>
 
         {/* Layout */}
         <div className="flex gap-6">
           {/* Sidebar */}
-         <div className={`transition-all duration-300 ${isSidebarOpen ? "w-72" : "w-16"} bg-white text-black border border-gray-300 shadow-md p-4 rounded-xl space-y-4`}>
-
+          <div className={`transition-all duration-300 ${isSidebarOpen ? "w-72" : "w-16"} bg-white text-black border border-gray-300 shadow-md p-4 rounded-xl space-y-4`}>
             <div className="flex items-center justify-between text-sm font-semibold text-gray-700 mb-2 border-b border-gray-300 pb-2">
               <div className="flex items-center space-x-2">
                 <Home className="w-4 h-4 text-blue-500" />
                 {isSidebarOpen && (
-                  <Link href="/" className="no-underline text-inherit">
+                  <Link href="/dashboard" className="no-underline text-inherit">
                     Dashboard
                   </Link>
                 )}
@@ -216,30 +293,31 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
               </>
             )}
 
-            {/* === Bottom User + Logout Section === */}
-            <div className="mt-6">
-              <div className="flex items-center justify-between px-3 py-2 rounded-md bg-gray-200 hover:bg-gray-300 hover:shadow-md transition-all duration-200">
-                <div className="flex items-center space-x-3">
-                  <Avatar className="h-8 w-8">
-                    <AvatarImage src="/user.jpg" alt="User" />
-                    <AvatarFallback className="bg-gray-300 text-blue-500">ST</AvatarFallback>
-                  </Avatar>
-                  {isSidebarOpen && (
-                    <div className="text-sm text-gray-700 font-medium">Your Name</div>
-                  )}
-                </div>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="text-gray-500 hover:text-red-500"
-                  onClick={() => {
-                    console.log("Logging out...")
-                  }}
-                >
-                  <LogOut className="h-5 w-5" />
-                </Button>
-              </div>
-            </div>
+{/* === Bottom User + View Profile Section === */}
+<div className="mt-4">
+  <div className="flex items-center justify-center md:justify-between px-3 py-2 rounded-md bg-white-200 hover:bg-gray-300 hover:shadow-md transition-all duration-200">
+    <div className="flex items-center space-x-2">
+      <Avatar className="h-8 w-8">
+        <AvatarImage src="/user.jpg" alt="User" />
+        <AvatarFallback className="bg-white-300 text-blue-500">ST</AvatarFallback>
+      </Avatar>
+
+      {/* Conditionally show "View Profile" only when sidebar is open */}
+      {isSidebarOpen && (
+        <Button
+          variant="ghost"
+          size="sm"
+          className="text-gray-600 hover:text-blue-600 text-sm px-2 py-1"
+          onClick={() => router.push('/profile')}
+        >
+          View Profile
+        </Button>
+      )}
+    </div>
+  </div>
+</div>
+
+
           </div>
 
           {/* Main content */}

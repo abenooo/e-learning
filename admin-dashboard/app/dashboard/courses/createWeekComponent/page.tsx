@@ -26,7 +26,7 @@ export default function CreateWeekComponentPage() {
   }
 
   const tabs = [
-    { label: "Course Detail", path: "/dashboard/courses/createCourse" },
+    { label: "Create Course", path: "/dashboard/courses/createCourse" },
     { label: "Create Phase", path: "/dashboard/courses/createPhase" },
     { label: "Create Week", path: "/dashboard/courses/createWeek" },
     { label: "Week Component", path: "/dashboard/courses/createWeekComponent" },

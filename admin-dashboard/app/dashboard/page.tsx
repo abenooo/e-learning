@@ -24,14 +24,13 @@ import {
   User,
   Users,
   Video,
-  type LucideIcon,
 } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
+import Link from "next/link";
+import { LucideIcon } from "lucide-react";
 type Theme = "dark" | "light";
 
 export default function Dashboard() {
@@ -219,14 +218,14 @@ export default function Dashboard() {
                 </CardHeader>
                 <CardContent className="p-6">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <ManagementLink icon={BookOpen} label="All Courses" />
-                    <ManagementLink icon={Book} label="Create Course" />
-                    <ManagementLink icon={Book} label="Create Phase" />
-                    <ManagementLink icon={Book} label="Create Week" />
-                    <ManagementLink icon={Book} label="Create Week Component" />
-                    <ManagementLink icon={Book} label="Add Week Content" />
-                    <ManagementLink icon={Book} label="Supplementary Course Offerings" />
-                    <ManagementLink icon={Book} label="Select Supplementary Course" />
+                  <ManagementLink icon={BookOpen} label="All Courses" href="/dashboard/courses/courses" />
+                  <ManagementLink icon={Book} label="Create Course" href="/dashboard/courses/createCourse" />
+                  <ManagementLink icon={Book} label="Create Phase" href="/dashboard/courses/createPhase" />
+                  <ManagementLink icon={Book} label="Create Week" href="/dashboard/courses/createWeek" />
+                  <ManagementLink icon={Book} label="Create Week Component" href="/dashboard/courses/createWeekComponent" />
+                  <ManagementLink icon={Book} label="Add Week Content" href="/dashboard/courses/addWeekContent" />
+                  <ManagementLink icon={Book} label="Supplementary Course Offerings" href="/dashboard/courses/supplementary" />
+                  <ManagementLink icon={Book} label="Select Supplementary Course" href="/dashboard/courses/selectSupplementary" />
                   </div>
                 </CardContent>
               </Card>
@@ -241,12 +240,12 @@ export default function Dashboard() {
                   </CardHeader>
                   <CardContent className="p-4">
                     <div className="space-y-2">
-                      <ManagementLink icon={Layers} label="Create Class" />
-                      <ManagementLink icon={Video} label="Add Class Video" />
-                      <ManagementLink icon={ListChecks} label="Create Checklist" />
-                      <ManagementLink icon={Layers} label="Create Class Component" />
-                      <ManagementLink icon={Database} label="Add Class Content" />
-                      <ManagementLink icon={Book} label="Assign Week" />
+                    <ManagementLink icon={Layers} label="Create Class" href="/dashboard/classes/createClass" />
+                    <ManagementLink icon={Video} label="Add Class Video" href="/dashboard/classes/addVideo" />
+                    <ManagementLink icon={ListChecks} label="Create Checklist" href="/dashboard/classes/createChecklist" />
+                    <ManagementLink icon={Layers} label="Create Class Component" href="/dashboard/classes/createClassComponent" />
+                    <ManagementLink icon={Database} label="Add Class Content" href="/dashboard/content/addClass" />
+                    <ManagementLink icon={Book} label="Assign Week" href="/dashboard/assignments/assignWeek" />
                     </div>
                   </CardContent>
                 </Card>
@@ -259,10 +258,10 @@ export default function Dashboard() {
                   </CardHeader>
                   <CardContent className="p-4">
                     <div className="space-y-2">
-                      <ManagementLink icon={Users} label="Create Batch" />
-                      <ManagementLink icon={Users} label="Create Group" />
-                      <ManagementLink icon={Users} label="Assign Batch Instructors" />
-                      <ManagementLink icon={Users} label="Assign Course Instructors" />
+                    <ManagementLink icon={Users} label="Create Batch" href="/dashboard/batch/createBatch" />
+                    <ManagementLink icon={Users} label="Create Group" href="/dashboard/batch/createGroup" />
+                    <ManagementLink icon={Users} label="Assign Batch Instructors" href="/dashboard/batch/batchInstructors" />
+                    <ManagementLink icon={Users} label="Assign Course Instructors" href="/dashboard/batch/courseInstructors" />
                     </div>
                   </CardContent>
                 </Card>
@@ -279,9 +278,9 @@ export default function Dashboard() {
                   </CardHeader>
                   <CardContent className="p-4">
                     <div className="space-y-2">
-                      <ManagementLink icon={User} label="List Of Users" />
-                      <ManagementLink icon={User} label="List Of Students" />
-                      <ManagementLink icon={User} label="Confirm Group Request" />
+                    <ManagementLink icon={User} label="List Of Users" href="/dashboard/users/list" />
+                    <ManagementLink icon={User} label="List Of Students" href="/dashboard/users/students" />
+                    <ManagementLink icon={User} label="Confirm Group Request" href="/dashboard/users/groupConfirmation" />
                     </div>
                   </CardContent>
                 </Card>
@@ -294,9 +293,9 @@ export default function Dashboard() {
                   </CardHeader>
                   <CardContent className="p-4">
                     <div className="space-y-2">
-                      <ManagementLink icon={Activity} label="Create Live Session" />
-                      <ManagementLink icon={Activity} label="Create Group Session" />
-                      <ManagementLink icon={Video} label="Add Live Class Video" />
+                    <ManagementLink icon={Activity} label="Create Live Session" href="/dashboard/sessions/live" />
+                    <ManagementLink icon={Activity} label="Create Group Session" href="/dashboard/sessions/group" />
+                    <ManagementLink icon={Video} label="Add Live Class Video" href="/dashboard/classes/addVideo" />
                     </div>
                   </CardContent>
                 </Card>
@@ -312,11 +311,11 @@ export default function Dashboard() {
                 </CardHeader>
                 <CardContent className="p-4">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <ManagementLink icon={Video} label="Watched Videos" />
-                    <ManagementLink icon={ListChecks} label="Checklist" />
-                    <ManagementLink icon={Users} label="Attendance" />
-                    <ManagementLink icon={ListChecks} label="Completion" />
-                    <ManagementLink icon={BarChart3} label="Weekly Report" />
+                  <ManagementLink icon={ListChecks} label="Checklist" href="/dashboard/reports/checklist" />
+                  <ManagementLink icon={Video} label="Watched Videos" href="/dashboard/reports/watched" />
+                  <ManagementLink icon={Users} label="Attendance" href="/dashboard/reports/attendance" />
+                  <ManagementLink icon={ListChecks} label="Completion" href="/dashboard/reports/completion" />
+                  <ManagementLink icon={BarChart3} label="Weekly Report" href="/dashboard/reports/weekly" />
                   </div>
                 </CardContent>
               </Card>
@@ -580,15 +579,41 @@ function UsageMetric({
     </div>
   );
 }
+
 type ManagementLinkProps = {
   icon: LucideIcon;
   label: string;
+  href?: string;
+  onClick?: () => void;
 };
 
-const ManagementLink: React.FC<ManagementLinkProps> = ({ icon: Icon, label }) => (
-  <button className="flex items-center justify-start gap-2 px-4 py-2 bg-white text-black border border-gray-300 rounded hover:bg-gray-100">
-    <Icon className="h-5 w-5 text-green-500" />
-    {label}
-  </button>
-);
+const ManagementLink: React.FC<ManagementLinkProps> = ({
+  icon: Icon,
+  label,
+  href,
+  onClick,
+}) => {
+  const baseClasses =
+    "flex items-center gap-2 px-4 py-2 bg-white text-black border border-gray-300 rounded hover:bg-gray-100 transition";
 
+  const content = (
+    <>
+      <Icon className="h-5 w-5 text-green-500 shrink-0" />
+      <span className="text-sm font-medium">{label}</span>
+    </>
+  );
+
+  if (href) {
+    return (
+      <Link href={href} className={baseClasses}>
+        {content}
+      </Link>
+    );
+  }
+
+  return (
+    <button onClick={onClick} className={baseClasses}>
+      {content}
+    </button>
+  );
+};
