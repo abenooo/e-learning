@@ -293,7 +293,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
               </>
             )}
 
-{/* === Bottom User + View Profile Section === */}
+          {/* === Bottom User + View Profile Section === */}
 <div className="mt-4">
   <div className="flex items-center justify-center md:justify-between px-3 py-2 rounded-md bg-white-200 hover:bg-gray-300 hover:shadow-md transition-all duration-200">
     <div className="flex items-center space-x-2">
@@ -304,19 +304,16 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
       {/* Conditionally show "View Profile" only when sidebar is open */}
       {isSidebarOpen && (
-        <Button
-          variant="ghost"
-          size="sm"
-          className="text-gray-600 hover:text-blue-600 text-sm px-2 py-1"
-          onClick={() => router.push('/profile')}
+        <Link
+          href="/dashboard/userProfile"
+          className="text-gray-600 hover:text-green-600 text-sm px-2 py-1 font-semibold"
         >
           View Profile
-        </Button>
+        </Link>
       )}
     </div>
   </div>
 </div>
-
 
           </div>
 

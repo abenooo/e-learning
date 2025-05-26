@@ -1,16 +1,26 @@
 "use client";
-
 import { useState } from "react";
-import {
-  ChevronLeft,
-  ChevronRight,
-  Video,
-  CheckCircle,
-  XCircle,
-  BarChart3,
-} from "lucide-react";
+import { usePathname } from "next/navigation";
+import Link from "next/link";
+import clsx from "clsx";
+import { ChevronLeft, ChevronRight, Video, Copy, BarChart3, CheckCircle, XCircle } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue } from "@/components/ui/select";
+import { Card, CardContent } from "@/components/ui/card";
 
-export default function CreateChecklistPage() {
+export default function CreateWatchedPage() {
+
+  const pathname = usePathname();
+ 
+   const tabs = [
+     { label: "Checklist", path: "/dashboard/reports/checklist" },
+     { label: "Watched Sessions", path: "/dashboard/reports/watched" },
+     { label: "Attendance", path: "/dashboard/reports/attendance" },
+     { label: "Completion", path: "/dashboard/reports/completion" },
+     { label: "Weekly Report", path: "/dashboard/reports/weekly" },
+   ];
+
   const [formData, setFormData] = useState({
     course: "",
     batch: "",
@@ -38,7 +48,6 @@ export default function CreateChecklistPage() {
       phase: "phase 1",
       group: "LS-1",
     },
-    // Add more students as needed
   ]);
 
   const [checklistItems, setChecklistItems] = useState([
@@ -47,17 +56,12 @@ export default function CreateChecklistPage() {
     { topic: "CSS", status: "read" },
   ]);
 
-  const handleChange = (e: { target: { name: string; value: string } }) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+  const handleChange = (name: string, value: string) => {
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleCreate = () => {
-    if (
-      formData.course &&
-      formData.batch &&
-      formData.phase &&
-      formData.group
-    ) {
+    if (formData.course && formData.batch && formData.phase && formData.group) {
       alert("Checklist Created!");
     } else {
       alert("Please fill in all fields.");
@@ -73,84 +77,108 @@ export default function CreateChecklistPage() {
   );
 
   return (
-    <div className="p-6 text-white">
-      <h1 className="text-2xl font-bold text-orange-400 mb-6 flex items-center gap-2">
-              <BarChart3 className="text-orange-500" />
-              CWatched Class Video
-            </h1>
-
+    <div className="p-6 bg-white text-black min-h-screen">
+      <h1 className="text-2xl font-bold text-green-600 mb-6 flex items-center gap-2">
+        <BarChart3 className="text-green-600" />
+        Watched Class Video
+      </h1>
+{/* Top Tabs */}
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between border-b pb-2 gap-4 mb-6">
+        <div className="flex flex-wrap gap-4">
+          {tabs.map((tab) => (
+            <Link
+              key={tab.path}
+              href={tab.path}
+              className={clsx(
+                "px-4 py-2 rounded-t text-sm font-medium",
+                pathname === tab.path
+                  ? "bg-white text-green-600 border-b-2 border-green-600"
+                  : "text-gray-600 hover:text-black"
+              )}
+            >
+              {tab.label}
+            </Link>
+          ))}
+        </div>
+      </div>
       {/* Filters */}
       <div className="grid grid-cols-1 md:grid-cols-5 gap-4 mb-4 text-sm">
-        <select
-          name="course"
-          onChange={handleChange}
-          className="p-2 bg-slate-800 border border-slate-600 rounded"
-        >
-          <option value="">Select Course</option>
-          <option value="fullstack">Fullstack Web Application</option>
-          <option value="mulesoft">MuleSoft</option>
-          <option value="aws">AWS</option>
-          <option value="database">Database</option>
-        </select>
-        <select
-          name="batch"
-          onChange={handleChange}
-          className="p-2 bg-slate-800 border border-slate-600 rounded"
-        >
-          <option value="">Select Batch</option>
-          <option value="april-2025">April-2025</option>
-          <option value="may-2025">May-2025</option>
-        </select>
-        <select
-          name="phase"
-          onChange={handleChange}
-          className="p-2 bg-slate-800 border border-slate-600 rounded"
-        >
-          <option value="">Select Phase</option>
-          <option value="phase 1">Phase 1</option>
-          <option value="phase 2">Phase 2</option>
-          <option value="phase 3">Phase 3</option>
-        </select>
-        <select
-          name="group"
-          onChange={handleChange}
-          className="p-2 bg-slate-800 border border-slate-600 rounded"
-        >
-          <option value="">Select Group</option>
-          <option value="LS-1">GS-1</option>
-          <option value="LS-2">GS-2</option>
-        </select>
-        <select
-          name="topic"
-          onChange={handleChange}
-          className="p-2 bg-slate-800 border border-slate-600 rounded"
-        >
-          <option value="">Select Topic</option>
-          <option value="Introduction">Introduction</option>
-          <option value="HTML">HTML</option>
-          <option value="CSS">CSS</option>
-        </select>
+        {[
+          {
+            name: "course",
+            options: [
+              { label: "Fullstack Web Application", value: "fullstack" },
+              { label: "MuleSoft", value: "mulesoft" },
+              { label: "AWS", value: "aws" },
+              { label: "Database", value: "database" },
+            ],
+          },
+          {
+            name: "batch",
+            options: [
+              { label: "April-2025", value: "april-2025" },
+              { label: "May-2025", value: "may-2025" },
+            ],
+          },
+          {
+            name: "phase",
+            options: [
+              { label: "Phase 1", value: "phase 1" },
+              { label: "Phase 2", value: "phase 2" },
+              { label: "Phase 3", value: "phase 3" },
+            ],
+          },
+          {
+            name: "group",
+            options: [
+              { label: "GS-1", value: "LS-1" },
+              { label: "GS-2", value: "LS-2" },
+            ],
+          },
+          {
+            name: "topic",
+            options: [
+              { label: "Introduction", value: "Introduction" },
+              { label: "HTML", value: "HTML" },
+              { label: "CSS", value: "CSS" },
+            ],
+          },
+        ].map((field) => (
+          <Select
+            key={field.name}
+            onValueChange={(value) => handleChange(field.name, value)}
+          >
+            <SelectTrigger className="w-full bg-gray-100 text-black border-gray-300">
+              <SelectValue placeholder={`Select ${field.name}`} />
+            </SelectTrigger>
+            <SelectContent>
+              {field.options.map((opt) => (
+                <SelectItem key={opt.value} value={opt.value}>
+                  {opt.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        ))}
       </div>
 
       {/* Total Students */}
-      <div className="mb-4">
-        <strong>Total Students: {filteredStudents.length}</strong>
-      </div>
+      <div className="mb-4 font-semibold">Total Students: {filteredStudents.length}</div>
 
       {/* Table */}
-      <div className="bg-slate-900/50 border border-slate-700 rounded p-4 overflow-x-auto">
-        <table className="min-w-full text-sm">
+      <Card className="overflow-x-auto p-4 border border-gray-300">
+        <table className="min-w-full text-sm text-left">
           <thead>
-            <tr className="text-left border-b border-slate-700">
+            <tr className="border-b border-gray-300 text-gray-700">
               <th className="p-2">User Profile</th>
               <th className="p-2">Watched Video</th>
             </tr>
           </thead>
           <tbody>
             {filteredStudents.map((student, idx) => (
-              <tr key={idx} className="border-b border-slate-800">
+              <tr key={idx} className="border-b border-gray-200">
                 <td className="p-2 flex items-center gap-3">
-                  <div className="w-10 h-10 flex items-center justify-center bg-slate-700 text-white rounded-full text-sm font-semibold">
+                  <div className="w-10 h-10 flex items-center justify-center bg-gray-300 text-black rounded-full text-sm font-semibold">
                     {student.name
                       .split(" ")
                       .map((n) => n[0])
@@ -158,35 +186,35 @@ export default function CreateChecklistPage() {
                   </div>
                   <div>
                     <div className="font-medium">{student.name}</div>
-                    <div className="text-xs text-slate-400">
-                      {student.email}
-                    </div>
-                    <div className="text-xs text-slate-500">{student.id}</div>
+                    <div className="text-xs text-gray-500">{student.email}</div>
+                    <div className="text-xs text-gray-400">{student.id}</div>
                   </div>
                 </td>
                 <td className="p-2">
                   <div className="flex gap-2 flex-wrap">
                     {checklistItems.map((item, i) => (
-                      <button
+                      <Button
                         key={i}
+                        size="icon"
+                        variant="ghost"
+                        className={`rounded-full p-1.5 ${
+                          item.status === "done"
+                            ? "bg-green-500 text-white"
+                            : "bg-red-500 text-white"
+                        }`}
                         onClick={() => {
                           const newItems = [...checklistItems];
                           newItems[i].status =
                             newItems[i].status === "done" ? "read" : "done";
                           setChecklistItems(newItems);
                         }}
-                        className={`p-1.5 rounded-full ${
-                          item.status === "done"
-                            ? "bg-green-500"
-                            : "bg-red-500"
-                        }`}
                       >
                         {item.status === "done" ? (
                           <CheckCircle size={16} />
                         ) : (
                           <XCircle size={16} />
                         )}
-                      </button>
+                      </Button>
                     ))}
                   </div>
                 </td>
@@ -194,16 +222,16 @@ export default function CreateChecklistPage() {
             ))}
           </tbody>
         </table>
-      </div>
+      </Card>
 
       {/* Pagination */}
       <div className="flex justify-between items-center mt-4">
-        <button className="flex items-center gap-1 px-3 py-1 border border-slate-700 rounded text-slate-400 hover:text-white">
+        <Button variant="outline" className="gap-1">
           <ChevronLeft size={16} /> Previous
-        </button>
-        <button className="flex items-center gap-1 px-3 py-1 border border-slate-700 rounded text-slate-400 hover:text-white">
+        </Button>
+        <Button variant="outline" className="gap-1">
           Next <ChevronRight size={16} />
-        </button>
+        </Button>
       </div>
     </div>
   );

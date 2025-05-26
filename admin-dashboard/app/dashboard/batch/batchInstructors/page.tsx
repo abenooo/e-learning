@@ -3,6 +3,11 @@
 import { useState } from "react"
 import { useRouter, usePathname } from "next/navigation"
 import { UserPlus } from "lucide-react"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Button } from "@/components/ui/button"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Card } from "@/components/ui/card"
 
 export default function CreateBatchInstructorPage() {
   const router = useRouter()
@@ -15,38 +20,35 @@ export default function CreateBatchInstructorPage() {
     instructor: "",
   })
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
-    const { name, value } = e.target
+  const handleChange = (name: string, value: string) => {
     setFormData(prev => ({ ...prev, [name]: value }))
   }
 
   const tabs = [
-    { label: "Manage Batches", path: "/dashboard/batch/createBatch" },
-    { label: "Manage Groups", path: "/dashboard/batch/createGroup" },
+    { label: "Create Batch", path: "/dashboard/batch/createBatch" },
+    { label: "Create Group", path: "/dashboard/batch/createGroup" },
     { label: "Batch Instructors", path: "/dashboard/batch/batchInstructors" },
     { label: "Course Instructors", path: "/dashboard/batch/courseInstructors" },
   ]
 
   return (
-    <div className="p-6 text-white">
+    <div className="p-6 text-black">
       {/* Page Title */}
-      <h1 className="text-2xl font-bold text-orange-400 mb-4 flex items-center gap-2">
-        <UserPlus className="text-orange-500" />
+      <h1 className="text-2xl font-bold text-green-600 mb-4 flex items-center gap-2">
+        <UserPlus className="text-green-500" />
         Assign Batch Instructor
       </h1>
 
-      {/* Tab Navigation */}
-      <div className="flex space-x-4 border-b border-slate-700 mb-6 text-sm font-semibold text-slate-400">
+      {/* Tabs */}
+      <div className="flex space-x-4 border-b border-gray-300 mb-6 text-sm font-semibold text-gray-600">
         {tabs.map(tab => (
           <button
             key={tab.path}
             onClick={() => router.push(tab.path)}
             className={`pb-2 transition-colors duration-200 ease-in-out ${
               pathname === tab.path
-                ? "border-b-2 border-orange-500 text-orange-400"
-                : "hover:text-white"
+                ? "border-b-2 border-green-600 text-green-600"
+                : "hover:text-black"
             }`}
           >
             {tab.label}
@@ -54,80 +56,72 @@ export default function CreateBatchInstructorPage() {
         ))}
       </div>
 
-      {/* Form */}
-      <form className="bg-slate-900/50 p-6 rounded shadow border border-slate-700/50 space-y-5 text-sm">
+      {/* Form Card */}
+      <Card className="p-6 space-y-5 bg-white text-black border border-gray-300 shadow">
         {/* Select Course */}
-        <div>
-          <label className="block font-medium mb-1 text-slate-300">Select Course</label>
-          <select
-            name="course"
-            value={formData.course}
-            onChange={handleChange}
-            className="w-full p-2 rounded bg-slate-800 border border-slate-600 text-white"
-          >
-            <option value="">Select Course</option>
-            <option value="Fullstack Web Application Development">
-              Fullstack Web Application Development
-            </option>
-          </select>
+        <div className="space-y-1">
+          <Label>Select Course</Label>
+          <Select value={formData.course} onValueChange={value => handleChange("course", value)}>
+            <SelectTrigger className="bg-white border border-gray-300 text-black">
+              <SelectValue placeholder="Select Course" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="Fullstack Web Application Development">
+                Fullstack Web Application Development
+              </SelectItem>
+            </SelectContent>
+          </Select>
         </div>
 
         {/* Select Batch */}
-        <div>
-          <label className="block font-medium mb-1 text-slate-300">Select Batch</label>
-          <select
-            name="batch"
-            value={formData.batch}
-            onChange={handleChange}
-            className="w-full p-2 rounded bg-slate-800 border border-slate-600 text-white"
-          >
-            <option value="">Select Batch</option>
-            <option value="June-2024">June-2024</option>
-          </select>
+        <div className="space-y-1">
+          <Label>Select Batch</Label>
+          <Select value={formData.batch} onValueChange={value => handleChange("batch", value)}>
+            <SelectTrigger className="bg-white border border-gray-300 text-black">
+              <SelectValue placeholder="Select Batch" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="June-2024">June-2024</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
 
-        {/* Choose Class */}
-        <div>
-          <label className="block font-medium mb-1 text-slate-300">Class Name</label>
-          <input
+        {/* Class Name */}
+        <div className="space-y-1">
+          <Label>Class Name</Label>
+          <Input
             type="text"
             name="className"
-            value={formData.className}
-            onChange={handleChange}
             placeholder="e.g. Frontend Essentials"
-            className="w-full p-2 rounded bg-slate-800 border border-slate-600 text-white"
+            value={formData.className}
+            onChange={(e) => handleChange("className", e.target.value)}
+            className="bg-white border border-gray-300 text-black"
           />
         </div>
 
-        {/* Choose Instructor */}
-        <div>
-          <label className="block font-medium mb-1 text-slate-300">Instructor</label>
-          <input
+        {/* Instructor */}
+        <div className="space-y-1">
+          <Label>Instructor</Label>
+          <Input
             type="text"
             name="instructor"
-            value={formData.instructor}
-            onChange={handleChange}
             placeholder="Enter instructor name"
-            className="w-full p-2 rounded bg-slate-800 border border-slate-600 text-white"
+            value={formData.instructor}
+            onChange={(e) => handleChange("instructor", e.target.value)}
+            className="bg-white border border-gray-300 text-black"
           />
         </div>
 
         {/* Buttons */}
-        <div className="flex gap-4 pt-4">
-          <button
-            type="button"
-            className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded"
-          >
+        <div className="flex justify-end gap-4 pt-4">
+          {/* <Button variant="outline" className="text-blue-600 border-blue-600 hover:bg-blue-50">
             Save as Draft
-          </button>
-          <button
-            type="submit"
-            className="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded"
-          >
+          </Button> */}
+          <Button className="bg-green-600 hover:bg-orange-700 text-white">
             Save & Next →
-          </button>
+          </Button>
         </div>
-      </form>
+      </Card>
     </div>
   )
 }

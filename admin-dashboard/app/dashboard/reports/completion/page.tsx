@@ -1,13 +1,26 @@
 "use client";
-
 import { useState } from "react";
-import {
-  ChevronLeft,
-  ChevronRight,
-  BarChart3,
-} from "lucide-react";
+import { usePathname } from "next/navigation";
+import Link from "next/link";
+import clsx from "clsx";
+import { ChevronLeft, ChevronRight, Video, Copy, BarChart3, CheckCircle, XCircle } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue } from "@/components/ui/select";
+import { Card, CardContent } from "@/components/ui/card";
 
 export default function CompletionPercentagePage() {
+
+    const pathname = usePathname();
+
+  const tabs = [
+    { label: "Checklist", path: "/dashboard/reports/checklist" },
+    { label: "Watched Sessions", path: "/dashboard/reports/watched" },
+    { label: "Attendance", path: "/dashboard/reports/attendance" },
+    { label: "Completion", path: "/dashboard/reports/completion" },
+    { label: "Weekly Report", path: "/dashboard/reports/weekly" },
+  ];
+
   const [formData, setFormData] = useState({
     course: "",
     batch: "",
@@ -17,7 +30,7 @@ export default function CompletionPercentagePage() {
     week: "",
   });
 
-  const [students, setStudents] = useState([
+  const [students] = useState([
     {
       name: "Rahel Adane",
       email: "rahelina24@gmail.com",
@@ -52,8 +65,8 @@ export default function CompletionPercentagePage() {
     },
   ]);
 
-  const handleChange = (e: { target: { name: any; value: any; }; }) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+  const handleChange = (key: string, value: string) => {
+    setFormData((prev) => ({ ...prev, [key]: value }));
   };
 
   const filteredStudents = students.filter(
@@ -66,86 +79,104 @@ export default function CompletionPercentagePage() {
   );
 
   return (
-    <div className="p-6 text-white">
-      <h1 className="text-2xl font-bold text-orange-400 mb-6 flex items-center gap-2">
-              <BarChart3 className="text-orange-500" />
-              Completion Percentage
-            </h1>
-
+    <div className="p-6 text-black bg-white min-h-screen">
+      <h1 className="text-2xl font-bold text-green-600 mb-6 flex items-center gap-2">
+        <BarChart3 className="text-green-500" />
+        Completion Percentage
+      </h1>
+  {/* Top Tabs */}
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between border-b pb-2 gap-4 mb-6">
+        <div className="flex flex-wrap gap-4">
+          {tabs.map((tab) => (
+            <Link
+              key={tab.path}
+              href={tab.path}
+              className={clsx(
+                "px-4 py-2 rounded-t text-sm font-medium",
+                pathname === tab.path
+                  ? "bg-white text-green-600 border-b-2 border-green-600"
+                  : "text-gray-600 hover:text-black"
+              )}
+            >
+              {tab.label}
+            </Link>
+          ))}
+        </div>
+      </div> 
       <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-6 gap-4 text-sm mb-6">
-        <select
-          name="course"
-          onChange={handleChange}
-          className="p-2 bg-slate-800 border border-slate-600 rounded"
-        >
-          <option value="">Select Course</option>
-          <option value="fullstack">Fullstack Web Application</option>
-          <option value="mulesoft">MuleSoft</option>
-          <option value="aws">AWS</option>
-          <option value="database">Database</option>
-        </select>
+        <Select onValueChange={(v) => handleChange("course", v)}>
+          <SelectTrigger className="bg-white border border-gray-300">
+            <SelectValue placeholder="Select Course" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="fullstack">Fullstack Web Application</SelectItem>
+            <SelectItem value="mulesoft">MuleSoft</SelectItem>
+            <SelectItem value="aws">AWS</SelectItem>
+            <SelectItem value="database">Database</SelectItem>
+          </SelectContent>
+        </Select>
 
-        <select
-          name="batch"
-          onChange={handleChange}
-          className="p-2 bg-slate-800 border border-slate-600 rounded"
-        >
-          <option value="">Select Batch</option>
-          <option value="april-2025">April-2025</option>
-          <option value="may-2025">May-2025</option>
-        </select>
+        <Select onValueChange={(v) => handleChange("batch", v)}>
+          <SelectTrigger className="bg-white border border-gray-300">
+            <SelectValue placeholder="Select Batch" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="april-2025">April-2025</SelectItem>
+            <SelectItem value="may-2025">May-2025</SelectItem>
+          </SelectContent>
+        </Select>
 
-        <select
-          name="group"
-          onChange={handleChange}
-          className="p-2 bg-slate-800 border border-slate-600 rounded"
-        >
-          <option value="">Select Group</option>
-          <option value="GS-1">GS-1</option>
-          <option value="GS-2">GS-2</option>
-        </select>
+        <Select onValueChange={(v) => handleChange("group", v)}>
+          <SelectTrigger className="bg-white border border-gray-300">
+            <SelectValue placeholder="Select Group" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="GS-1">GS-1</SelectItem>
+            <SelectItem value="GS-2">GS-2</SelectItem>
+          </SelectContent>
+        </Select>
 
-        <select
-          name="scope"
-          onChange={handleChange}
-          className="p-2 bg-slate-800 border border-slate-600 rounded"
-        >
-          <option value="">Select Scope</option>
-          <option value="per phase">Per Phase</option>
-          <option value="per week">Per Week</option>
-        </select>
+        <Select onValueChange={(v) => handleChange("scope", v)}>
+          <SelectTrigger className="bg-white border border-gray-300">
+            <SelectValue placeholder="Select Scope" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="per phase">Per Phase</SelectItem>
+            <SelectItem value="per week">Per Week</SelectItem>
+          </SelectContent>
+        </Select>
 
-        <select
-          name="phase"
-          onChange={handleChange}
-          className="p-2 bg-slate-800 border border-slate-600 rounded"
-        >
-          <option value="">Select Phase</option>
-          <option value="phase 1">Phase 1</option>
-          <option value="phase 2">Phase 2</option>
-          <option value="phase 3">Phase 3</option>
-        </select>
+        <Select onValueChange={(v) => handleChange("phase", v)}>
+          <SelectTrigger className="bg-white border border-gray-300">
+            <SelectValue placeholder="Select Phase" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="phase 1">Phase 1</SelectItem>
+            <SelectItem value="phase 2">Phase 2</SelectItem>
+            <SelectItem value="phase 3">Phase 3</SelectItem>
+          </SelectContent>
+        </Select>
 
-        <select
-          name="week"
-          onChange={handleChange}
-          className="p-2 bg-slate-800 border border-slate-600 rounded"
-        >
-          <option value="">Select Week</option>
-          <option value="week 1: introduction">Week 1: Introduction</option>
-          <option value="week 2: CSS">Week 2: CSS</option>
-          <option value="week 3: HTML">Week 3: HTML</option>
-        </select>
+        <Select onValueChange={(v) => handleChange("week", v)}>
+          <SelectTrigger className="bg-white border border-gray-300">
+            <SelectValue placeholder="Select Week" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="week 1: introduction">Week 1: Introduction</SelectItem>
+            <SelectItem value="week 2: CSS">Week 2: CSS</SelectItem>
+            <SelectItem value="week 3: HTML">Week 3: HTML</SelectItem>
+          </SelectContent>
+        </Select>
       </div>
 
       <div className="mb-4">
         <strong>Total Students: {filteredStudents.length}</strong>
       </div>
 
-      <div className="overflow-x-auto bg-slate-900/50 border border-slate-700 rounded p-4">
-        <table className="min-w-full text-sm">
+      <Card className="overflow-x-auto border border-gray-200 p-4 bg-white">
+        <table className="min-w-full text-sm text-black">
           <thead>
-            <tr className="text-left border-b border-slate-700">
+            <tr className="border-b border-gray-200 text-left">
               <th className="p-2">User Profile</th>
               <th className="p-2">Watched Video</th>
               <th className="p-2">Checklist</th>
@@ -155,9 +186,9 @@ export default function CompletionPercentagePage() {
           </thead>
           <tbody>
             {filteredStudents.map((student, idx) => (
-              <tr key={idx} className="border-b border-slate-800">
+              <tr key={idx} className="border-b border-gray-100">
                 <td className="p-2 flex items-center gap-3">
-                  <div className="w-10 h-10 flex items-center justify-center bg-slate-700 text-white rounded-full text-sm font-semibold">
+                  <div className="w-10 h-10 flex items-center justify-center bg-gray-300 text-black rounded-full text-sm font-semibold">
                     {student.name
                       .split(" ")
                       .map((n) => n[0])
@@ -165,8 +196,8 @@ export default function CompletionPercentagePage() {
                   </div>
                   <div>
                     <div className="font-medium">{student.name}</div>
-                    <div className="text-xs text-slate-400">{student.email}</div>
-                    <div className="text-xs text-slate-500">{student.id}</div>
+                    <div className="text-xs text-gray-500">{student.email}</div>
+                    <div className="text-xs text-gray-400">{student.id}</div>
                   </div>
                 </td>
                 <td className="p-2">{student.completion.video}%</td>
@@ -177,12 +208,12 @@ export default function CompletionPercentagePage() {
             ))}
           </tbody>
         </table>
-      </div>
+      </Card>
 
-      <div className="mt-4 flex gap-4 justify-center items-center">
-        <ChevronLeft className="cursor-pointer text-green-500" />
-        <div className="text-sm text-slate-400">Page 1 of 5</div>
-        <ChevronRight className="cursor-pointer text-green-500" />
+      <div className="mt-4 flex gap-4 justify-center items-center text-black">
+        <ChevronLeft className="cursor-pointer text-black-600" />
+        <div className="text-sm text-gray-500">Page 1 of 5</div>
+        <ChevronRight className="cursor-pointer text-black-600" />
       </div>
     </div>
   );

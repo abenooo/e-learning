@@ -4,6 +4,19 @@ import { useRouter, usePathname } from "next/navigation"
 import { useState } from "react"
 import { ListChecks } from "lucide-react"
 
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+} from "@/components/ui/select"
+import { Input } from "@/components/ui/input"
+import { Textarea } from "@/components/ui/textarea"
+import { Label } from "@/components/ui/label"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent } from "@/components/ui/card"
+
 export default function CreateChecklistPage() {
   const router = useRouter()
   const pathname = usePathname()
@@ -27,33 +40,33 @@ export default function CreateChecklistPage() {
   })
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target
     setFormData(prev => ({ ...prev, [name]: value }))
   }
 
   return (
-    <div className="p-6 text-white">
-      {/* Title */}
-      <h1 className="text-2xl font-bold text-orange-400 mb-6 flex items-center gap-2">
-        <ListChecks className="text-orange-500" />
+    <div className="p-6 text-black bg-white min-h-screen">
+      {/* Page Title */}
+      <h1 className="text-2xl font-bold text-green-600 mb-2 flex items-center gap-2">
+        <ListChecks className="text-green-500" />
         Create Checklist
       </h1>
-      <p className="text-sm text-slate-400 mb-6">
+      <p className="text-sm text-gray-600 mb-6">
         Create the class roadmap of your course with details.
       </p>
 
-      {/* Tabs */}
-      <div className="flex space-x-4 border-b border-slate-700 mb-6 text-sm font-semibold text-slate-400">
+      {/* Tab Navigation */}
+      <div className="flex space-x-4 border-b border-gray-300 mb-6 text-sm font-semibold text-gray-500">
         {tabs.map(tab => (
           <button
             key={tab.path}
             onClick={() => router.push(tab.path)}
             className={`pb-2 ${
               pathname === tab.path
-                ? "border-b-2 border-orange-500 text-orange-400"
-                : "hover:text-white"
+                ? "border-b-2 border-green-500 text-green-500"
+                : "hover:text-black"
             }`}
           >
             {tab.label}
@@ -62,139 +75,141 @@ export default function CreateChecklistPage() {
       </div>
 
       {/* Form */}
-      <form className="bg-slate-900/50 p-6 rounded shadow border border-slate-700/50 space-y-6 text-sm">
-        {/* Row 1: Course and Phase */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
-            <label className="block font-medium mb-1 text-slate-300">Selected Course</label>
-            <select
-              name="courseTitle"
-              value={formData.courseTitle}
-              onChange={handleChange}
-              className="w-full p-2 rounded bg-slate-800 border border-slate-600 text-white"
-            >
-              <option value="">Select Course</option>
-              <option value="Fullstack Web Application Development">
-                Fullstack Web Application Development
-              </option>
-            </select>
+      <Card className="shadow border border-gray-200">
+        <CardContent className="space-y-6 p-6">
+          {/* Row 1 */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <Label className="mb-1 block">Selected Course</Label>
+              <Select
+                value={formData.courseTitle}
+                onValueChange={value => setFormData(prev => ({ ...prev, courseTitle: value }))}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Select Course" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="Fullstack Web Application Development">
+                    Fullstack Web Application Development
+                  </SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div>
+              <Label className="mb-1 block">Selected Phase</Label>
+              <Select
+                value={formData.phaseTitle}
+                onValueChange={value => setFormData(prev => ({ ...prev, phaseTitle: value }))}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Select Phase" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="Phase 1: Building static websites using HTML, CSS & Bootstrap">
+                    Phase 1: Building static websites using HTML, CSS & Bootstrap
+                  </SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
           </div>
-          <div>
-            <label className="block font-medium mb-1 text-slate-300">Selected Phase</label>
-            <select
-              name="phaseTitle"
-              value={formData.phaseTitle}
-              onChange={handleChange}
-              className="w-full p-2 rounded bg-slate-800 border border-slate-600 text-white"
-            >
-              <option value="">Select Phase</option>
-              <option value="Phase 1: Building static websites using HTML, CSS & Bootstrap">
-                Phase 1: Building static websites using HTML, CSS & Bootstrap
-              </option>
-            </select>
+
+          {/* Row 2 */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <Label className="mb-1 block">Selected Week</Label>
+              <Select
+                value={formData.weekTitle}
+                onValueChange={value => setFormData(prev => ({ ...prev, weekTitle: value }))}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Select Week" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="Course Preparation Week: Before you start the class">
+                    Course Preparation Week: Before you start the class
+                  </SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div>
+              <Label className="mb-1 block">Selected Class Topic</Label>
+              <Select
+                value={formData.classTitle}
+                onValueChange={value => setFormData(prev => ({ ...prev, classTitle: value }))}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Select Class" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="Basic computer skills - part I">
+                    Basic computer skills - part I
+                  </SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
           </div>
-        </div>
 
-        {/* Row 2: Week and Class */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {/* Checklist Title */}
           <div>
-            <label className="block font-medium mb-1 text-slate-300">Selected Week</label>
-            <select
-              name="weekTitle"
-              value={formData.weekTitle}
+            <Label className="mb-1 block">Checklist Item Title</Label>
+            <Input
+              type="text"
+              name="checklistTitle"
+              placeholder="Enter checklist item title as question?"
+              value={formData.checklistTitle}
               onChange={handleChange}
-              className="w-full p-2 rounded bg-slate-800 border border-slate-600 text-white"
-            >
-              <option value="">Select Week</option>
-              <option value="Course Preparation Week: Before you start the class">
-                Course Preparation Week: Before you start the class
-              </option>
-            </select>
+            />
           </div>
+
+          {/* Brief Note */}
           <div>
-            <label className="block font-medium mb-1 text-slate-300">Selected Class Topic</label>
-            <select
-              name="classTitle"
-              value={formData.classTitle}
+            <Label className="mb-1 block">Brief HTML Note</Label>
+            <Textarea
+              name="briefNote"
+              rows={5}
+              value={formData.briefNote}
               onChange={handleChange}
-              className="w-full p-2 rounded bg-slate-800 border border-slate-600 text-white"
-            >
-              <option value="">Select Class</option>
-              <option value="Basic computer skills - part I">
-                Basic computer skills - part I
-              </option>
-            </select>
+              placeholder="Enter checklist item brief html note"
+            />
           </div>
-        </div>
 
-        {/* Checklist Title */}
-        <div>
-          <label className="block font-medium mb-1 text-slate-300">Checklist Item Title</label>
-          <input
-            type="text"
-            name="checklistTitle"
-            value={formData.checklistTitle}
-            onChange={handleChange}
-            placeholder="Enter checklist item title as question?"
-            className="w-full p-2 rounded bg-slate-800 border border-slate-600 text-white"
-          />
-        </div>
+          {/* Description Note */}
+          <div>
+            <Label className="mb-1 block">Description Note</Label>
+            <Textarea
+              name="descriptionNote"
+              rows={5}
+              value={formData.descriptionNote}
+              onChange={handleChange}
+              placeholder="Enter checklist item description note (optional)"
+            />
+          </div>
 
-        {/* Brief HTML Note */}
-        <div>
-          <label className="block font-medium mb-1 text-slate-300">Brief HTML Note</label>
-          <textarea
-            name="briefNote"
-            value={formData.briefNote}
-            onChange={handleChange}
-            placeholder="Enter checklist item brief html note"
-            rows={6}
-            className="w-full p-2 rounded bg-slate-800 border border-slate-600 text-white"
-          />
-        </div>
+          {/* Reference Link */}
+          <div>
+            <Label className="mb-1 block">Reference Link</Label>
+            <Input
+              type="text"
+              name="referenceLink"
+              placeholder="https://www.youtube.com/watch?v=bqL4ZbLYeyY"
+              value={formData.referenceLink}
+              onChange={handleChange}
+            />
+          </div>
 
-        {/* Description Note */}
-        <div>
-          <label className="block font-medium mb-1 text-slate-300">Description Note</label>
-          <textarea
-            name="descriptionNote"
-            value={formData.descriptionNote}
-            onChange={handleChange}
-            placeholder="Enter checklist item description note (optional)"
-            rows={6}
-            className="w-full p-2 rounded bg-slate-800 border border-slate-600 text-white"
-          />
-        </div>
-
-        {/* Reference Link */}
-        <div>
-          <label className="block font-medium mb-1 text-slate-300">Reference Link</label>
-          <input
-            type="text"
-            name="referenceLink"
-            value={formData.referenceLink}
-            onChange={handleChange}
-            placeholder="https://www.youtube.com/watch?v=bqL4ZbLYeyY"
-            className="w-full p-2 rounded bg-slate-800 border border-slate-600 text-white"
-          />
-        </div>
-
-        {/* Buttons */}
-        <div className="flex gap-4 pt-4">
-          <button
-            type="submit"
-            className="border border-blue-500 text-blue-500 hover:bg-blue-500 hover:text-white px-4 py-2 rounded transition"
-          >
-            Save & Create Checklist +
-          </button>
-          <button
-            type="submit"
-            className="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded transition"
-          >
-            Save & Next →
-          </button>
-        </div>
-      </form>
+          {/* Buttons */}
+          <div className="flex justify-end gap-4 pt-4">
+            {/* <Button variant="outline" type="submit" className="border-blue-500 text-blue-500 hover:text-white hover:bg-blue-500">
+              Save & Create Checklist +
+            </Button> */}
+            <Button type="submit" className="bg-green-500 hover:bg-orange-600 text-white">
+              Save & Next →
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
     </div>
   )
 }

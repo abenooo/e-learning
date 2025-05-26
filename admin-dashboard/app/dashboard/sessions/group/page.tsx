@@ -1,9 +1,23 @@
 "use client";
 
 import { useState } from "react";
+import { usePathname } from "next/navigation";
+import Link from "next/link";
+import clsx from "clsx";
 import { ChevronLeft, ChevronRight, Video, Copy } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue } from "@/components/ui/select";
+import { Card } from "@/components/ui/card";
 
 export default function CreateGroupSessionPage() {
+
+    const pathname = usePathname();
+
+  const tabs = [
+    { label: "Live Session", path: "/dashboard/sessions/live" },
+    { label: "Group Sessions", path: "/dashboard/sessions/group" },
+  ];
   const [formData, setFormData] = useState({
     course: "",
     batch: "",
@@ -14,34 +28,38 @@ export default function CreateGroupSessionPage() {
   });
 
   const [sessions, setSessions] = useState([
-    // Example session entries for the table
     { createdBy: "Admin", sessionTitle: "Week 1 - Intro", batch: "April-2025", group: "LS-1", zoomLink: "https://zoom.us/abc", status: "Active" },
     { createdBy: "Admin", sessionTitle: "Week 2 - HTML", batch: "May-2025", group: "LS-2", zoomLink: "https://zoom.us/def", status: "Inactive" },
   ]);
 
-  const handleChange = (e: { target: { name: any; value: any; }; }) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  const handleSelectChange = (name: string, value: string) => {
+    setFormData({ ...formData, [name]: value });
+  };
+
   const handleCreate = () => {
-    if (formData.zoomLink && formData.course && formData.batch && formData.phase && formData.week && formData.group) {
+    const { course, batch, phase, week, group, zoomLink } = formData;
+    if (zoomLink && course && batch && phase && week && group) {
       const newSession = {
-        createdBy: "Admin",  // You can modify this to dynamically get the logged-in user
-        sessionTitle: `${formData.week} - ${formData.course}`,
-        batch: formData.batch,
-        group: formData.group,
-        zoomLink: formData.zoomLink,
+        createdBy: "Admin",
+        sessionTitle: `${week} - ${course}`,
+        batch,
+        group,
+        zoomLink,
         status: "Active"
       };
-      setSessions([...sessions, newSession]); // Add the new session to the sessions array
-      setFormData({ ...formData, zoomLink: "" }); // Clear the form after submission
+      setSessions([...sessions, newSession]);
+      setFormData({ ...formData, zoomLink: "" });
     } else {
       alert("Please fill in all fields.");
     }
   };
 
   const handleDelete = (index: number) => {
-    setSessions(sessions.filter((_, i) => i !== index)); // Remove session by index
+    setSessions(sessions.filter((_, i) => i !== index));
   };
 
   const handleStatusChange = (index: number) => {
@@ -56,74 +74,110 @@ export default function CreateGroupSessionPage() {
   };
 
   return (
-    <div className="p-6 text-white">
+    <div className="p-6 bg-white text-black min-h-screen">
       {/* Page Title */}
-      <h1 className="text-2xl font-bold text-orange-400 mb-6 flex items-center gap-2">
-        <Video className="text-orange-500" />
+      <h1 className="text-2xl font-bold text-green-500 mb-6 flex items-center gap-2">
+        <Video className="text-green-600" />
         Create Group Session
       </h1>
 
+      {/* Top Tabs */}
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between border-b pb-2 gap-4 mb-6">
+        <div className="flex flex-wrap gap-4">
+          {tabs.map((tab) => (
+            <Link
+              key={tab.path}
+              href={tab.path}
+              className={clsx(
+                "px-4 py-2 rounded-t text-sm font-medium",
+                pathname === tab.path
+                  ? "bg-white text-green-600 border-b-2 border-green-600"
+                  : "text-gray-600 hover:text-black"
+              )}
+            >
+              {tab.label}
+            </Link>
+          ))}
+        </div>
+      </div>
       {/* Filters */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6 text-sm">
-        <select name="course" onChange={handleChange} value={formData.course} className="p-2 bg-slate-800 border border-slate-600 rounded">
-          <option value="">Select Course</option>
-          <option value="fullstack">Fullstack Web Application</option>
-          <option value="mulesoft">MuleSoft</option>
-          <option value="aws">AWS</option>
-          <option value="database">Database</option>
-        </select>
+        <Select onValueChange={(value) => handleSelectChange("course", value)} value={formData.course}>
+          <SelectTrigger>
+            <SelectValue placeholder="Select Course" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="fullstack">Fullstack Web Application</SelectItem>
+            <SelectItem value="mulesoft">MuleSoft</SelectItem>
+            <SelectItem value="aws">AWS</SelectItem>
+            <SelectItem value="database">Database</SelectItem>
+          </SelectContent>
+        </Select>
 
-        <select name="batch" onChange={handleChange} value={formData.batch} className="p-2 bg-slate-800 border border-slate-600 rounded">
-          <option value="">Select Batch</option>
-          <option value="april-2025">April-2025</option>
-          <option value="may-2025">May-2025</option>
-        </select>
+        <Select onValueChange={(value) => handleSelectChange("batch", value)} value={formData.batch}>
+          <SelectTrigger>
+            <SelectValue placeholder="Select Batch" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="april-2025">April-2025</SelectItem>
+            <SelectItem value="may-2025">May-2025</SelectItem>
+          </SelectContent>
+        </Select>
 
-        <select name="phase" onChange={handleChange} value={formData.phase} className="p-2 bg-slate-800 border border-slate-600 rounded">
-          <option value="">Select Phase</option>
-          <option value="phase 1">Phase 1</option>
-          <option value="phase 2">Phase 2</option>
-          <option value="phase 3">Phase 3</option>
-        </select>
+        <Select onValueChange={(value) => handleSelectChange("phase", value)} value={formData.phase}>
+          <SelectTrigger>
+            <SelectValue placeholder="Select Phase" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="phase 1">Phase 1</SelectItem>
+            <SelectItem value="phase 2">Phase 2</SelectItem>
+            <SelectItem value="phase 3">Phase 3</SelectItem>
+          </SelectContent>
+        </Select>
 
-        <select name="week" onChange={handleChange} value={formData.week} className="p-2 bg-slate-800 border border-slate-600 rounded">
-          <option value="">Select Week</option>
-          <option value="week 1">Week 1: Introduction</option>
-          <option value="week 2">Week 2: HTML</option>
-          <option value="week 3">Week 3: CSS</option>
-        </select>
+        <Select onValueChange={(value) => handleSelectChange("week", value)} value={formData.week}>
+          <SelectTrigger>
+            <SelectValue placeholder="Select Week" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="week 1">Week 1: Introduction</SelectItem>
+            <SelectItem value="week 2">Week 2: HTML</SelectItem>
+            <SelectItem value="week 3">Week 3: CSS</SelectItem>
+          </SelectContent>
+        </Select>
 
-        <select name="group" onChange={handleChange} value={formData.group} className="p-2 bg-slate-800 border border-slate-600 rounded">
-          <option value="">Select Group</option>
-          <option value="LS-1">GS-1</option>
-          <option value="LS-2">GS-2</option>
-        </select>
+        <Select onValueChange={(value) => handleSelectChange("group", value)} value={formData.group}>
+          <SelectTrigger>
+            <SelectValue placeholder="Select Group" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="LS-1">GS-1</SelectItem>
+            <SelectItem value="LS-2">GS-2</SelectItem>
+          </SelectContent>
+        </Select>
       </div>
 
-      {/* Zoom Link & Create Button in One Row */}
+      {/* Zoom Link & Create Button */}
       <div className="flex items-center gap-4 mb-6">
-        <input
+        <Input
           type="text"
           name="zoomLink"
           value={formData.zoomLink}
           onChange={handleChange}
           placeholder="Zoom Meeting Link"
-          className="p-2 bg-slate-800 border border-slate-600 rounded w-full md:w-2/3"
+          className="w-full md:w-2/3"
         />
-        <button
-          onClick={handleCreate}
-          className="bg-orange-500 hover:bg-orange-600 px-8 py-2 rounded text-white"
-        >
+        <Button className="bg-green-500 hover:bg-orange-600 text-white" onClick={handleCreate}>
           Create
-        </button>
+        </Button>
       </div>
 
       {/* Group Session Links Table */}
-      <div className="bg-slate-900/50 p-4 rounded border border-slate-700">
+      <div className="bg-gray-100 p-4 rounded border border-gray-300">
         <h2 className="text-lg font-semibold mb-4">Group Session Links</h2>
         <div className="overflow-x-auto">
-          <table className="min-w-full text-sm text-left text-slate-300">
-            <thead className="bg-slate-800 text-slate-400">
+          <table className="min-w-full text-sm text-left text-black">
+            <thead className="bg-gray-200">
               <tr>
                 <th className="px-4 py-2">Created By</th>
                 <th className="px-4 py-2">Session Title</th>
@@ -135,36 +189,35 @@ export default function CreateGroupSessionPage() {
             </thead>
             <tbody>
               {sessions.map((session, index) => (
-                <tr key={index} className="border-b border-slate-700">
+                <tr key={index} className="border-b border-gray-300">
                   <td className="px-4 py-2">{session.createdBy}</td>
                   <td className="px-4 py-2">{session.sessionTitle}</td>
                   <td className="px-4 py-2">{session.batch} & {session.group}</td>
-                  <td className="px-4 py-2 text-blue-400 underline cursor-pointer relative">
+                  <td className="px-4 py-2 text-blue-600 underline relative">
                     <a href={session.zoomLink} target="_blank" rel="noopener noreferrer">
                       {session.zoomLink}
                     </a>
-                    {/* Copy Button only if status is Active */}
                     {session.status === "Active" && (
                       <button 
-                        className="absolute top-0 right-0 p-2 text-white bg-orange-500 rounded-full"
+                        className="absolute top-1 right-1 p-1 text-white bg-orange-500 rounded-full"
                         onClick={() => handleCopyLink(session.zoomLink)}
                       >
-                        <Copy size={16} />
+                        <Copy size={14} />
                       </button>
                     )}
                   </td>
                   <td className="px-4 py-2">
                     <span
                       onClick={() => handleStatusChange(index)}
-                      className={`cursor-pointer px-2 py-1 text-xs ${session.status === "Active" ? "bg-green-700" : "bg-red-700"} text-white rounded`}
+                      className={`cursor-pointer px-2 py-1 text-xs ${session.status === "Active" ? "bg-green-600" : "bg-red-600"} text-white rounded`}
                     >
                       {session.status}
                     </span>
                   </td>
                   <td className="px-4 py-2">
-                    <button 
-                      className="text-red-500 hover:text-red-700"
-                      onClick={() => handleDelete(index)} // Delete action
+                    <button
+                      className="text-red-600 hover:text-red-800"
+                      onClick={() => handleDelete(index)}
                     >
                       Delete
                     </button>
@@ -177,12 +230,12 @@ export default function CreateGroupSessionPage() {
 
         {/* Pagination */}
         <div className="flex justify-between items-center mt-4">
-          <button className="flex items-center gap-1 px-3 py-1 border border-slate-700 rounded text-slate-400 hover:text-white">
-            <ChevronLeft size={16} /> Previous
-          </button>
-          <button className="flex items-center gap-1 px-3 py-1 border border-slate-700 rounded text-slate-400 hover:text-white">
-            Next <ChevronRight size={16} />
-          </button>
+          <Button variant="outline" className="text-black border-gray-400">
+            <ChevronLeft size={16} className="mr-1" /> Previous
+          </Button>
+          <Button variant="outline" className="text-black border-gray-400">
+            Next <ChevronRight size={16} className="ml-1" />
+          </Button>
         </div>
       </div>
     </div>

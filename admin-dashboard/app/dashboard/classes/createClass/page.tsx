@@ -138,10 +138,10 @@ export default function CreateClassPage() {
         </div>
 
         {/* Buttons */}
-        <div className="flex gap-4 pt-4">
-          <Button variant="outline" className="border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white">
+        <div className="flex justify-end gap-4 pt-4">
+          {/* <Button variant="outline" className="border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white">
             Save & Create New Class +
-          </Button>
+          </Button> */}
           <Button className="bg-green-500 hover:bg-orange-600 text-white">
             Save & Next →
           </Button>

@@ -1,15 +1,34 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { Users2 } from "lucide-react"
+import { useState } from "react";
+import { Users2, Search } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+} from "@/components/ui/select";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import clsx from "clsx";
 
 export default function ListUsersPage() {
-  const [role, setRole] = useState("all")
-  const [filter, setFilter] = useState("all")
-  const [search, setSearch] = useState("")
-  const [currentPage, setCurrentPage] = useState(1)
+  const [role, setRole] = useState("all");
+  const [filter, setFilter] = useState("all");
+  const [search, setSearch] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const pathname = usePathname();
 
-  // Dummy data (replace with real data from API)
+  const tabs = [
+    { label: "List Users", path: "/dashboard/users/list" },
+    { label: "Students", path: "/dashboard/users/students" },
+    { label: "Group Confirmation", path: "/dashboard/users/groupConfirmation" },
+  ];
+
   const users = [
     {
       id: 1,
@@ -29,88 +48,124 @@ export default function ListUsersPage() {
       address: "Bahir Dar",
       joinedDate: "2023-11-30",
     },
-    // Add more users as needed
-  ]
+  ];
 
-  const filteredUsers = users.filter(user => {
+  const filteredUsers = users.filter((user) => {
     return (
       (role === "all" || user.role === role) &&
       (filter === "all" || user.role === "team member") &&
       user.name.toLowerCase().includes(search.toLowerCase())
-    )
-  })
+    );
+  });
 
-  const totalUsers = filteredUsers.length
+  const totalUsers = filteredUsers.length;
 
   return (
-    <div className="p-6 text-white">
+    <div className="p-6 bg-white text-black min-h-screen space-y-6">
       {/* Page Title */}
-      <h1 className="text-2xl font-bold text-orange-400 mb-6 flex items-center gap-2">
-        <Users2 className="text-orange-500" />
+      <h1 className="text-2xl font-bold text-green-600 flex items-center gap-2">
+        <Users2 className="text-green-500" />
         List of Users
       </h1>
 
-      {/* Filters */}
+     {/* Top Tabs */}
+<div className="flex flex-col md:flex-row md:items-center md:justify-between border-b pb-2 gap-4">
+  {/* Navigation Tabs */}
+  <div className="flex flex-wrap gap-4">
+    {tabs.map(tab => (
+      <Link
+        key={tab.path}
+        href={tab.path}
+        className={clsx(
+          "px-4 py-2 rounded-t text-sm font-medium",
+          pathname === tab.path
+            ? "bg-white text-green-600 border-b-2 border-green-600"
+            : "text-gray-600 hover:text-black"
+        )}
+      >
+        {tab.label}
+      </Link>
+    ))}
+  </div>
+
+  {/* Search Input (with spacing from top tabs) */}
+  <div className="relative w-full md:w-1/3 mt-2 md:mt-0">
+    <Input
+      type="text"
+      placeholder="Search students"
+      value={search}
+      onChange={e => setSearch(e.target.value)}
+    />
+    <Search className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 w-4 h-4" />
+  </div>
+</div>
+
+
+      {/* Filter Controls */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6 text-sm">
-        <div>
-          <label className="block font-medium mb-1 text-slate-300">Select Role</label>
-          <select
-            value={role}
-            onChange={e => setRole(e.target.value)}
-            className="w-full p-2 rounded bg-slate-800 border border-slate-600 text-white"
-          >
-            <option value="all">All Users</option>
-            <option value="supper admin">Supper Admin</option>
-            <option value="admin">Admin</option>
-            <option value="instructor">Instructor</option>
-            <option value="group instructor">Group Instructor</option>
-            <option value="team member">Team Member</option>
-          </select>
+        {/* Role Filter */}
+        <div className="space-y-1">
+          <Label>Select Role</Label>
+          <Select value={role} onValueChange={(value) => setRole(value)}>
+            <SelectTrigger>
+              <SelectValue placeholder="Select role" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All Users</SelectItem>
+              <SelectItem value="supper admin">Supper Admin</SelectItem>
+              <SelectItem value="admin">Admin</SelectItem>
+              <SelectItem value="instructor">Instructor</SelectItem>
+              <SelectItem value="group instructor">Group Instructor</SelectItem>
+              <SelectItem value="team member">Team Member</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
 
-        <div>
-          <label className="block font-medium mb-1 text-slate-300">Filter Users</label>
-          <select
-            value={filter}
-            onChange={e => setFilter(e.target.value)}
-            className="w-full p-2 rounded bg-slate-800 border border-slate-600 text-white"
-          >
-            <option value="all">All Users</option>
-            <option value="team">Team</option>
-          </select>
+        {/* Filter Users */}
+        <div className="space-y-1">
+          <Label>Filter Users</Label>
+          <Select value={filter} onValueChange={(value) => setFilter(value)}>
+            <SelectTrigger>
+              <SelectValue placeholder="Filter users" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All Users</SelectItem>
+              <SelectItem value="team">Team</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
 
-        <div className="md:col-span-2">
-          <label className="block font-medium mb-1 text-slate-300">Search Users</label>
-          <input
-            type="text"
-            placeholder="Search by name"
-            value={search}
-            onChange={e => setSearch(e.target.value)}
-            className="w-full p-2 rounded bg-slate-800 border border-slate-600 text-white"
-          />
-        </div>
       </div>
-
       {/* Total Users */}
-      <div className="mb-4 text-sm text-slate-400">Total Users: {totalUsers}</div>
+      <div className="text-sm text-gray-600">Total Users: {totalUsers}</div>
 
       {/* User Table */}
       <div className="overflow-x-auto">
         <table className="w-full text-sm border-collapse">
-          <thead className="bg-slate-800 text-slate-300">
+          <thead className="bg-gray-100 text-gray-700">
             <tr>
-              <th className="text-left p-3 border-b border-slate-700">Avatar / Name</th>
-              <th className="text-left p-3 border-b border-slate-700">Contact</th>
-              <th className="text-left p-3 border-b border-slate-700">Address</th>
-              <th className="text-left p-3 border-b border-slate-700">Joined Date</th>
+              <th className="text-left p-3 border-b border-gray-300">
+                Avatar / Name
+              </th>
+              <th className="text-left p-3 border-b border-gray-300">Contact</th>
+              <th className="text-left p-3 border-b border-gray-300">Address</th>
+              <th className="text-left p-3 border-b border-gray-300">
+                Joined Date
+              </th>
             </tr>
           </thead>
           <tbody>
-            {filteredUsers.map(user => (
-              <tr key={user.id} className="border-b border-slate-700 hover:bg-slate-800">
+            {filteredUsers.map((user) => (
+              <tr
+                key={user.id}
+                className="border-b border-gray-200 hover:bg-gray-50 transition"
+              >
                 <td className="p-3 flex items-center gap-2">
-                  <img src={user.avatar} alt="avatar" className="w-8 h-8 rounded-full" />
+                  <img
+                    src={user.avatar}
+                    alt="avatar"
+                    className="w-8 h-8 rounded-full"
+                  />
                   <span>{user.name}</span>
                 </td>
                 <td className="p-3">{user.contact}</td>
@@ -120,7 +175,7 @@ export default function ListUsersPage() {
             ))}
             {filteredUsers.length === 0 && (
               <tr>
-                <td colSpan={4} className="p-4 text-center text-slate-500">
+                <td colSpan={4} className="p-4 text-center text-gray-500">
                   No users found.
                 </td>
               </tr>
@@ -131,21 +186,21 @@ export default function ListUsersPage() {
 
       {/* Pagination */}
       <div className="mt-6 flex justify-between items-center text-sm">
-        <button
-          onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
-          className="bg-slate-700 hover:bg-slate-600 px-4 py-2 rounded text-white disabled:opacity-50"
+        <Button
+          variant="secondary"
+          onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
           disabled={currentPage === 1}
         >
           Previous
-        </button>
-        <span className="text-slate-400">Page {currentPage}</span>
-        <button
-          onClick={() => setCurrentPage(prev => prev + 1)}
-          className="bg-slate-700 hover:bg-slate-600 px-4 py-2 rounded text-white"
+        </Button>
+        <span className="text-gray-600">Page {currentPage}</span>
+        <Button
+          variant="secondary"
+          onClick={() => setCurrentPage((prev) => prev + 1)}
         >
           Next
-        </button>
+        </Button>
       </div>
     </div>
-  )
+  );
 }
