@@ -147,10 +147,10 @@ export default function CreatePhasePage() {
         </div>
 
         {/* Buttons */}
-        <div className="flex gap-4 pt-4">
-          <Button type="submit" variant="outline" className="bg-blue-600 text-white hover:bg-blue-700">
+        <div className="flex justify-end gap-4 pt-4">
+          {/* <Button type="submit" variant="outline" className="bg-blue-600 text-white hover:bg-blue-700">
             Save & Create New Phase
-          </Button>
+          </Button> */}
           <Button type="submit" className="bg-green-500 text-white hover:bg-orange-600">
             Save & Next →
           </Button>

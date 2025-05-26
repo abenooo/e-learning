@@ -1,98 +1,107 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { useRouter, usePathname } from "next/navigation"
-import { UserPlus } from "lucide-react"
+import { useState } from "react";
+import { useRouter, usePathname } from "next/navigation";
+import { UserPlus } from "lucide-react";
+import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+} from "@/components/ui/select";
+import { Button } from "@/components/ui/button";
 
 export default function CourseInstructorPage() {
-  const router = useRouter()
-  const pathname = usePathname()
+  const router = useRouter();
+  const pathname = usePathname();
 
   const [formData, setFormData] = useState({
     selectedCourse: "",
     selectedTeamMember: "",
-  })
+  });
 
-  const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const { name, value } = e.target
-    setFormData(prev => ({ ...prev, [name]: value }))
-  }
+  const handleChange = (name: string, value: string) => {
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
 
   const tabs = [
-    { label: "Manage Batches", path: "/dashboard/batch/createBatch" },
-    { label: "Manage Groups", path: "/dashboard/batch/createGroup" },
-    { label: "Batch Instructors", path: "/dashboard/batch/batchInstructors" },
-    { label: "Course Instructors", path: "/dashboard/batch/courseInstructors" },
-  ]
+    { label: "Assign Week", path: "/dashboard/assignments/assignWeek" },
+    { label: "Batch Instructors", path: "/dashboard/assignments/batchInstructors" },
+    { label: "Course Instructors", path: "/dashboard/assignments/courseInstructors" },
+  ];
 
   return (
-    <div className="p-6 text-white">
+    <div className="p-6 bg-white text-black min-h-screen">
       {/* Page Title */}
-      <h1 className="text-2xl font-bold text-orange-400 mb-4 flex items-center gap-2">
-        <UserPlus className="text-orange-500" />
+      <h1 className="text-2xl font-bold text-green-600 mb-4 flex items-center gap-2">
+        <UserPlus className="text-green-500" />
         Course Instructor Assignment
       </h1>
 
       {/* Tab Navigation */}
-      <div className="flex space-x-4 border-b border-slate-700 mb-6 text-sm font-semibold text-slate-400">
-        {tabs.map(tab => (
+      <nav className="flex space-x-6 border-b border-gray-300 mb-6 text-sm font-semibold">
+        {tabs.map((tab) => (
           <button
             key={tab.path}
             onClick={() => router.push(tab.path)}
+            type="button"
             className={`pb-2 transition-colors duration-200 ease-in-out ${
               pathname === tab.path
-                ? "border-b-2 border-orange-500 text-orange-400"
-                : "hover:text-white"
+                ? "border-b-2 border-green-500 text-green-600"
+                : "text-gray-600 hover:text-black"
             }`}
           >
             {tab.label}
           </button>
         ))}
-      </div>
+      </nav>
 
       {/* Form */}
-      <form className="bg-slate-900/50 p-6 rounded shadow border border-slate-700/50 space-y-5 text-sm">
+      <form className="bg-white border border-gray-200 shadow rounded p-6 space-y-5 text-sm">
         {/* Select Course */}
-        <div>
-          <label className="block font-medium mb-1 text-slate-300">Select Course</label>
-          <select
-            name="selectedCourse"
+        <div className="space-y-1">
+          <Label htmlFor="selectedCourse">Select Course</Label>
+          <Select
             value={formData.selectedCourse}
-            onChange={handleChange}
-            className="w-full p-2 rounded bg-slate-800 border border-slate-600 text-white"
+            onValueChange={(value) => handleChange("selectedCourse", value)}
           >
-            <option value="">Select Course</option>
-            <option value="Fullstack Web Application Development">
-              Fullstack Web Application Development
-            </option>
-          </select>
+            <SelectTrigger id="selectedCourse">
+              <SelectValue placeholder="Select Course" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="Fullstack Web Application Development">
+                Fullstack Web Application Development
+              </SelectItem>
+            </SelectContent>
+          </Select>
         </div>
 
         {/* Select Team Member */}
-        <div>
-          <label className="block font-medium mb-1 text-slate-300">Select Team Member</label>
-          <select
-            name="selectedTeamMember"
+        <div className="space-y-1">
+          <Label htmlFor="selectedTeamMember">Select Team Member</Label>
+          <Select
             value={formData.selectedTeamMember}
-            onChange={handleChange}
-            className="w-full p-2 rounded bg-slate-800 border border-slate-600 text-white"
+            onValueChange={(value) => handleChange("selectedTeamMember", value)}
           >
-            <option value="">Select Team Member</option>
-            <option value="John Doe">John Doe</option>
-            <option value="Jane Smith">Jane Smith</option>
-          </select>
+            <SelectTrigger id="selectedTeamMember">
+              <SelectValue placeholder="Select Team Member" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="John Doe">John Doe</SelectItem>
+              <SelectItem value="Jane Smith">Jane Smith</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
 
         {/* Assign Button */}
-        <div className="pt-4">
-          <button
-            type="submit"
-            className="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded"
-          >
+        <div className="flex justify-end gap-4 pt-4">
+          <Button type="submit" className="bg-green-500 hover:bg-orange-600 text-white">
             Assign as Instructor
-          </button>
+          </Button>
         </div>
       </form>
     </div>
-  )
+  );
 }

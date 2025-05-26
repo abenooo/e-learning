@@ -137,10 +137,10 @@ export default function CreateWeekComponentPage() {
           </div>
 
           {/* Buttons */}
-          <div className="flex gap-4 pt-4">
-            <Button variant="default" className="bg-blue-600 hover:bg-blue-700">
+          <div className="flex justify-end gap-4 pt-4">
+            {/* <Button variant="default" className="bg-blue-600 hover:bg-blue-700">
               Save & Create +
-            </Button>
+            </Button> */}
             <Button variant="destructive" className="bg-green-500 hover:bg-orange-600">
               Save & Next →
             </Button>

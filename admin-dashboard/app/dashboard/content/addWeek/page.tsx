@@ -3,6 +3,11 @@
 import { useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { FilePlus2 } from "lucide-react";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Select, SelectItem, SelectTrigger, SelectValue, SelectContent } from "@/components/ui/select";
+import { Button } from "@/components/ui/button";
 
 export default function AddWeekContentPage() {
   const router = useRouter();
@@ -29,23 +34,23 @@ export default function AddWeekContentPage() {
   }
 
   return (
-    <div className="p-6 text-white">
+    <div className="p-6 text-black bg-white min-h-screen">
       {/* Page Title */}
-      <h1 className="text-2xl font-bold text-orange-400 mb-4 flex items-center gap-2">
-        <FilePlus2 className="text-orange-500" />
+      <h1 className="text-2xl font-bold text-green-600 mb-4 flex items-center gap-2">
+        <FilePlus2 className="text-green-600" />
         Add Week Content
       </h1>
 
       {/* Tab Navigation */}
-      <div className="flex space-x-4 border-b border-slate-700 mb-6 text-sm font-semibold text-slate-400">
+      <div className="flex space-x-4 border-b border-gray-300 mb-6 text-sm font-semibold text-gray-500">
         {tabs.map(tab => (
           <button
             key={tab.path}
             onClick={() => router.push(tab.path)}
             className={`pb-2 transition-colors duration-200 ease-in-out ${
               pathname === tab.path
-                ? "border-b-2 border-orange-500 text-orange-400"
-                : "hover:text-white"
+                ? "border-b-2 border-green-600 text-green-600"
+                : "hover:text-black"
             }`}
           >
             {tab.label}
@@ -54,16 +59,16 @@ export default function AddWeekContentPage() {
       </div>
 
       {/* Form */}
-      <form className="bg-slate-900/50 p-6 rounded shadow border border-slate-700/50 space-y-5 text-sm">
+      <form className="bg-white border border-gray-200 p-6 rounded-lg shadow space-y-5 text-sm">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {/* Select Course */}
           <div>
-            <label className="block font-medium mb-1 text-slate-300">Select Course</label>
+            <Label className="mb-1 block">Select Course</Label>
             <select
               name="selectedCourse"
               value={formData.selectedCourse}
               onChange={handleChange}
-              className="w-full p-2 rounded bg-slate-800 border border-slate-600 text-white"
+              className="w-full border border-gray-300 p-2 rounded bg-white text-black"
             >
               <option value="">Select Course</option>
               <option value="Fullstack Web Dev">Fullstack Web Dev</option>
@@ -72,12 +77,12 @@ export default function AddWeekContentPage() {
 
           {/* Select Phase */}
           <div>
-            <label className="block font-medium mb-1 text-slate-300">Select Phase</label>
+            <Label className="mb-1 block">Select Phase</Label>
             <select
               name="selectedPhase"
               value={formData.selectedPhase}
               onChange={handleChange}
-              className="w-full p-2 rounded bg-slate-800 border border-slate-600 text-white"
+              className="w-full border border-gray-300 p-2 rounded bg-white text-black"
             >
               <option value="">Select Phase</option>
               <option value="Phase 1">Phase 1</option>
@@ -86,12 +91,12 @@ export default function AddWeekContentPage() {
 
           {/* Select Week */}
           <div>
-            <label className="block font-medium mb-1 text-slate-300">Select Week</label>
+            <Label className="mb-1 block">Select Week</Label>
             <select
               name="selectedWeek"
               value={formData.selectedWeek}
               onChange={handleChange}
-              className="w-full p-2 rounded bg-slate-800 border border-slate-600 text-white"
+              className="w-full border border-gray-300 p-2 rounded bg-white text-black"
             >
               <option value="">Select Week</option>
               <option value="Week 1">Week 1</option>
@@ -101,12 +106,12 @@ export default function AddWeekContentPage() {
 
           {/* Select Component */}
           <div>
-            <label className="block font-medium mb-1 text-slate-300">Select Component</label>
+            <Label className="mb-1 block">Select Component</Label>
             <select
               name="selectedComponent"
               value={formData.selectedComponent}
               onChange={handleChange}
-              className="w-full p-2 rounded bg-slate-800 border border-slate-600 text-white"
+              className="w-full border border-gray-300 p-2 rounded bg-white text-black"
             >
               <option value="">Select Component</option>
               <option value="Lecture">Lecture</option>
@@ -117,38 +122,36 @@ export default function AddWeekContentPage() {
 
         {/* Content Title */}
         <div>
-          <label className="block font-medium mb-1 text-slate-300">Content Title</label>
-          <input
+          <Label className="mb-1 block">Content Title</Label>
+          <Input
             type="text"
             name="contentTitle"
             value={formData.contentTitle}
             onChange={handleChange}
             placeholder="e.g. Introduction to Git"
-            className="w-full p-2 rounded bg-slate-800 border border-slate-600 text-white"
           />
         </div>
 
-        {/* Icon Type & Content Type */}
+        {/* Icon & Content Type */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label className="block font-medium mb-1 text-slate-300">Icon Type</label>
-            <input
+            <Label className="mb-1 block">Icon Type</Label>
+            <Input
               type="text"
               name="iconType"
               value={formData.iconType}
               onChange={handleChange}
               placeholder="e.g. book, video"
-              className="w-full p-2 rounded bg-slate-800 border border-slate-600 text-white"
             />
           </div>
 
           <div>
-            <label className="block font-medium mb-1 text-slate-300">Content Type</label>
+            <Label className="mb-1 block">Content Type</Label>
             <select
               name="contentType"
               value={formData.contentType}
               onChange={handleChange}
-              className="w-full p-2 rounded bg-slate-800 border border-slate-600 text-white"
+              className="w-full border border-gray-300 p-2 rounded bg-white text-black"
             >
               <option value="">Choose Type</option>
               <option value="Reading">Reading</option>
@@ -160,25 +163,21 @@ export default function AddWeekContentPage() {
 
         {/* Description */}
         <div>
-          <label className="block font-medium mb-1 text-slate-300">Description</label>
-          <textarea
+          <Label className="mb-1 block">Description</Label>
+          <Textarea
             name="description"
             rows={4}
             value={formData.description}
             onChange={handleChange}
             placeholder="Enter content description"
-            className="w-full p-2 rounded bg-slate-800 border border-slate-600 text-white"
           />
         </div>
 
-        {/* Buttons */}
-        <div className="flex gap-4 pt-4">
-          <button
-            type="submit"
-            className="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded"
-          >
+        {/* Submit Button */}
+        <div className="flex justify-end gap-4 pt-4">
+          <Button type="submit" className="bg-green-600 hover:bg-orange-700 text-white">
             Save & Create New Content
-          </button>
+          </Button>
         </div>
       </form>
     </div>

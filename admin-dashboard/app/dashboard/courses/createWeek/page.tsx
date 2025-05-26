@@ -142,10 +142,10 @@ export default function CreateCourseWeekPage() {
         </div>
 
         {/* Buttons */}
-        <div className="flex gap-4 pt-4">
-          <Button type="submit" className="bg-blue-600 hover:bg-blue-700 text-white">
+        <div className="flex justify-end gap-4 pt-4">
+          {/* <Button type="submit" className="bg-blue-600 hover:bg-blue-700 text-white">
             Save & Create New Week +
-          </Button>
+          </Button> */}
           <Button type="submit" className="bg-green-500 hover:bg-orange-600 text-white">
             Save & Next →
           </Button>

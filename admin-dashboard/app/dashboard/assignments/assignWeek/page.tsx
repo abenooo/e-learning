@@ -1,105 +1,142 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { useRouter, usePathname } from "next/navigation"
-import { CalendarCheck2 } from "lucide-react"
+import { useState } from "react";
+import { useRouter, usePathname } from "next/navigation";
+import { CalendarCheck2 } from "lucide-react";
+import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+} from "@/components/ui/select";
+import { Button } from "@/components/ui/button";
 
 export default function AssignWeekPage() {
-  const router = useRouter()
-  const pathname = usePathname()
+  const router = useRouter();
+  const pathname = usePathname();
+
+  const tabs = [
+    { label: "Assign Week", path: "/dashboard/assignments/assignWeek" },
+    { label: "Batch Instructors", path: "/dashboard/assignments/batchInstructors" },
+    { label: "Course Instructors", path: "/dashboard/assignments/courseInstructors" },
+  ];
 
   const [formData, setFormData] = useState({
     selectedCourse: "",
     selectedPhase: "",
     selectedWeek: "",
     selectedClass: "",
-  })
+  });
 
-  const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const { name, value } = e.target
-    setFormData(prev => ({ ...prev, [name]: value }))
-  }
+  const handleChange = (name: string, value: string) => {
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
 
   return (
-    <div className="p-6 text-white">
+    <div className="p-6 text-black bg-white min-h-screen">
       {/* Page Title */}
-      <h1 className="text-2xl font-bold text-orange-400 mb-6 flex items-center gap-2">
-        <CalendarCheck2 className="text-orange-500" />
+      <h1 className="text-2xl font-bold text-green-600 mb-6 flex items-center gap-2">
+        <CalendarCheck2 className="text-green-500" />
         Assign Week
       </h1>
 
-      <form className="bg-slate-900/50 p-6 rounded shadow border border-slate-700/50 space-y-5 text-sm">
-
-        {/* Select Course */}
-        <div>
-          <label className="block font-medium mb-1 text-slate-300">Select Course</label>
-          <select
-            name="selectedCourse"
-            value={formData.selectedCourse}
-            onChange={handleChange}
-            className="w-full p-2 rounded bg-slate-800 border border-slate-600 text-white"
+      {/* Tabs Navigation */}
+      <nav className="flex space-x-6 border-b border-gray-300 mb-6 text-sm font-semibold">
+        {tabs.map((tab) => (
+          <button
+            key={tab.path}
+            onClick={() => router.push(tab.path)}
+            className={`pb-2 transition-colors duration-200 ease-in-out ${
+              pathname === tab.path
+                ? "border-b-2 border-green-500 text-green-600"
+                : "text-gray-600 hover:text-black"
+            }`}
+            type="button"
           >
-            <option value="">-- Choose Course --</option>
-            <option value="Course1">Course 1</option>
-            <option value="Course2">Course 2</option>
-          </select>
+            {tab.label}
+          </button>
+        ))}
+      </nav>
+
+      {/* Form */}
+      <form className="bg-white p-6 rounded shadow border border-gray-200 space-y-5 text-sm">
+        {/* Select Course */}
+        <div className="space-y-1">
+          <Label>Select Course</Label>
+          <Select
+            value={formData.selectedCourse}
+            onValueChange={(value) => handleChange("selectedCourse", value)}
+          >
+            <SelectTrigger>
+              <SelectValue placeholder="-- Choose Course --" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="Course1">Course 1</SelectItem>
+              <SelectItem value="Course2">Course 2</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
 
         {/* Select Phase */}
-        <div>
-          <label className="block font-medium mb-1 text-slate-300">Select Phase</label>
-          <select
-            name="selectedPhase"
+        <div className="space-y-1">
+          <Label>Select Phase</Label>
+          <Select
             value={formData.selectedPhase}
-            onChange={handleChange}
-            className="w-full p-2 rounded bg-slate-800 border border-slate-600 text-white"
+            onValueChange={(value) => handleChange("selectedPhase", value)}
           >
-            <option value="">-- Choose Phase --</option>
-            <option value="Phase1">Phase 1</option>
-            <option value="Phase2">Phase 2</option>
-          </select>
+            <SelectTrigger>
+              <SelectValue placeholder="-- Choose Phase --" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="Phase1">Phase 1</SelectItem>
+              <SelectItem value="Phase2">Phase 2</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
 
         {/* Select Week */}
-        <div>
-          <label className="block font-medium mb-1 text-slate-300">Select Week</label>
-          <select
-            name="selectedWeek"
+        <div className="space-y-1">
+          <Label>Select Week</Label>
+          <Select
             value={formData.selectedWeek}
-            onChange={handleChange}
-            className="w-full p-2 rounded bg-slate-800 border border-slate-600 text-white"
+            onValueChange={(value) => handleChange("selectedWeek", value)}
           >
-            <option value="">-- Choose Week --</option>
-            <option value="Week1">Week 1</option>
-            <option value="Week2">Week 2</option>
-          </select>
+            <SelectTrigger>
+              <SelectValue placeholder="-- Choose Week --" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="Week1">Week 1</SelectItem>
+              <SelectItem value="Week2">Week 2</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
 
         {/* Select Class */}
-        <div>
-          <label className="block font-medium mb-1 text-slate-300">Select Class</label>
-          <select
-            name="selectedClass"
+        <div className="space-y-1">
+          <Label>Select Class</Label>
+          <Select
             value={formData.selectedClass}
-            onChange={handleChange}
-            className="w-full p-2 rounded bg-slate-800 border border-slate-600 text-white"
+            onValueChange={(value) => handleChange("selectedClass", value)}
           >
-            <option value="">-- Choose Class --</option>
-            <option value="Class A">Class A</option>
-            <option value="Class B">Class B</option>
-          </select>
+            <SelectTrigger>
+              <SelectValue placeholder="-- Choose Class --" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="Class A">Class A</SelectItem>
+              <SelectItem value="Class B">Class B</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
 
         {/* Assign Week Button */}
-        <div className="pt-4">
-          <button
-            type="submit"
-            className="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded"
-          >
+        <div className="flex justify-end gap-4 pt-4">
+          <Button type="submit" className="bg-green-500 hover:bg-orange-600 text-white">
             Assign Week
-          </button>
+          </Button>
         </div>
       </form>
     </div>
-  )
+  );
 }

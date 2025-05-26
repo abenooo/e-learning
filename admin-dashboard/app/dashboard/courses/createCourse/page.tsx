@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
 import { Card } from "@/components/ui/card"
 import { getToken } from "@/lib/auth"
+import { toast } from "@/components/ui/use-toast"
 
 export default function CreateCoursePage() {
   const [formData, setFormData] = useState({
@@ -69,66 +70,86 @@ export default function CreateCoursePage() {
       reader.readAsDataURL(file)
     }
   }
+console.log("Submitting formData:", formData)
+ const handleSubmit = async () => {
+  setLoading(true)
+  setError(null)
+  setSuccess(false)
 
-  const handleSubmit = async () => {
-    setLoading(true)
-    setError(null)
-    setSuccess(false)
+  const requiredFields = [
+    "title",
+    "description",
+    "price",
+    "difficulty_level",
+    "status",
+    "duration_months",
+    "course_type",
+    "delivery_method",
+    "logo_url",
+  ]
 
-    const requiredFields = [
-      "title",
-      "description",
-      "price",
-      "difficulty_level",
-      "status",
-      "duration_months",
-      "course_type",
-      "delivery_method",
-      "logo_url",
-    ]
-    const missingField = requiredFields.find(field => !formData[field as keyof typeof formData])
-    if (missingField) {
-      setError(`Please fill in the required field: ${missingField}`)
-      setLoading(false)
-      return
-    }
-
-    try {
-      const token = getToken()
-      if (!token) throw new Error("Unauthorized. No token found.")
-
-      const res = await fetch("https://e-learning-mern-stack.onrender.com/api/courses", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(formData),
-      })
-
-      const result = await res.json()
-      if (!res.ok) throw new Error(result.message || "Failed to create course.")
-
-      setSuccess(true)
-      setFormData({
-        title: "",
-        description: "",
-        thumbnail: "/uploads/courses/fullstack-thumbnail.jpg",
-        logo_url: "",
-        price: 0,
-        difficulty_level: "beginner",
-        status: "draft",
-        duration_months: 1,
-        course_type: "free",
-        delivery_method: "online",
-      })
-      setIconPreview("")
-    } catch (err: any) {
-      setError(err.message || "Something went wrong.")
-    } finally {
-      setLoading(false)
-    }
+  const missingField = requiredFields.find(
+    (field) => !formData[field as keyof typeof formData]
+  )
+  if (missingField) {
+    setError(`Please fill in the required field: ${missingField}`)
+    setLoading(false)
+    return
   }
+
+  try {
+    const token = getToken()
+    if (!token) throw new Error("Unauthorized. No token found.")
+
+    const res = await fetch("https://e-learning-mern-stack.onrender.com/api/courses", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(formData),
+    })
+
+    const result = await res.json()
+
+    // ✅ Proper success check
+    if (!res.ok || !result.success) {
+      console.error("Course creation failed:", result)
+      const errorMsg =
+        result.message ||
+        result.error ||
+        `Course creation failed. Server responded with status ${res.status}.`
+      throw new Error(errorMsg)
+    }
+
+    toast({
+      title: "Course Created",
+      description: "Your course was successfully created.",
+      className: "bg-green-50 border border-green-400 text-green-700",
+    })
+
+    setSuccess(true)
+    setFormData({
+      title: "",
+      description: "",
+      thumbnail: "/uploads/courses/fullstack-thumbnail.jpg",
+      logo_url: "",
+      price: 0,
+      difficulty_level: "beginner",
+      status: "draft",
+      duration_months: 1,
+      course_type: "free",
+      delivery_method: "online",
+    })
+    setIconPreview("")
+  } catch (err: any) {
+    console.error("Error occurred while creating course:", err)
+    setError(err.message || "Something went wrong.")
+  } finally {
+    setLoading(false)
+  }
+}
+
 
   const tabs = [
     { label: "Create Course", path: "/dashboard/courses/createCourse" },
@@ -257,4 +278,4 @@ export default function CreateCoursePage() {
       </Card>
     </div>
   )
-}
+} 

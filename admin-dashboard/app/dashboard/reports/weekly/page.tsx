@@ -7,7 +7,26 @@ import {
   Calculator,
   Trash,
   BarChart3,
-} from "lucide-react";
+} from "lucide-react"; // ✅ Removed incorrect Link import
+import Link from "next/link"; // ✅ Added correct Next.js Link
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+} from "@/components/ui/select";
+import { Button } from "@/components/ui/button";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { usePathname } from "next/navigation";
+import clsx from "clsx";
 
 type IndividualScore = {
   group: string;
@@ -31,6 +50,16 @@ const PHASES = ["phase 1", "phase 2", "phase 3"];
 const WEEKS = ["week 1: introduction", "week 2: CSS", "week 3: HTML"];
 
 export default function WeeklyReportPage() {
+  
+      const pathname = usePathname();
+  
+    const tabs = [
+      { label: "Checklist", path: "/dashboard/reports/checklist" },
+      { label: "Watched Sessions", path: "/dashboard/reports/watched" },
+      { label: "Attendance", path: "/dashboard/reports/attendance" },
+      { label: "Completion", path: "/dashboard/reports/completion" },
+      { label: "Weekly Report", path: "/dashboard/reports/weekly" },
+    ];
   const [formData, setFormData] = useState({
     course: "",
     batch: "",
@@ -42,15 +71,14 @@ export default function WeeklyReportPage() {
   const [individualScores, setIndividualScores] = useState<IndividualScore[]>([]);
   const [groupScores, setGroupScores] = useState<GroupScore[]>([]);
 
-  const handleChange = (e: { target: { name: string; value: string } }) => {
-    const updated = { ...formData, [e.target.name]: e.target.value };
+  const handleChange = (name: string, value: string) => {
+    const updated = { ...formData, [name]: value };
     setFormData(updated);
   };
 
   useEffect(() => {
     const { course, batch, group, phase, week } = formData;
     if (course && batch && group && phase && week) {
-      // Create a new student row
       const newScore: IndividualScore = {
         group,
         total: 14,
@@ -59,7 +87,6 @@ export default function WeeklyReportPage() {
       };
       setIndividualScores([newScore]);
 
-      // Ensure matching group in groupScores
       const exists = groupScores.find((g) => g.group === group);
       if (!exists) {
         const newGroupScore: GroupScore = {
@@ -78,8 +105,7 @@ export default function WeeklyReportPage() {
 
   const calculateColumn = (stepIndex: number) => {
     const updatedIndividuals = individualScores.map((student) => {
-      const newValue = Math.floor(Math.random() * 100);
-      student.steps[stepIndex] = newValue;
+      student.steps[stepIndex] = Math.floor(Math.random() * 100);
       return student;
     });
     setIndividualScores([...updatedIndividuals]);
@@ -139,8 +165,7 @@ export default function WeeklyReportPage() {
       );
 
       const avgWeeklyScore =
-        members.reduce((acc, curr) => acc + (curr.weeklyScore ?? 0), 0) /
-        memberCount;
+        members.reduce((acc, curr) => acc + (curr.weeklyScore ?? 0), 0) / memberCount;
 
       const formGroup = formData.group === groupName;
 
@@ -157,14 +182,32 @@ export default function WeeklyReportPage() {
   };
 
   return (
-    <div className="p-6 text-white">
-      <h1 className="text-2xl font-bold text-orange-400 mb-6 flex items-center gap-2">
-        <BarChart3 className="text-orange-500" />
+    <div className="p-6 bg-white text-black min-h-screen">
+      <h1 className="text-2xl font-bold text-green-500 mb-6 flex items-center gap-2">
+        <BarChart3 className="text-green-500" />
         Weekly Report
       </h1>
-
+{/* Top Tabs */}
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between border-b pb-2 gap-4 mb-6">
+        <div className="flex flex-wrap gap-4">
+          {tabs.map((tab) => (
+            <Link
+              key={tab.path}
+              href={tab.path}
+              className={clsx(
+                "px-4 py-2 rounded-t text-sm font-medium",
+                pathname === tab.path
+                  ? "bg-white text-green-600 border-b-2 border-green-600"
+                  : "text-gray-600 hover:text-black"
+              )}
+            >
+              {tab.label}
+            </Link>
+          ))}
+        </div>
+      </div> 
       {/* Filters */}
-      <div className="grid grid-cols-1 md:grid-cols-6 gap-4 text-sm mb-4">
+      <div className="grid grid-cols-1 md:grid-cols-6 gap-4 text-sm mb-6">
         {[
           { name: "course", values: COURSES },
           { name: "batch", values: BATCHES },
@@ -172,116 +215,123 @@ export default function WeeklyReportPage() {
           { name: "phase", values: PHASES },
           { name: "week", values: WEEKS },
         ].map(({ name, values }) => (
-          <select
+          <Select
             key={name}
-            name={name}
-            onChange={handleChange}
-            className="p-2 bg-slate-800 border border-slate-600 rounded"
+            onValueChange={(val) => handleChange(name, val)}
           >
-            <option value="">Select {name}</option>
-            {values.map((val) => (
-              <option key={val} value={val}>
-                {val}
-              </option>
-            ))}
-          </select>
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder={`Select ${name}`} />
+            </SelectTrigger>
+            <SelectContent>
+              {values.map((val) => (
+                <SelectItem key={val} value={val}>
+                  {val}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         ))}
       </div>
 
       {/* Group Table */}
       <h2 className="text-lg font-semibold mt-6 mb-2">All Group Scores</h2>
-      <table className="w-full text-sm mb-8 border border-slate-700">
-        <thead className="bg-slate-800">
-          <tr>
-            <th>Group</th>
-            <th>Videos (25%)</th>
-            <th>Class (15%)</th>
-            <th>Checklist (10%)</th>
-            <th>Exercises (25%)</th>
-            <th>Group (25%)</th>
-            <th>Weekly Score</th>
-          </tr>
-        </thead>
-        <tbody>
+      <Table className="mb-8">
+        <TableHeader>
+          <TableRow>
+            <TableHead>Group</TableHead>
+            <TableHead>Videos (25%)</TableHead>
+            <TableHead>Class (15%)</TableHead>
+            <TableHead>Checklist (10%)</TableHead>
+            <TableHead>Exercises (25%)</TableHead>
+            <TableHead>Group (25%)</TableHead>
+            <TableHead>Weekly Score</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
           {groupScores.map((group, idx) => (
-            <tr key={idx} className="text-center">
-              <td>{group.group}</td>
+            <TableRow key={idx}>
+              <TableCell>{group.group}</TableCell>
               {group.scores.map((score, i) => (
-                <td key={i}>{score}%</td>
+                <TableCell key={i}>{score}%</TableCell>
               ))}
-              <td>{group.average !== null ? `${group.average}%` : "-"}</td>
-            </tr>
+              <TableCell>{group.average !== null ? `${group.average}%` : "-"}</TableCell>
+            </TableRow>
           ))}
-        </tbody>
-      </table>
+        </TableBody>
+      </Table>
 
       {/* Individual Table */}
       <h2 className="text-lg font-semibold mb-2">Individual Scores</h2>
-      <table className="w-full text-sm border border-slate-700">
-        <thead className="bg-slate-800">
-          <tr>
-            <th>Group</th>
-            <th>Total Student</th>
-            {["Videos", "Class", "Checklist", "Exercises", "Group"].map(
-              (label, i) => (
-                <th key={i}>
-                  {label} (%):
-                  <div className="flex justify-center gap-1 mt-1">
-                    <button
-                      onClick={() => calculateColumn(i)}
-                      className="text-green-500"
-                    >
-                      <Calculator size={16} />
-                    </button>
-                    <button
-                      onClick={() => deleteColumn(i)}
-                      className="text-red-500"
-                    >
-                      <Trash size={16} />
-                    </button>
-                  </div>
-                </th>
-              )
-            )}
-            <th>
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead>Group</TableHead>
+            <TableHead>Total Student</TableHead>
+            {["Videos", "Class", "Checklist", "Exercises", "Group"].map((label, i) => (
+              <TableHead key={i}>
+                {label} (%)
+                <div className="flex gap-1 mt-1">
+                  <Button
+                    size="icon"
+                    variant="ghost"
+                    className="text-green-600"
+                    onClick={() => calculateColumn(i)}
+                  >
+                    <Calculator size={16} />
+                  </Button>
+                  <Button
+                    size="icon"
+                    variant="ghost"
+                    className="text-red-600"
+                    onClick={() => deleteColumn(i)}
+                  >
+                    <Trash size={16} />
+                  </Button>
+                </div>
+              </TableHead>
+            ))}
+            <TableHead>
               Weekly Score
-              <div className="flex justify-center gap-1 mt-1">
-                <button
+              <div className="flex gap-1 mt-1">
+                <Button
+                  size="icon"
+                  variant="ghost"
+                  className="text-green-600"
                   onClick={calculateWeeklyScore}
-                  className="text-green-500"
                 >
                   <Calculator size={16} />
-                </button>
-                <button
+                </Button>
+                <Button
+                  size="icon"
+                  variant="ghost"
+                  className="text-red-600"
                   onClick={deleteWeeklyScore}
-                  className="text-red-500"
                 >
                   <Trash size={16} />
-                </button>
+                </Button>
               </div>
-            </th>
-          </tr>
-        </thead>
-        <tbody>
+            </TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
           {individualScores.map((student, idx) => (
-            <tr key={idx} className="text-center">
-              <td>{student.group}</td>
-              <td>{student.total}</td>
+            <TableRow key={idx}>
+              <TableCell>{student.group}</TableCell>
+              <TableCell>{student.total}</TableCell>
               {student.steps.map((step, i) => (
-                <td key={i}>{step}%</td>
+                <TableCell key={i}>{step}%</TableCell>
               ))}
-              <td>
-                {student.weeklyScore !== null ? `${student.weeklyScore}%` : "-"}
-              </td>
-            </tr>
+              <TableCell>{student.weeklyScore !== null ? `${student.weeklyScore}%` : "-"}</TableCell>
+            </TableRow>
           ))}
-        </tbody>
-      </table>
+        </TableBody>
+      </Table>
 
+      {/* Pagination */}
       <div className="mt-6 flex gap-4 justify-center items-center">
-        <ChevronLeft className="cursor-pointer text-orange-500" />
-        <div className="text-sm text-slate-400">Page 1 of 5</div>
-        <ChevronRight className="cursor-pointer text-orange-500" />
+        <ChevronLeft className="cursor-pointer text-black-500" />
+        <div className="text-sm text-gray-500">Page 1 of 5</div>
+        <ChevronRight className="cursor-pointer text-black-500" />
       </div>
     </div>
   );
