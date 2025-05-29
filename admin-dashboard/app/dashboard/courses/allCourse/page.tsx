@@ -135,7 +135,7 @@ const AllCoursesPage = () => {
         <h1 className="text-2xl font-bold">All Courses</h1>
         <button
           onClick={() => router.push('/dashboard/courses/createCourse')}
-          className="bg-blue-100 text-blue-700 px-4 py-2 rounded flex items-center gap-2 hover:bg-blue-200"
+          className="bg-green-100 text-black-700 px-4 py-2 rounded flex items-center gap-2 hover:bg-green-200"
         >
           <FilePlus size={16} /> Create New Course
         </button>
