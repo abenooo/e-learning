@@ -241,6 +241,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             {isSidebarOpen && (
               <>
                 <NavDropdown icon={BookOpen} label="Course Management">
+                  <NavSubItem label="All Course" href="/dashboard/courses/allCourse" />
                   <NavSubItem label="Create Course" href="/dashboard/courses/createCourse" />
                   <NavSubItem label="Create Phase" href="/dashboard/courses/createPhase" />
                   <NavSubItem label="Create Week" href="/dashboard/courses/createWeek" />
