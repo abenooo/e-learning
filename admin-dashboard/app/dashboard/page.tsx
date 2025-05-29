@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, JSX } from "react";
 import {
   Activity,
   AlertCircle,
@@ -31,8 +31,19 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 import Link from "next/link";
 import { LucideIcon } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { getToken } from "@/lib/auth";
 type Theme = "dark" | "light";
-
+type User = {
+  id: string;
+  name: string;
+  email: string;
+  phone: string;
+  initials: string;
+  user_id_number: string;
+  last_login: string;
+  roles: string[];
+};
 export default function Dashboard() {
   const [theme, setTheme] = useState<Theme>("dark");
   const [isLoading, setIsLoading] = useState(true);
@@ -465,7 +476,59 @@ const ActionButton: React.FC<ActionButtonProps> = ({ icon: Icon, label }) => (
     {label}
   </button>
 );
-function UserProfileCard() {
+function UserProfileCard(): JSX.Element | null {
+  const [user, setUser] = useState<User | null>(null);
+  const [localLoginTime, setLocalLoginTime] = useState<string>('');
+  const router = useRouter();
+
+  useEffect(() => {
+    async function fetchUser() {
+      const token = getToken();
+      if (!token) {
+        router.push('/login');
+        return;
+      }
+
+      try {
+        const res = await fetch('https://e-learning-mern-stack.onrender.com/api/auth/me', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (!res.ok) throw new Error('Failed to fetch user');
+
+        const data = await res.json();
+     // console.log("Full API response:", data);
+        setUser(data.user);
+
+        if (data.user.last_login) {
+          const formatted = new Date(data.user.last_login).toLocaleString('en-US', {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric',
+            hour: 'numeric',
+            minute: '2-digit',
+            hour12: true,
+          });
+          setLocalLoginTime(formatted);
+        } else {
+          console.warn("⚠️ last_login field is missing in user data");
+          setLocalLoginTime("Unknown");
+        }
+
+      } catch (error) {
+        console.error('❌ Error fetching user:', error);
+      }
+    }
+
+    fetchUser();
+  }, [router]);
+
+  if (!user) return null;
+
   return (
     <Card className="bg-white border border-gray-200 shadow-sm text-black">
       <CardHeader className="pb-2 border-b border-gray-200">
@@ -475,23 +538,25 @@ function UserProfileCard() {
         <div className="flex items-center space-x-4 mb-4">
           <Avatar className="h-16 w-16">
             <AvatarImage src="/placeholder.svg?height=64&width=64" alt="User" />
-            <AvatarFallback className="bg-gray-200 text-green-500 text-xl">ST</AvatarFallback>
+            <AvatarFallback className="bg-gray-200 text-green-500 text-xl">
+              {user.initials || 'U'}
+            </AvatarFallback>
           </Avatar>
           <div>
-            <div className="text-lg font-medium text-black">Advanced TSP</div>
-            <div className="text-sm text-gray-600">advancestsp@gmail.com</div>
+            <div className="text-lg font-medium text-black">{user.name}</div>
+            <div className="text-sm text-gray-600">{user.email}</div>
           </div>
         </div>
         <div className="space-y-3">
           <MetricRow
             label="Role"
             value={
-              <Badge className="bg-green-100 text-green-600 border border-green-300">
-                Administrator
+              <Badge className="bg-green-100 text-green-600 border border-green-300 capitalize">
+                {user.roles?.[0] || 'User'}
               </Badge>
             }
           />
-          <MetricRow label="Last Login" value="Today, 10:30 AM" />
+          <MetricRow label="Last Login" value={localLoginTime || "Not available"} />
           <MetricRow
             label="Status"
             value={
@@ -514,6 +579,7 @@ function MetricRow({ label, value }: { label: string; value: React.ReactNode }) 
     </div>
   );
 }
+
 function SystemStatusCard({
   cpuUsage,
   memoryUsage,
@@ -617,3 +683,5 @@ const ManagementLink: React.FC<ManagementLinkProps> = ({
     </button>
   );
 };
+
+
