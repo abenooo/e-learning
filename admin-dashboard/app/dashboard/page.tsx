@@ -218,14 +218,14 @@ export default function Dashboard() {
                 </CardHeader>
                 <CardContent className="p-6">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <ManagementLink icon={BookOpen} label="All Courses" href="/dashboard/courses/allCourse"  />
-                  <ManagementLink icon={Book} label="Create Course" href="/dashboard/courses/createCourse" />
-                  <ManagementLink icon={Book} label="Create Phase" href="/dashboard/courses/createPhase" />
-                  <ManagementLink icon={Book} label="Create Week" href="/dashboard/courses/createWeek" />
-                  <ManagementLink icon={Book} label="Create Week Component" href="/dashboard/courses/createWeekComponent" />
-                  <ManagementLink icon={Book} label="Add Week Content" href="/dashboard/courses/addWeekContent" />
-                  <ManagementLink icon={Book} label="Supplementary Course Offerings" href="/dashboard/courses/supplementary" />
-                  <ManagementLink icon={Book} label="Select Supplementary Course" href="/dashboard/courses/selectSupplementary" />
+                    <ManagementLink icon={BookOpen} label="All Courses" href="/dashboard/courses/allCourse" />
+                    <ManagementLink icon={Book} label="Create Course" href="/dashboard/courses/createCourse" />
+                    <ManagementLink icon={Book} label="Create Phase" href="/dashboard/courses/createPhase" />
+                    <ManagementLink icon={Book} label="Create Week" href="/dashboard/courses/createWeek" />
+                    <ManagementLink icon={Book} label="Create Week Component" href="/dashboard/courses/createWeekComponent" />
+                    <ManagementLink icon={Book} label="Add Week Content" href="/dashboard/courses/addWeekContent" />
+                    <ManagementLink icon={Book} label="Supplementary Course Offerings" href="/dashboard/courses/supplementary" />
+                    <ManagementLink icon={Book} label="Select Supplementary Course" href="/dashboard/courses/selectSupplementary" />
                   </div>
                 </CardContent>
               </Card>
@@ -240,12 +240,12 @@ export default function Dashboard() {
                   </CardHeader>
                   <CardContent className="p-4">
                     <div className="space-y-2">
-                    <ManagementLink icon={Layers} label="Create Class" href="/dashboard/classes/createClass" />
-                    <ManagementLink icon={Video} label="Add Class Video" href="/dashboard/classes/addVideo" />
-                    <ManagementLink icon={ListChecks} label="Create Checklist" href="/dashboard/classes/createChecklist" />
-                    <ManagementLink icon={Layers} label="Create Class Component" href="/dashboard/classes/createClassComponent" />
-                    <ManagementLink icon={Database} label="Add Class Content" href="/dashboard/content/addClass" />
-                    <ManagementLink icon={Book} label="Assign Week" href="/dashboard/assignments/assignWeek" />
+                      <ManagementLink icon={Layers} label="Create Class" href="/dashboard/classes/createClass" />
+                      <ManagementLink icon={Video} label="Add Class Video" href="/dashboard/classes/addVideo" />
+                      <ManagementLink icon={ListChecks} label="Create Checklist" href="/dashboard/classes/createChecklist" />
+                      <ManagementLink icon={Layers} label="Create Class Component" href="/dashboard/classes/createClassComponent" />
+                      <ManagementLink icon={Database} label="Add Class Content" href="/dashboard/content/addClass" />
+                      <ManagementLink icon={Book} label="Assign Week" href="/dashboard/assignments/assignWeek" />
                     </div>
                   </CardContent>
                 </Card>
@@ -258,10 +258,10 @@ export default function Dashboard() {
                   </CardHeader>
                   <CardContent className="p-4">
                     <div className="space-y-2">
-                    <ManagementLink icon={Users} label="Create Batch" href="/dashboard/batch/createBatch" />
-                    <ManagementLink icon={Users} label="Create Group" href="/dashboard/batch/createGroup" />
-                    <ManagementLink icon={Users} label="Assign Batch Instructors" href="/dashboard/batch/batchInstructors" />
-                    <ManagementLink icon={Users} label="Assign Course Instructors" href="/dashboard/batch/courseInstructors" />
+                      <ManagementLink icon={Users} label="Create Batch" href="/dashboard/batch/createBatch" />
+                      <ManagementLink icon={Users} label="Create Group" href="/dashboard/batch/createGroup" />
+                      <ManagementLink icon={Users} label="Assign Batch Instructors" href="/dashboard/batch/batchInstructors" />
+                      <ManagementLink icon={Users} label="Assign Course Instructors" href="/dashboard/batch/courseInstructors" />
                     </div>
                   </CardContent>
                 </Card>
@@ -278,9 +278,9 @@ export default function Dashboard() {
                   </CardHeader>
                   <CardContent className="p-4">
                     <div className="space-y-2">
-                    <ManagementLink icon={User} label="List Of Users" href="/dashboard/users/list" />
-                    <ManagementLink icon={User} label="List Of Students" href="/dashboard/users/students" />
-                    <ManagementLink icon={User} label="Confirm Group Request" href="/dashboard/users/groupConfirmation" />
+                      <ManagementLink icon={User} label="List Of Users" href="/dashboard/users/list" />
+                      <ManagementLink icon={User} label="List Of Students" href="/dashboard/users/students" />
+                      <ManagementLink icon={User} label="Confirm Group Request" href="/dashboard/users/groupConfirmation" />
                     </div>
                   </CardContent>
                 </Card>
@@ -293,9 +293,9 @@ export default function Dashboard() {
                   </CardHeader>
                   <CardContent className="p-4">
                     <div className="space-y-2">
-                    <ManagementLink icon={Activity} label="Create Live Session" href="/dashboard/sessions/live" />
-                    <ManagementLink icon={Activity} label="Create Group Session" href="/dashboard/sessions/group" />
-                    <ManagementLink icon={Video} label="Add Live Class Video" href="/dashboard/classes/addVideo" />
+                      <ManagementLink icon={Activity} label="Create Live Session" href="/dashboard/sessions/live" />
+                      <ManagementLink icon={Activity} label="Create Group Session" href="/dashboard/sessions/group" />
+                      <ManagementLink icon={Video} label="Add Live Class Video" href="/dashboard/classes/addVideo" />
                     </div>
                   </CardContent>
                 </Card>
@@ -311,11 +311,11 @@ export default function Dashboard() {
                 </CardHeader>
                 <CardContent className="p-4">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <ManagementLink icon={ListChecks} label="Checklist" href="/dashboard/reports/checklist" />
-                  <ManagementLink icon={Video} label="Watched Videos" href="/dashboard/reports/watched" />
-                  <ManagementLink icon={Users} label="Attendance" href="/dashboard/reports/attendance" />
-                  <ManagementLink icon={ListChecks} label="Completion" href="/dashboard/reports/completion" />
-                  <ManagementLink icon={BarChart3} label="Weekly Report" href="/dashboard/reports/weekly" />
+                    <ManagementLink icon={ListChecks} label="Checklist" href="/dashboard/reports/checklist" />
+                    <ManagementLink icon={Video} label="Watched Videos" href="/dashboard/reports/watched" />
+                    <ManagementLink icon={Users} label="Attendance" href="/dashboard/reports/attendance" />
+                    <ManagementLink icon={ListChecks} label="Completion" href="/dashboard/reports/completion" />
+                    <ManagementLink icon={BarChart3} label="Weekly Report" href="/dashboard/reports/weekly" />
                   </div>
                 </CardContent>
               </Card>
@@ -445,10 +445,10 @@ function QuickActionsCard() {
       </CardHeader>
       <CardContent>
         <div className="grid grid-cols-2 gap-3">
-          <ActionButton icon={Book} label="Create Course" />
-          <ActionButton icon={Layers} label="Create Class" />
-          <ActionButton icon={Users} label="Create Batch" />
-          <ActionButton icon={Video} label="Add Video" />
+          <ManagementLink icon={ListChecks} label="Checklist" href="/dashboard/reports/checklist" />
+          <ManagementLink icon={Video} label="Watched Videos" href="/dashboard/reports/watched" />
+          <ManagementLink icon={Users} label="Attendance" href="/dashboard/reports/attendance" />
+          <ManagementLink icon={BarChart3} label="Weekly Report" href="/dashboard/reports/weekly" />
         </div>
       </CardContent>
     </Card>
