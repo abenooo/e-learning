@@ -20,16 +20,13 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const pathname = usePathname()
   const router = useRouter()
-
   useEffect(() => {
     const canvas = canvasRef.current
     if (!canvas) return
     const ctx = canvas.getContext("2d")
     if (!ctx) return
-
     canvas.width = canvas.offsetWidth
     canvas.height = canvas.offsetHeight
-
     class Particle {
       x: number; y: number; size: number; speedX: number; speedY: number; color: string;
       constructor(public width: number, public height: number) {
@@ -56,12 +53,10 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         ctx.fill()
       }
     }
-
     const particles: Particle[] = []
     for (let i = 0; i < 100; i++) {
       particles.push(new Particle(canvas.width, canvas.height))
     }
-
     function animate() {
       if (!ctx || !canvas) return
       ctx.clearRect(0, 0, canvas.width, canvas.height)
@@ -71,13 +66,10 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       })
       requestAnimationFrame(animate)
     }
-
     animate()
   }, [])
-
   const toggleTheme = () => setTheme(theme === "dark" ? "light" : "dark")
   const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen)
-
   const handleLogout = async () => {
     try {
       const token = localStorage.getItem("token")
@@ -96,7 +88,6 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       console.error("Logout error:", err)
     }
   }
-
   const renderFooter = () => (
     <footer className="mt-12 border-t border-gray-300 pt-10 pb-12 text-gray-600 text-sm">
       <div className="flex flex-col md:flex-row items-center justify-between gap-4 px-4">
@@ -123,7 +114,6 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       </div>
     </footer>
   )
-
   return (
     <div className={`${theme} min-h-screen bg-white text-black relative`}>
       <canvas ref={canvasRef} className="absolute inset-0 w-full h-full opacity-10" />
@@ -135,7 +125,6 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             <Hexagon className="h-8 w-8 text-green-500" />
             <span className="text-xl font-bold text-green-600">Advanced Technical Service Provider</span>
           </div>
-
           {/* Controls: Search, Theme, Avatar, Logout */}
           <div className="flex items-center space-x-16">
             {/* Search Form */}
@@ -157,7 +146,6 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                 <Search className="h-4 w-4 text-black" />
               </button>
             </form>
-
             {/* Theme Toggle */}
             {/* <Button
       variant="ghost"
@@ -181,10 +169,9 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                     const token = localStorage.getItem("token");
 
                     if (!token) {
-                      router.replace("/"); // ✅ Redirect to LoginPage
+                      router.replace("/"); 
                       return;
                     }
-
                     const res = await fetch("https://e-learning-mern-stack.onrender.com/api/auth/logout", {
                       method: "POST",
                       headers: {
@@ -200,15 +187,13 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                       router.replace("/"); // Even on error, force redirect
                       return;
                     }
-
                     localStorage.removeItem("token");
-                    router.replace("/"); // ✅ Redirect to root (LoginPage)
+                    router.replace("/"); 
                   } catch (err) {
                     console.error("Logout error:", err);
                     router.replace("/");
                   }
                 }}
-
                 variant="ghost"
                 size="icon"
                 className="text-gray-600 hover:text-red-500"
@@ -219,7 +204,6 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             </div>
           </div>
         </header>
-
         {/* Layout */}
         <div className="flex gap-6">
           {/* Sidebar */}
@@ -237,7 +221,6 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                 <Menu className="w-5 h-5 text-gray-700" />
               </Button>
             </div>
-
             {isSidebarOpen && (
               <>
                 <NavDropdown icon={BookOpen} label="Course Management">
@@ -294,28 +277,27 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
               </>
             )}
 
-          {/* === Bottom User + View Profile Section === */}
-<div className="mt-4">
-  <div className="flex items-center justify-center md:justify-between px-3 py-2 rounded-md bg-white-200 hover:bg-gray-300 hover:shadow-md transition-all duration-200">
-    <div className="flex items-center space-x-2">
-      <Avatar className="h-8 w-8">
-        <AvatarImage src="/user.jpg" alt="User" />
-        <AvatarFallback className="bg-white-300 text-blue-500">ST</AvatarFallback>
-      </Avatar>
+            {/* === Bottom User + View Profile Section === */}
+            <div className="mt-4">
+              <div className="flex items-center justify-center md:justify-between px-3 py-2 rounded-md bg-white-200 hover:bg-gray-300 hover:shadow-md transition-all duration-200">
+                <div className="flex items-center space-x-2">
+                  <Avatar className="h-8 w-8">
+                    <AvatarImage src="/user.jpg" alt="User" />
+                    <AvatarFallback className="bg-white-300 text-blue-500">ST</AvatarFallback>
+                  </Avatar>
 
-      {/* Conditionally show "View Profile" only when sidebar is open */}
-      {isSidebarOpen && (
-        <Link
-          href="/dashboard/userProfile"
-          className="text-gray-600 hover:text-green-600 text-sm px-2 py-1 font-semibold"
-        >
-          View Profile
-        </Link>
-      )}
-    </div>
-  </div>
-</div>
-
+                  {/* Conditionally show "View Profile" only when sidebar is open */}
+                  {isSidebarOpen && (
+                    <Link
+                      href="/dashboard/userProfile"
+                      className="text-gray-600 hover:text-green-600 text-sm px-2 py-1 font-semibold"
+                    >
+                      View Profile
+                    </Link>
+                  )}
+                </div>
+              </div>
+            </div>
           </div>
 
           {/* Main content */}
