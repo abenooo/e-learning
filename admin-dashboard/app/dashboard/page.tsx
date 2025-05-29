@@ -218,7 +218,7 @@ export default function Dashboard() {
                 </CardHeader>
                 <CardContent className="p-6">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <ManagementLink icon={BookOpen} label="All Courses" href="/dashboard/courses/courses" />
+                  <ManagementLink icon={BookOpen} label="All Courses" href="/dashboard/courses/allCourse"  />
                   <ManagementLink icon={Book} label="Create Course" href="/dashboard/courses/createCourse" />
                   <ManagementLink icon={Book} label="Create Phase" href="/dashboard/courses/createPhase" />
                   <ManagementLink icon={Book} label="Create Week" href="/dashboard/courses/createWeek" />
